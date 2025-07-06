@@ -19,7 +19,7 @@ function Get-ESETPROTECTServer {
         Uri         = $res.Get.Update.Uri
         ContentType = $res.Get.Update.ContentType
     }
-    $Metadata = Invoke-RestMethodWrapper @params
+    $Metadata = Invoke-EvergreenRestMethod @params
     if ($null -ne $Metadata) {
 
         # Grab the JSON metadata from the returned object
@@ -28,7 +28,7 @@ function Get-ESETPROTECTServer {
 
         # Find all the supported languages because the versions can be different per language
         $Languages = $InfoData.Language | Select-Object -Unique
-        Write-Verbose -Message "$($MyInvocation.MyCommand): Found $($Language.Count) languages."
+        Write-Verbose -Message "$($MyInvocation.MyCommand): Found $($Languages.Count) languages."
 
         # Step through each of the supported languages
         foreach ($Language in $Languages) {

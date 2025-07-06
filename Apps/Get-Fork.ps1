@@ -21,7 +21,7 @@ Function Get-Fork {
     $params = @{
         Uri = $res.Get.Update.Uri
     }
-    $Content = Invoke-RestMethodWrapper @params
+    $Content = Invoke-EvergreenRestMethod @params
     if ($null -ne $Content) {
         try {
             # Parse the returned content and match the version number
@@ -38,7 +38,7 @@ Function Get-Fork {
         # Convert the returned release data into a useable object with Version, URI etc.
         $PSObject = [PSCustomObject] @{
             Version = $Version
-            URI     = $res.Get.Download.Uri
+            URI     = (Resolve-SystemNetWebRequest -Uri $res.Get.Download.Uri).ResponseUri.AbsoluteUri
         }
         Write-Output -InputObject $PSObject
     }

@@ -1,54 +1,30 @@
 {
     "Name": "Microsoft Outlook",
-    "Source": "https://www.microsoft.com/en/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook",
+    "Source": "https://learn.microsoft.com/en-us/microsoft-365-apps/outlook/get-started/deployment-new-outlook",
     "Get": {
         "Update": {
-            "Uri": "https://res.cdn.office.net/nativehost/5mttl/installer/v1/win-x64/prod/RELEASES?id=Outlook&localVersion=1.2022.10050400&arch=amd64",
-            "ContentType": "application/json; charset=utf-8",
-            "UserAgent": "Mozilla/5.0 (Windows NT 6.1; WOW64) SkypeUriPreview Preview/0.5",
-            "MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
-            "Rings": {
-                "General": "general",
-                "ITAdmins": "ring1_5",
-                "DeveloperPartners": "ring1_6",
-                "Dogfood": "ring2",
-                "TAP": "ring3",
-                "Preview": "ring3_6",
-                "OuterRing": "ring3_9",
-                "Public": "ring4"
-            },
-            "ReplaceText": "#ring"
+            "Uri": ""
         },
         "Download": {
-            "Uri": "https://res.cdn.office.net/nativehost/5mttl/installer/v1/win-x64/prod/#installer",
-            "Architecture": [
-                "x64",
-                "x32",
-                "arm64"
+            "Uri": [
+                "https://go.microsoft.com/fwlink/?linkid=2195164",
+                "https://go.microsoft.com/fwlink/?linkid=2195278",
+                "https://go.microsoft.com/fwlink/?linkid=2195438"
             ],
-            "ReplaceText": {
-                "architecture": "#architecture",
-                "ring": "#ring"
-            },
-            "Extensions": [
-                ".exe",
-                ".msi"
-            ]
+            "MaximumRedirection": 3,
+            "DatePattern": "d/M/yyyy"
         }
     },
     "Install": {
         "Setup": "",
+        "Preinstall": "",
         "Physical": {
             "Arguments": "",
-            "PostInstall": [
-                ""
-            ]
+            "PostInstall": []
         },
         "Virtual": {
             "Arguments": "",
-            "PostInstall": [
-                ""
-            ]
+            "PostInstall": []
         }
     }
 }

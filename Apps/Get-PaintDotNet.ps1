@@ -1,4 +1,4 @@
-Function Get-PaintDotNet {
+function Get-PaintDotNet {
     <#
         .SYNOPSIS
             Get the current version and download URL for the Paint.NET tools.
@@ -8,28 +8,29 @@ Function Get-PaintDotNet {
             Twitter: @cit_bronson
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
     # Read the Paint.NET updates feed
-    $Content = Invoke-WebRequestWrapper -Uri $res.Get.Uri
-    If ($Null -ne $Content) {
-
-        # Convert the content from string data
-        $Data = $Content | ConvertFrom-StringData
+    $Content = Invoke-EvergreenRestMethod -Uri $res.Get.Uri
+    if ($null -ne $Content) {
 
         # Build the output object
-        ForEach ($url in ($Data.("$($Data.StableVersions)$($res.Get.UrlProperty)") -split $res.Get.UrlDelimiter)) {
-            $PSObject = [PSCustomObject] @{
-                Version = $Data.($res.Get.VersionProperty)
-                URI     = $url
+        foreach ($Release in $Content.releases) {
+            foreach ($File in $Release.files) {
+                $PSObject = [PSCustomObject] @{
+                    Version      = $Release.version
+                    Channel      = $Release.milestone
+                    Architecture = $File.architecture
+                    URI          = $File.'mirror-urls'[0]
+                }
+                Write-Output -InputObject $PSObject
             }
-            Write-Output -InputObject $PSObject
         }
     }
 }

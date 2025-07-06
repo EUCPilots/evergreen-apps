@@ -1,4 +1,4 @@
-Function Get-MicrosoftWvdBootLoader {
+function Get-MicrosoftWvdBootLoader {
     <#
         .SYNOPSIS
             Get the current version and download URL for the Microsoft Remote Desktop Boot Loader.
@@ -9,42 +9,34 @@ Function Get-MicrosoftWvdBootLoader {
             Twitter: @stealthpuppy
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    # Grab the download link headers to find the file name
     $params = @{
-        Uri          = $res.Get.Download.Uri
-        Method       = "Head"
-        ReturnObject = "Headers"
+        Uri = $res.Get.Download.Uri
     }
-    $Headers = Invoke-WebRequestWrapper @params
+    $Response = Resolve-SystemNetWebRequest @params
 
-    If ($Null -ne $Headers) {
-        # Match filename
-        $Filename = [RegEx]::Match($Headers['Content-Disposition'], $res.Get.Download.MatchFilename).Captures.Groups[1].Value
-
-        # Match version
-        $Version = [RegEx]::Match($Headers['Content-Disposition'], $res.Get.Download.MatchVersion).Captures.Value
-        If ($Version.Length -eq 0) { $Version = "Unknown" }
-
-        # Construct the output; Return the custom object to the pipeline
-        $PSObject = [PSCustomObject] @{
-            Version      = $Version
-            Architecture = Get-Architecture -String $Filename
-            Date         = $Headers['Last-Modified'] | Select-Object -First 1
-            Size         = $Headers['Content-Length'] | Select-Object -First 1
-            Filename     = $Filename
-            URI          = $res.Get.Download.Uri
-        }
-        Write-Output -InputObject $PSObject
+    # Match version
+    $Version = [RegEx]::Match($Response.ResponseUri.AbsoluteUri, $res.Get.Download.MatchVersion).Captures.Groups[1].Value
+    if ($null -ne $Version) {
+        Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version."
     }
-    Else {
-        Throw "$($MyInvocation.MyCommand): Failed to return a header from $($res.Get.Download.Uri)."
+    else {
+        Write-Warning -Message "$($MyInvocation.MyCommand): Failed to determine version number from: $($Response.ResponseUri.AbsoluteUri)."
     }
+
+    # Construct the output; Return the custom object to the pipeline
+    $PSObject = [PSCustomObject] @{
+        Version      = $Version
+        Date         = $Response.LastModified.DateTime
+        Architecture = Get-Architecture -String $Response.ResponseUri.AbsoluteUri
+        URI          = $Response.ResponseUri.AbsoluteUri
+    }
+    Write-Output -InputObject $PSObject
 }

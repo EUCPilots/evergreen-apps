@@ -21,23 +21,23 @@ Function Get-PiriformCCleanerFree {
         Uri       = $res.Get.Update.Uri
         UserAgent = $res.Get.Update.UserAgent
     }
-    $Update = Invoke-RestMethodWrapper @params
+    $Update = Invoke-EvergreenRestMethod @params
 
     # Build object and output to the pipeline
     if ($null -ne $Update) {
 
         # Grab the download link headers to find the file name
-        $params = @{
-            Uri          = $res.Get.Download.Uri
-            Method       = "Head"
-            ReturnObject = "Headers"
-        }
-        $Headers = Invoke-WebRequestWrapper @params
-        $Filename = [RegEx]::Match($Headers['Content-Disposition'], $res.Get.Download.MatchFilename).Captures.Groups[1].Value
+        # $params = @{
+        #     Uri          = $res.Get.Download.Uri
+        #     Method       = "Head"
+        #     ReturnObject = "Headers"
+        # }
+        # $Headers = Invoke-EvergreenWebRequest @params
+        # $Filename = [RegEx]::Match($Headers['Content-Disposition'], $res.Get.Download.MatchFilename).Captures.Groups[1].Value
 
         $PSObject = [PSCustomObject] @{
             Version  = ($Update -split "\|")[2]
-            Filename = $Filename
+            Filename = (Split-Path -Path $($Update -split "\|")[-2] -Leaf)
             URI      = $res.Get.Download.Uri
         }
         Write-Output -InputObject $PSObject

@@ -1,4 +1,4 @@
-﻿Function Get-ScooterBeyondCompare {
+﻿function Get-ScooterBeyondCompare {
     <#
         .SYNOPSIS
             Returns the latest Beyond Compare and download URL.
@@ -10,39 +10,52 @@
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $False)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    ForEach ($language in $res.Get.Uri.GetEnumerator()) {
+    # Query the Beyond Compare update API
+    $params = @{
+        Uri       = $res.Get.Update.Uri
+        UserAgent = $res.Get.Update.UserAgent
+    }
+    $Content = Invoke-EvergreenRestMethod @params
+    if ($null -ne $Content) {
 
-        # Query the Beyond Compare update API
-        $iwcParams = @{
-            Uri       = $res.Get.Uri[$language.key]
-            UserAgent = $res.Get.UserAgent
+        if ($Content -is [System.Xml.XmlDocument]) {
+            $XmlContent = $Content
         }
-        $Content = Invoke-RestMethodWrapper @iwcParams
+        else {
+            # Normalize the XML content
+            $Content = $Content -replace "<a", "" -replace "</a>", ""
+            $XmlContent = New-Object -TypeName "System.Xml.XmlDocument"
+            $XmlContent.LoadXml($Content)
+        }
 
-        # If something is returned
-        If ($Null -ne $Content) {
+        # Build an array of the latest release and download URLs
+        foreach ($Update in $XmlContent.Update) {
 
-            # Build an array of the latest release and download URLs
-            ForEach ($update in $Content.Update) {
+            # Replace text in the version string
+            $Version = $Update.latestVersion -replace $res.Get.Update.ReplaceText, "."
+            Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version"
+            if ($Version -notmatch $res.Get.Update.MatchVersion) {
+                $Version = [RegEx]::Match($Update.latestVersion, $res.Get.Update.MatchVersion).Captures.Value
+                $Version = "$($Version).$($Update.latestBuild)"
+                Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version"
+            }
 
-                try {
-                    $version = [RegEx]::Match($update.latestversion, $res.Get.MatchVersion).Captures.Value
-                    $version = "$($version).$($update.latestBuild)"
-                }
-                catch {
-                    $version = $update.latestVersion
-                }
+            # Step through each language
+            foreach ($language in $res.Get.Update.Languages.GetEnumerator()) {
 
+                # Output the version and download URL
                 $PSObject = [PSCustomObject] @{
-                    Version  = $version
-                    Language = $res.Get.Languages[$language.key]
-                    URI      = $update.download
+                    Version      = $Version
+                    Language     = $res.Get.Update.Languages[$language.key]
+                    Architecture = Get-Architecture -String $Update.download
+                    Type         = Get-FileType -File $Update.download
+                    URI          = if ($language.key -eq "en") { $Update.download } else { $Update.download -replace "BCompare-", "BCompare-$($language.key)-" }
                 }
                 Write-Output -InputObject $PSObject
             }

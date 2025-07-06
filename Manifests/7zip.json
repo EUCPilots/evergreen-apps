@@ -1,25 +1,10 @@
 {
-	"Name": "7zip",
+	"Name": "7-Zip",
 	"Source": "https://www.7-zip.org/",
 	"Get": {
-		"Update": {
-			"Uri": "https://sourceforge.net/projects/sevenzip/best_release.json",
-			"ContentType": "application/json; charset=utf-8"
-		},
-		"Download" : {
-			"Folder": "7-Zip",
-			"Feed": "https://sourceforge.net/projects/sevenzip/rss?path=",
-			"FilterProperty": "link",
-            "ReplaceText": {
-                "Link": "/download"
-            },
-            "MatchFileTypes": "\\.exe$|\\.msi$",
-            "FileProperty": "description.'#cdata-section'",
-			"ContentType": "application/rss+xml; charset=utf-8",
-			"Uri": "https://nchc.dl.sourceforge.net/project/sevenzip"
-		},
-		"MatchVersion": "(\\d+(\\.\\d+){1,3})",
-		"DatePattern": "yyyy-MM-dd HH:mm:ss"
+		"Uri": "https://api.github.com/repos/ip7z/7zip/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
 	},
 	"Install": {
 		"Setup": "7z*.exe|7z.msi",

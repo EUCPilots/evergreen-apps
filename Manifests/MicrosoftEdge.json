@@ -4,10 +4,6 @@
     "Get": {
         "Update": {
             "Uri": "https://edgeupdates.microsoft.com/api/products",
-            "Views": {
-                "Consumer": "",
-                "Enterprise": "?view=enterprise"
-            },
             "Platforms": [
                 "Windows",
                 "Any"

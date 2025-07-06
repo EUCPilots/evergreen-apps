@@ -4,20 +4,39 @@
 	"Get": {
 		"Update": {
 			"Uri": "https://product-details.mozilla.org/1.0/thunderbird_versions.json",
-			"Channels": [
-				"LATEST_THUNDERBIRD_VERSION"
-			]
+			"Channels": {
+                "LATEST_THUNDERBIRD_VERSION": "Current",
+                "LATEST_THUNDERBIRD_DEVEL_VERSION": "Beta",
+                "THUNDERBIRD_ESR": "ESR",
+                "THUNDERBIRD_ESR_NEXT": "ESR_Next"
+            }
 		},
 		"Download": {
 			"Uri": {
 				"LATEST_THUNDERBIRD_VERSION": {
-					"Exe": "https://download.mozilla.org/?product=thunderbird-latest-ssl&os=#platform&lang=#language",
-					"Msi": "https://download.mozilla.org/?product=thunderbird-msi-latest-ssl&os=#platform&lang=#language"					
-				}
+                    "Exe": "https://download.mozilla.org/?product=thunderbird-#version-SSL&os=#platform&lang=#language",
+                    "Msi": "https://download.mozilla.org/?product=thunderbird-#version-msi-SSL&os=#platform&lang=#language",
+                    "Msix": "https://download.mozilla.org/?product=thunderbird-#version-msix-SSL&os=#platform&lang=#language"
+				},
+                "LATEST_THUNDERBIRD_DEVEL_VERSION": {
+                    "Exe": "https://download.mozilla.org/?product=thunderbird-beta-latest-SSL&os=#platform&lang=#language",
+                    "Msi": "https://download.mozilla.org/?product=thunderbird-beta-latest-msi-SSL&os=#platform&lang=#language",
+                    "Msix": "https://download.mozilla.org/?product=thunderbird-beta-latest-msix-SSL&os=#platform&lang=#language"
+                },
+                "THUNDERBIRD_ESR": {
+                    "Exe": "https://download.mozilla.org/?product=thunderbird-#version-SSL&os=#platform&lang=#language",
+                    "Msi": "https://download.mozilla.org/?product=thunderbird-#version-msi-SSL&os=#platform&lang=#language",
+                    "Msix": "https://download.mozilla.org/?product=thunderbird-#version-msix-SSL&os=#platform&lang=#language"
+                },
+                "THUNDERBIRD_ESR_NEXT": {
+                    "Exe": "https://download.mozilla.org/?product=thunderbird-#version-SSL&os=#platform&lang=#language",
+                    "Msi": "https://download.mozilla.org/?product=thunderbird-#version-msi-SSL&os=#platform&lang=#language",
+                    "Msix": "https://download.mozilla.org/?product=thunderbird-#version-msix-SSL&os=#platform&lang=#language"
+                }
 			},
 			"Platforms": [
 				"win64",
-				"win"
+                "win"
 			],
             "FullLanguageList": [
                 "en-US",

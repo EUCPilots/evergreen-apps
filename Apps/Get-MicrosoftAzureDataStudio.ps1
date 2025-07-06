@@ -1,7 +1,8 @@
-Function Get-MicrosoftAzureDataStudio {
+function Get-MicrosoftAzureDataStudio {
     <#
         .SYNOPSIS
-            Reads the Microsoft Azure Data Studio code update API to retrieve available Stable and Insider builds version numbers and download URLs for Windows.
+            Reads the Microsoft Azure Data Studio code update API to retrieve available
+            Stable and Insider builds version numbers and download URLs for Windows.
 
         .NOTES
             Site: https://stealthpuppy.com
@@ -9,42 +10,40 @@ Function Get-MicrosoftAzureDataStudio {
             Twitter: @stealthpuppy
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    # Get the commit details
-    $commit = (Invoke-RestMethodWrapper -Uri $res.Get.Update.Version.Uri).($res.Get.Update.Version.Property)
+    foreach ($platform in $res.Get.Update.Platform) {
+        Write-Verbose -Message "$($MyInvocation.MyCommand): Getting release info for $platform."
 
-    # Walk through each platform
-    If ($commit) {
-        ForEach ($platform in $res.Get.Update.Platform) {
-            Write-Verbose -Message "$($MyInvocation.MyCommand): Getting release info for $platform."
+        # Walk through each channel in the platform
+        foreach ($channel in $res.Get.Update.Channel) {
 
-            # Walk through each channel in the platform
-            ForEach ($channel in $res.Get.Update.Channel) {
+            # Resolve details for the update feed
+            $params = @{
+                Uri         = $res.Get.Update.Uri -replace "#platform", $platform.ToLower() -replace "#channel", $channel.ToLower()
+                ErrorAction = "Stop"
+            }
+            $UpdateFeed = Invoke-EvergreenRestMethod @params
 
-                # Read the version details from the API, format and return to the pipeline
-                $Uri = "$($res.Get.Update.Uri)/$($platform.ToLower())/$($channel.ToLower())/$commit"
-                $updateFeed = Invoke-RestMethodWrapper -Uri $Uri
-                If ($updateFeed) {
-                    $PSObject = [PSCustomObject] @{
-                        Version      = $updateFeed.productVersion -replace $res.Get.Update.ReplaceText, ""
-                        Platform     = $platform
-                        Channel      = $channel
-                        Sha256       = $updateFeed.sha256hash
-                        URI          = $updateFeed.url
-                    }
-                    Write-Output -InputObject $PSObject
+            # If we have a valid response, output the details
+            if ($null -ne $UpdateFeed) {
+                $Url = $(Resolve-SystemNetWebRequest -Uri $UpdateFeed.url).ResponseUri.AbsoluteUri
+                $PSObject = [PSCustomObject] @{
+                    Version      = $UpdateFeed.productVersion
+                    Channel      = $channel
+                    Platform     = $platform
+                    Sha256       = $UpdateFeed.sha256hash
+                    Type         = Get-FileType -File $Url
+                    URI          = $Url
                 }
+                Write-Output -InputObject $PSObject
             }
         }
-    }
-    Else {
-        Throw "$($MyInvocation.MyCommand): failed to get commit details from: $($res.Get.Update.Version.Uri)."
     }
 }

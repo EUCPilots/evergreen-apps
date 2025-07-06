@@ -6,7 +6,6 @@ function Get-MicrosoftWvdMultimediaRedirection {
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-            Twitter: @stealthpuppy
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
@@ -18,41 +17,25 @@ function Get-MicrosoftWvdMultimediaRedirection {
     )
 
     $params = @{
-        Uri          = $res.Get.Download.Uri
-        Method       = "Head"
-        ReturnObject = "Headers"
+        Uri = $res.Get.Download.Uri
     }
-    $Content = Invoke-WebRequestWrapper @params
+    $Response = Resolve-SystemNetWebRequest @params
 
-    if ($null -ne $Content) {
-        try {
-            # Match filename
-            $Filename = [RegEx]::Match($Content.'Content-Disposition', $res.Get.Download.MatchFilename).Captures.Groups[1].Value
-            Write-Verbose -Message "$($MyInvocation.MyCommand): Found filename: $Filename."
-        }
-        catch {
-            Write-Warning -Message "$($MyInvocation.MyCommand): Failed to match filename from '$($Content.'Content-Disposition')'."
-        }
-
-        try {
-            # Match version
-            $Version = [RegEx]::Match($Content.'Content-Disposition', $res.Get.Download.MatchVersion).Captures.Groups[1].Value
-            Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version."
-        }
-        catch {
-            $Version = [RegEx]::Match($Content.'Content-Disposition', $res.Get.Download.MatchVersionFallback).Captures.Groups[1].Value
-            Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version."
-            Write-Warning -Message "$($MyInvocation.MyCommand): Unable to determine a version number from '$($Content.'Content-Disposition')'."
-        }
-
-        # Construct the output; Return the custom object to the pipeline
-        $PSObject = [PSCustomObject] @{
-            Version      = $Version
-            Architecture = Get-Architecture -String $Filename
-            Date         = $Content.'Last-Modified'[0]
-            Filename     = $Filename
-            URI          = $res.Get.Download.Uri
-        }
-        Write-Output -InputObject $PSObject
+    # Match version
+    $Version = [RegEx]::Match($Response.ResponseUri.AbsoluteUri, $res.Get.Download.MatchVersion).Captures.Groups[1].Value
+    if ($null -ne $Version) {
+        Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version."
     }
+    else {
+        Write-Warning -Message "$($MyInvocation.MyCommand): Failed to determine version number from: $($Response.ResponseUri.AbsoluteUri)."
+    }
+
+    # Construct the output; Return the custom object to the pipeline
+    $PSObject = [PSCustomObject] @{
+        Version      = $Version
+        Date         = $Response.LastModified.DateTime
+        Architecture = Get-Architecture -String $Response.ResponseUri.AbsoluteUri
+        URI          = $Response.ResponseUri.AbsoluteUri
+    }
+    Write-Output -InputObject $PSObject
 }

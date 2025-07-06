@@ -1,4 +1,4 @@
-Function Get-MicrosoftSsms {
+function Get-MicrosoftSsms {
     <#
         .SYNOPSIS
             Returns the latest SQL Server Management Studio
@@ -8,41 +8,32 @@ Function Get-MicrosoftSsms {
             Twitter: @stealthpuppy
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification="Product name is a plural")]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification = "Product name is a plural")]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    # Resolve the SSMS update feed
-    $UpdateFeed = Resolve-SystemNetWebRequest -Uri $res.Get.Update.Uri
+    # Follow the https://go.microsoft.com/fwlink/?linkid= link to get to the update XML
+    $UpdateFeed = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri
+    if ($UpdateFeed -is [System.Xml.XmlElement]) {
 
-    # SQL Management Studio downloads/versions documentation
-    $params = @{
-        Uri = $UpdateFeed.ResponseUri.AbsoluteUri
-    }
-    $Content = Invoke-RestMethodWrapper @params
-
-    If ($Null -ne $Content) {
-        ForEach ($entry in $Content.component) {
-            Write-Warning -Message "$($MyInvocation.MyCommand): Version returned from the update feed: $($entry.version). See $($script:resourceStrings.Uri.Issues) for more information."
-
-            ForEach ($language in $res.Get.Download.Language.GetEnumerator()) {
+        foreach ($Entry in $UpdateFeed) {
+            foreach ($language in $res.Get.Download.Language.GetEnumerator()) {
 
                 # Follow the download link which will return a 301
-                $Uri = $res.Get.Download.Uri -replace $res.Get.Download.ReplaceText, $res.Get.Download.Language[$language.key]
+                $Query = "?clcid="
+                $Uri = "$($Entry.link.href)$($Query)$($res.Get.Download.Language[$language.key])"
                 $ResponseUri = Resolve-SystemNetWebRequest -Uri $Uri
-
-                # Check returned URL. It should be a go.microsoft.com/fwlink/?linkid style link
-                If ($Null -ne $ResponseUri) {
+                if ($ResponseUri.ResponseUri -is [System.Uri]) {
 
                     # Construct the output; Return the custom object to the pipeline
                     $PSObject = [PSCustomObject] @{
-                        Version  = $entry.version
-                        Date     = ConvertTo-DateTime -DateTime ($Content.updated.Split(".")[0]) -Pattern $res.Get.Update.DatePattern
+                        Version  = $Entry.component.version
+                        Date     = ConvertTo-DateTime -DateTime ($UpdateFeed.updated.Split(".")[0]) -Pattern $res.Get.Update.DatePattern
                         Language = $language.key
                         URI      = $ResponseUri.ResponseUri.AbsoluteUri
                     }

@@ -16,12 +16,15 @@ Function Get-LehrerOffice {
     $webrequest = @{
         Uri = $res.Get.Update.Uri
     }
-    $Content = Invoke-WebRequestWrapper @webrequest
+    $Content = Invoke-EvergreenWebRequest @webrequest
+
+    $versions = $Content | Select-String -Pattern $res.Get.Update.MatchVersion
+    $newestVersion = $versions.Matches.Item(0).Groups.Item(1).Value
 
     # Construct the output; Return the custom object to the pipeline
     If ($Null -ne $Content) {
         $PSObject = [PSCustomObject] @{
-            Version = $Content
+            Version = $newestVersion
             Type    = 'Exe'
             URI     = $res.Get.Download.Uri
         }
