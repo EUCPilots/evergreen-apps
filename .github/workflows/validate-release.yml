@@ -1,0 +1,112 @@
+name: Validate and release
+
+on:
+    push:
+        paths:
+            - 'Apps/**'
+            - 'Manifests/**'
+    workflow_dispatch:
+
+jobs:
+    psscriptanalyzer:
+        runs-on: ubuntu-latest
+        name: 'Run PSScriptAnalyzer'
+        permissions:
+            contents: read # for actions/checkout to fetch code
+            security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+            actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+
+        steps:
+        - uses: actions/checkout@v4
+
+        - name: Run PSScriptAnalyzer
+          uses: microsoft/psscriptanalyzer-action@6b2948b1944407914a58661c49941824d149734f
+          with:
+            path: "./Apps"
+            recurse: true
+            output: results.sarif
+
+        # Upload the SARIF file generated in the previous step
+        - name: Upload SARIF results file
+          uses: github/codeql-action/upload-sarif@v3
+          with:
+            sarif_file: results.sarif
+
+    calc-sha256:
+        runs-on: ubuntu-latest
+        name: 'Calculate SHA256 hashes'
+        needs: psscriptanalyzer
+        steps:
+            - name: 'Checkout repository'
+              uses: actions/checkout@v3
+              with:
+                ref: main
+                token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: 'Calculate SHA256 hashes and save to CSV'
+              run: |
+                    echo "file_path,sha256" > sha256_hashes.csv
+                    find Apps Manifests -type f | sort | while read -r file; do
+                        hash=$(sha256sum "$file" | awk '{print $1}')
+                        echo "$file,$hash" >> sha256_hashes.csv
+                    done
+
+            - name: 'Commit and push hash file'
+              run: |
+                    git config --global user.name "github-actions[bot]"
+                    git config --global user.email "github-actions[bot]@users.noreply.github.com"
+                    git add sha256_hashes.csv
+                    git commit -m "Update SHA256 hashes CSV [skip ci]" || echo "No changes to commit"
+                    git push
+
+    release:
+        runs-on: ubuntu-latest
+        name: 'Create Release'
+        needs: [calc-sha256, psscriptanalyzer]
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Set release tag (yy.MM.dd)
+              id: set_tag
+              run: echo "TAG=$(date +'%y.%m.%d')" >> $GITHUB_OUTPUT
+
+            - name: Compress directories
+              run: |
+                    zip -r evergreen-apps.zip Apps Manifests sha256_hashes.csv
+
+            - name: Get changed files for this commit
+              id: changed_files
+              run: |
+                    if [ "${{ github.event_name }}" = "push" ]; then
+                      git fetch origin ${{ github.event.before }}
+                      git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
+                    else
+                      echo "No changed files detected." > changed_files.txt
+                    fi
+
+            - name: Create release notes
+              id: release_notes
+              run: |
+                    echo "### Files changed in this release:" > release_notes.md
+                    cat changed_files.txt | sed 's/^/- /' >> release_notes.md
+                    echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+                    cat release_notes.md >> $GITHUB_ENV
+                    echo "EOF" >> $GITHUB_ENV
+
+            - name: Create Git tag
+              run: |
+                    git config --global user.name "github-actions[bot]"
+                    git config --global user.email "github-actions[bot]@users.noreply.github.com"
+                    git tag "v${{ steps.set_tag.outputs.TAG }}.${{ github.run_number }}"
+                    git push origin "v${{ steps.set_tag.outputs.TAG }}.${{ github.run_number }}"
+
+            - name: Create GitHub release
+              uses: softprops/action-gh-release@v2
+              with:
+                    tag_name: "v${{ steps.set_tag.outputs.TAG }}.${{ github.run_number }}"
+                    name: "v${{ steps.set_tag.outputs.TAG }}.${{ github.run_number }}"
+                    files: evergreen-apps.zip
+                    body_path: release_notes.md
+              env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
