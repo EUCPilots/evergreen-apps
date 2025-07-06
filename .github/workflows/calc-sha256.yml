@@ -1,0 +1,31 @@
+name: Calc SHA256
+
+on:
+    push:
+        paths:
+            - 'Apps/**'
+            - 'Manifests/**'
+    workflow_dispatch:
+
+jobs:
+    calc-sha256:
+        runs-on: ubuntu-latest
+        steps:
+            - name: 'Checkout repository'
+              uses: actions/checkout@v3
+
+            - name: 'Calculate SHA256 hashes and save to CSV'
+              run: |
+                    echo "file_path,sha256" > sha256_hashes.csv
+                    find Apps Manifests -type f | sort | while read -r file; do
+                        hash=$(sha256sum "$file" | awk '{print $1}')
+                        echo "$file,$hash" >> sha256_hashes.csv
+                    done
+
+            - name: 'Commit and push hash file'
+              run: |
+                    git config --global user.name "github-actions[bot]"
+                    git config --global user.email "github-actions[bot]@users.noreply.github.com"
+                    git add sha256_hashes.csv
+                    git commit -m "Update SHA256 hashes CSV [skip ci]" || echo "No changes to commit"
+                    git push
