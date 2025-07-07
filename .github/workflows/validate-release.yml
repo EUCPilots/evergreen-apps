@@ -19,7 +19,7 @@ jobs:
         steps:
         - uses: actions/checkout@v4
 
-        - name: Run PSScriptAnalyzer
+        - name: 'Analyse PowerShell'
           uses: microsoft/psscriptanalyzer-action@6b2948b1944407914a58661c49941824d149734f
           with:
             path: "./Apps"
@@ -27,15 +27,44 @@ jobs:
             output: results.sarif
 
         # Upload the SARIF file generated in the previous step
-        - name: Upload SARIF results file
+        - name: 'Upload SARIF results file'
           uses: github/codeql-action/upload-sarif@v3
           with:
             sarif_file: results.sarif
 
+    validate-json:
+        runs-on: ubuntu-latest
+        name: 'Validate JSON files'
+        needs: psscriptanalyzer
+        steps:
+            - name: 'Checkout repository'
+              uses: actions/checkout@v3
+              with:
+                ref: main
+                token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: 'Validate JSON files'
+              run: |
+                  find Manifests -type f -name '*.json' | while read -r file; do
+                      if ! jq empty "$file"; then
+                          echo "Invalid JSON: $file"
+                          exit 1
+                      fi
+                  done
+
+            - name: 'Check for empty files in Apps and Manifests'
+              run: |
+                  find Apps Manifests -type f -empty > empty_files.txt
+                  if [ -s empty_files.txt ]; then
+                    echo "Empty files found:"
+                    cat empty_files.txt
+                    exit 1
+                  fi
+
     calc-sha256:
         runs-on: ubuntu-latest
         name: 'Calculate SHA256 hashes'
-        needs: psscriptanalyzer
+        needs: [psscriptanalyzer, validate-json]
         steps:
             - name: 'Checkout repository'
               uses: actions/checkout@v3
@@ -61,21 +90,35 @@ jobs:
 
     release:
         runs-on: ubuntu-latest
-        name: 'Create Release'
-        needs: [calc-sha256, psscriptanalyzer]
+        name: 'Create release'
+        needs: [psscriptanalyzer, validate-json, calc-sha256]
         steps:
-            - name: Checkout repository
+            - name: 'Checkout repository'
               uses: actions/checkout@v4
 
-            - name: Set release tag (yy.MM.dd)
+            - name: 'Set release tag (yy.MM.dd)'
               id: set_tag
               run: echo "TAG=$(date +'%y.%m.%d')" >> $GITHUB_OUTPUT
 
-            - name: Compress directories
+            - name: 'Compress directories'
               run: |
                     zip -r evergreen-apps.zip Apps Manifests sha256_hashes.csv
 
-            - name: Get changed files for this commit
+            - name: 'Check ZIP file size'
+              run: |
+                    if [ ! -s evergreen-apps.zip ]; then
+                      echo "ZIP file is empty or missing."
+                      exit 1
+                    fi
+
+            - name: 'Verify ZIP file integrity'
+              run: |
+                    if ! unzip -tq evergreen-apps.zip; then
+                      echo "ZIP file is corrupt or missing files."
+                      exit 1
+                    fi
+
+            - name: 'Get changed files for this commit'
               id: changed_files
               run: |
                     if [ "${{ github.event_name }}" = "push" ]; then
@@ -85,7 +128,7 @@ jobs:
                       echo "No changed files detected." > changed_files.txt
                     fi
 
-            - name: Create release notes
+            - name: 'Create release notes'
               id: release_notes
               run: |
                     echo "### Files changed in this release:" > release_notes.md
@@ -94,14 +137,14 @@ jobs:
                     cat release_notes.md >> $GITHUB_ENV
                     echo "EOF" >> $GITHUB_ENV
 
-            - name: Create Git tag
+            - name: 'Create Git tag'
               run: |
                     git config --global user.name "github-actions[bot]"
                     git config --global user.email "github-actions[bot]@users.noreply.github.com"
                     git tag "v${{ steps.set_tag.outputs.TAG }}.${{ github.run_number }}"
                     git push origin "v${{ steps.set_tag.outputs.TAG }}.${{ github.run_number }}"
 
-            - name: Create GitHub release
+            - name: 'Create GitHub release'
               uses: softprops/action-gh-release@v2
               with:
                     tag_name: "v${{ steps.set_tag.outputs.TAG }}.${{ github.run_number }}"
@@ -110,3 +153,14 @@ jobs:
                     body_path: release_notes.md
               env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: 'Verify release asset uploaded'
+              run: |
+                RELEASE_ID=$(gh release view "v${{ steps.set_tag.outputs.TAG }}.${{ github.run_number }}" --json id -q .id)
+                ASSET_COUNT=$(gh release view "v${{ steps.set_tag.outputs.TAG }}.${{ github.run_number }}" --json assets -q '.assets | length')
+                if [ "$ASSET_COUNT" -eq 0 ]; then
+                  echo "No assets uploaded to the release."
+                  exit 1
+                fi
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
