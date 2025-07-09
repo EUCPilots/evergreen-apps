@@ -149,7 +149,9 @@ jobs:
               with:
                     tag_name: "v${{ steps.set_tag.outputs.TAG }}.${{ github.run_number }}"
                     name: "v${{ steps.set_tag.outputs.TAG }}.${{ github.run_number }}"
-                    files: evergreen-apps.zip
+                    files: |
+                      evergreen-apps.zip
+                      sha256_hashes.csv
                     body_path: release_notes.md
               env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
