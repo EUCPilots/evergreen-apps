@@ -1,11 +1,17 @@
 name: Validate and release
 
+defaults:
+  run:
+    shell: bash
+
 on:
-    push:
-        paths:
-            - 'Apps/**'
-            - 'Manifests/**'
-    workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Apps/**'
+      - 'Manifests/**'
+  workflow_dispatch:
 
 jobs:
     psscriptanalyzer:
