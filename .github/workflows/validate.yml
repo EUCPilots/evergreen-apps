@@ -1,0 +1,68 @@
+name: Validate
+
+defaults:
+  run:
+    shell: bash
+
+on:
+  push:
+    branches-ignore:
+      - main
+    paths:
+      - 'Apps/**'
+      - 'Manifests/**'
+  workflow_dispatch:
+
+jobs:
+    psscriptanalyzer:
+        runs-on: ubuntu-latest
+        name: 'Run PSScriptAnalyzer'
+        permissions:
+            contents: read # for actions/checkout to fetch code
+            security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+            actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+
+        steps:
+        - uses: actions/checkout@v4
+
+        - name: 'Analyse PowerShell'
+          uses: microsoft/psscriptanalyzer-action@6b2948b1944407914a58661c49941824d149734f
+          with:
+            path: "./Apps"
+            recurse: true
+            output: results.sarif
+
+        # Upload the SARIF file generated in the previous step
+        - name: 'Upload SARIF results file'
+          uses: github/codeql-action/upload-sarif@v3
+          with:
+            sarif_file: results.sarif
+
+    validate-json:
+        runs-on: ubuntu-latest
+        name: 'Validate JSON files'
+        needs: psscriptanalyzer
+        steps:
+            - name: 'Checkout repository'
+              uses: actions/checkout@v3
+              with:
+                ref: main
+                token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: 'Validate JSON files'
+              run: |
+                  find Manifests -type f -name '*.json' | while read -r file; do
+                      if ! jq empty "$file"; then
+                          echo "Invalid JSON: $file"
+                          exit 1
+                      fi
+                  done
+
+            - name: 'Check for empty files in Apps and Manifests'
+              run: |
+                  find Apps Manifests -type f -empty > empty_files.txt
+                  if [ -s empty_files.txt ]; then
+                    echo "Empty files found:"
+                    cat empty_files.txt
+                    exit 1
+                  fi
