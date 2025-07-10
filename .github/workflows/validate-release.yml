@@ -11,6 +11,12 @@ on:
     paths:
       - 'Apps/**'
       - 'Manifests/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'Apps/**'
+      - 'Manifests/**'
   workflow_dispatch:
 
 jobs:
@@ -67,16 +73,13 @@ jobs:
                     exit 1
                   fi
 
-    calc-sha256:
+    release:
         runs-on: ubuntu-latest
-        name: 'Calculate SHA256 hashes'
+        name: 'Create release'
         needs: [psscriptanalyzer, validate-json]
         steps:
             - name: 'Checkout repository'
-              uses: actions/checkout@v3
-              with:
-                ref: main
-                token: ${{ secrets.GITHUB_TOKEN }}
+              uses: actions/checkout@v4
 
             - name: 'Calculate SHA256 hashes and save to CSV'
               run: |
@@ -85,14 +88,6 @@ jobs:
                         hash=$(sha256sum "$file" | awk '{print $1}')
                         echo "$file,$hash" >> sha256_hashes.csv
                     done
-
-    release:
-        runs-on: ubuntu-latest
-        name: 'Create release'
-        needs: [psscriptanalyzer, validate-json, calc-sha256]
-        steps:
-            - name: 'Checkout repository'
-              uses: actions/checkout@v4
 
             - name: 'Set release tag (yy.MM.dd)'
               id: set_tag
@@ -119,7 +114,7 @@ jobs:
             - name: 'Get changed files for this commit'
               id: changed_files
               run: |
-                    if [ "${{ github.event_name }}" = "push" ]; then
+                    if [ "${{ github.event_name }}" = "push" || "${{ github.event_name }}" = "pull_request" ]; then
                       git fetch origin ${{ github.event.before }}
                       git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
                     else
