@@ -1,0 +1,64 @@
+name: Bug report
+description: File a bug report for a function or application.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Also tell us, what did you expected to happen
+      placeholder: Describe the issue you're seeing with Evergreen, a function or a specific application supported by Evergreen.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version of Evergreen are you using?
+      placeholder: Add the version number in the format 2107.408
+    validations:
+      required: true
+  - type: dropdown
+    id: powershell
+    attributes:
+      label: What PowerShell edition/s are you running Evergreen on?
+      multiple: true
+      options:
+        - PowerShell Core
+        - Windows PowerShell
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Which operating system/s are you running Evergreen on?
+      multiple: true
+      options:
+        - Windows 10+
+        - Windows Server 2016+
+        - macOS
+        - Linux
+    validations:
+      required: true
+  - type: checkboxes
+    id: documentation
+    attributes:
+      label: Have you reviewed the documentation?
+      description: "Please confirm that you've reviewed the following links:"
+      options:
+        - label: "Troubleshooting at: https://stealthpuppy.com/evergreen/troubleshoot/"
+        - label: "Known issues at: https://stealthpuppy.com/evergreen/issues/"
+  - type: textarea
+    id: verbose
+    attributes:
+      label: Verbose output
+      description: Please copy and paste the output from the target Evergreen function with the -Verbose parameter. This will be automatically formatted into code, so no need for backticks.
+      placeholder: "For example, add the output from: Get-EvergreenApp -Name MicrosoftFSLogixApps -Verbose"
+      render: shell
+    validations:
+      required: true
