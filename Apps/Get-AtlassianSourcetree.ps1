@@ -1,16 +1,16 @@
-Function Get-AtlassianSourcetree {
+function Get-AtlassianSourcetree {
     <#
         .SYNOPSIS
             Returns the available Atlassian Sourcetree versions and download URIs.
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -23,7 +23,7 @@ Function Get-AtlassianSourcetree {
     $Content = Invoke-EvergreenRestMethod @params
 
     # Read the JSON and build an array of platform, channel, version
-    If ($Null -ne $Content) {
+    if ($null -ne $Content) {
 
         # Match version number
         try {
@@ -35,7 +35,7 @@ Function Get-AtlassianSourcetree {
         }
 
         # Step through each installer type
-        ForEach ($item in $res.Get.Download.Uri.GetEnumerator()) {
+        foreach ($item in $res.Get.Download.Uri.GetEnumerator()) {
 
             # Build the output object; Output object to the pipeline
             $Url = $res.Get.Download.Uri[$item.Key] -replace $res.Get.Download.ReplaceText, $Version

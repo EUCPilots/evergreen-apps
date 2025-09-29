@@ -1,4 +1,4 @@
-﻿Function Get-CiscoWebEx {
+﻿function Get-CiscoWebEx {
     <#
         .SYNOPSIS
             Get the current version and download URL for Get-Cisco WebEx.
@@ -6,12 +6,12 @@
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -23,7 +23,7 @@
         ContentType = $res.Get.Download.ContentType
     }
     $object = Invoke-EvergreenRestMethod @params
-    If ($Null -ne $object) {
+    if ($null -ne $object) {
 
         # Desktop app
         $PSObject = [PSCustomObject] @{

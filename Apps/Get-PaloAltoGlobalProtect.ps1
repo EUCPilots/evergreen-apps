@@ -5,7 +5,7 @@ function Get-PaloAltoGlobalProtect {
             Author: Aaron Parker
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
         [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]

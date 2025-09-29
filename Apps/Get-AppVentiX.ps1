@@ -1,4 +1,4 @@
-Function Get-AppVentiX {
+function Get-AppVentiX {
     <#
         .SYNOPSIS
             Get the current version and download URIs for AppVentix.
@@ -8,9 +8,9 @@ Function Get-AppVentiX {
             Twitter: @adotcoop
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -21,7 +21,7 @@ Function Get-AppVentiX {
         ContentType = $res.Get.Update.ContentType
     }
     $Content = Invoke-EvergreenRestMethod @params
-    If ($Null -ne $Content) {
+    if ($null -ne $Content) {
 
         # Construct the output; Return the custom object to the pipeline
         $PSObject = [PSCustomObject] @{

@@ -2,10 +2,10 @@ function Get-RedHatOpenJDK17 {
     <#
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
         [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]

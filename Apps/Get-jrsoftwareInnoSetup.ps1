@@ -1,4 +1,4 @@
-Function Get-jrsoftwareInnoSetup {
+function Get-jrsoftwareInnoSetup {
     <#
         .SYNOPSIS
             Get the current version and download URL for jrsoftware InnoSetup.
@@ -9,9 +9,9 @@ Function Get-jrsoftwareInnoSetup {
             based on Get-TelerikFiddlerEverywhere.ps1
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -20,7 +20,7 @@ Function Get-jrsoftwareInnoSetup {
     # Get the latest download
     $Response = Resolve-SystemNetWebRequest -Uri $res.Get.Download.Uri
 
-    If ($Null -ne $Response) {
+    if ($null -ne $Response) {
 
         # Extract the version information from the uri
         try {

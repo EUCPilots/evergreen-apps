@@ -1,16 +1,16 @@
-Function Get-voidtoolsEverything {
+function Get-voidtoolsEverything {
     <#
         .SYNOPSIS
             Returns the available voidtools Everything versions.
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -20,7 +20,7 @@ Function Get-voidtoolsEverything {
     $Response = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri
 
     # Build the output object
-    If ($Null -ne $Response) {
+    if ($null -ne $Response) {
 
         # Construct the version number from the response, skipping the first line
         try {
@@ -31,7 +31,7 @@ Function Get-voidtoolsEverything {
         }
 
         # Return an object for each architecture
-        ForEach ($item in $res.Get.Download.Uri.GetEnumerator()) {
+        foreach ($item in $res.Get.Download.Uri.GetEnumerator()) {
             $PSObject = [PSCustomObject] @{
                 Version      = $Version
                 Architecture = $item.Name

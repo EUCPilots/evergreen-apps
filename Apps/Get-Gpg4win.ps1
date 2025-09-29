@@ -1,4 +1,4 @@
-Function Get-Gpg4win {
+function Get-Gpg4win {
     <#
         .SYNOPSIS
             Returns the available gpg4win versions.
@@ -8,9 +8,9 @@ Function Get-Gpg4win {
             Twitter: @_BornToBeRoot
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -19,7 +19,7 @@ Function Get-Gpg4win {
     # Get files from server (https://files.gpg4win.org/)
     $Response = Invoke-WebRequest -Uri $res.Get.Update.Uri -UseBasicParsing
 
-    if ($Null -ne $Response) {
+    if ($null -ne $Response) {
         # Filter and sort by latest (gpg4win-4.0.3.exe)
         $LatestVersion = ($Response.Links | Where-Object { $_.href -match $res.Get.Update.MatchFile } | Sort-Object -Property href -Descending | Select-Object -First 1).href
 

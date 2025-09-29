@@ -7,9 +7,9 @@ function Get-ControlUpMonitor {
             Author: Nathan Joseph
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -18,9 +18,9 @@ function Get-ControlUpMonitor {
     # Query the ControlUp VDI/DaaS Product JSON
     $Object = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri
     Write-Verbose $Object
-    If ($Null -ne $Object) {
+    if ($null -ne $Object) {
         # Build an array of the latest release and download URLs
-        ForEach ($item in ($Object.($res.Get.Update.Properties.Monitor) | Get-Member -MemberType "NoteProperty" | Select-Object -ExpandProperty "Name")) {
+        foreach ($item in ($Object.($res.Get.Update.Properties.Monitor) | Get-Member -MemberType "NoteProperty" | Select-Object -ExpandProperty "Name")) {
             $PSObject = [PSCustomObject] @{
                 Version      = $Object.($res.Get.Update.Properties.Version) -replace $res.Get.Update.ReplaceText, ""
                 URI          = $Object.($res.Get.Update.Properties.Monitor).$item.Trim()

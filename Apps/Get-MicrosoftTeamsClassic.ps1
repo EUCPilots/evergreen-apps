@@ -5,7 +5,7 @@ function Get-MicrosoftTeamsClassic {
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
 
             https://teams.microsoft.com/desktopclient/installer/windows/x64
             https://teams.microsoft.com/desktopclient/installer/windows/x86
@@ -13,16 +13,16 @@ function Get-MicrosoftTeamsClassic {
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification="Product name is a plural")]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
     # Step through each release ring
-    ForEach ($ring in $res.Get.Update.Rings.GetEnumerator()) {
+    foreach ($ring in $res.Get.Update.Rings.GetEnumerator()) {
 
         # Read the JSON and convert to a PowerShell object. Return the release version of Teams
         Write-Verbose -Message "$($MyInvocation.MyCommand): Query ring: $($ring.Name): $($res.Get.Update.Rings[$ring.Key])."
@@ -33,14 +33,14 @@ function Get-MicrosoftTeamsClassic {
         $updateFeed = Invoke-EvergreenRestMethod @params
 
         # Read the JSON and build an array of platform, channel, version
-        If ($Null -ne $updateFeed) {
+        if ($null -ne $updateFeed) {
 
             # Match version number
             $Version = [RegEx]::Match($updateFeed.releasesPath, $res.Get.Update.MatchVersion).Captures.Groups[1].Value
             Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version."
 
             # Step through each architecture
-            ForEach ($Architecture in $res.Get.Download.Architecture) {
+            foreach ($Architecture in $res.Get.Download.Architecture) {
 
                 # Query for the installer
                 $params = @{
@@ -51,9 +51,9 @@ function Get-MicrosoftTeamsClassic {
                 Write-Verbose -Message "$($MyInvocation.MyCommand): Found installer: $Uri."
 
                 # Build the output object and output object to the pipeline
-                If ($Null -ne $Uri) {
+                if ($null -ne $Uri) {
 
-                    ForEach ($extension in $res.Get.Download.Extensions) {
+                    foreach ($extension in $res.Get.Download.Extensions) {
                         $Uri = $Uri -replace ".exe$", $extension
                         $PSObject = [PSCustomObject] @{
                             Version      = $Version

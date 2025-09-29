@@ -1,4 +1,4 @@
-Function Get-TelerikFiddlerEverywhere {
+function Get-TelerikFiddlerEverywhere {
     <#
         .SYNOPSIS
             Get the current version and download URL for Telerik Fiddler Everywhere.
@@ -6,12 +6,12 @@ Function Get-TelerikFiddlerEverywhere {
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -21,7 +21,7 @@ Function Get-TelerikFiddlerEverywhere {
     $Response = Resolve-SystemNetWebRequest -Uri $res.Get.Download.Uri
 
     # Construct the output; Return the custom object to the pipeline
-    If ($Null -ne $Response) {
+    if ($null -ne $Response) {
         $PSObject = [PSCustomObject] @{
             Version = [RegEx]::Match($Response.ResponseUri.LocalPath, $res.Get.Download.MatchVersion).Captures.Groups[1].Value
             URI     = $Response.ResponseUri.AbsoluteUri

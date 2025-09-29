@@ -1,4 +1,4 @@
-Function Get-PodmanDesktop {
+function Get-PodmanDesktop {
     <#
         .SYNOPSIS
             Returns the available Podman Desktop versions.
@@ -7,9 +7,9 @@ Function Get-PodmanDesktop {
             Author: Kirill Trofimov
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])

@@ -1,4 +1,4 @@
-Function Get-PDFForgePDFCreator {
+function Get-PDFForgePDFCreator {
     <#
         .SYNOPSIS
             Get the current version and download URL for PDFForge PDFCreator.
@@ -6,12 +6,12 @@ Function Get-PDFForgePDFCreator {
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -23,10 +23,10 @@ Function Get-PDFForgePDFCreator {
         ContentType = $res.Get.Update.ContentType
     }
     $Update = Invoke-EvergreenRestMethod @params
-    if ($Null -ne $Update) {
+    if ($null -ne $Update) {
 
         # Select the latest version
-        $LatestUpdate = $Update | Where-Object { $_.isStable -eq $True } | `
+        $LatestUpdate = $Update | Where-Object { $_.isStable -eq $true } | `
             Sort-Object -Property @{ Expression = { [System.Version]$_.Version }; Descending = $true } | `
             Select-Object -First 1
 

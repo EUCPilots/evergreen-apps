@@ -1,4 +1,4 @@
-Function Get-BlueJ {
+function Get-BlueJ {
     <#
         .SYNOPSIS
             Get the current version and download URIs for the supported releases of BlueJ.
@@ -8,9 +8,9 @@ Function Get-BlueJ {
             Twitter: @adotcoop
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -24,7 +24,7 @@ Function Get-BlueJ {
 
     $Content = Invoke-EvergreenWebRequest @iwcParams
 
-    If ($Null -ne $Content) {
+    if ($null -ne $Content) {
 
         # Convert response from UTF8
         Try {

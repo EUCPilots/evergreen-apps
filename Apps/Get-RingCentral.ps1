@@ -1,16 +1,16 @@
-Function Get-RingCentral {
+function Get-RingCentral {
     <#
         .SYNOPSIS
             Get the current version and download URL for RingCentral.
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -31,8 +31,8 @@ Function Get-RingCentral {
         $YmlVersion = "Latest"
     }
 
-    ForEach ($platform in $res.Get.Download.Keys) {
-        ForEach ($installer in $res.Get.Download[$platform].Keys) {
+    foreach ($platform in $res.Get.Download.Keys) {
+        foreach ($installer in $res.Get.Download[$platform].Keys) {
 
             # Follow the download link which will return a 301/302
             $redirectUrl = Resolve-SystemNetWebRequest -Uri $res.Get.Download[$platform][$installer]

@@ -1,13 +1,13 @@
-Function Get-ZorgmailVeiligVerzendenAddin {
+function Get-ZorgmailVeiligVerzendenAddin {
     <#
         .NOTES
             Author: Rico Roodenburg
     #>
 
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -19,7 +19,7 @@ Function Get-ZorgmailVeiligVerzendenAddin {
     }
     $UpdateFeed = Invoke-EvergreenRestMethod @params
 
-    if ($Null -ne $UpdateFeed) {
+    if ($null -ne $UpdateFeed) {
         $res.Get.Download.Editions | ForEach-Object {
             $uri = $res.Get.Download.Uri
             if ($_ -eq "Default") {

@@ -3,7 +3,7 @@ function Get-Freelens {
         .SYNOPSIS
             Returns the available Freelens versions.
 
-        .NOTES            
+        .NOTES
             Author: BornToBeRoot
     #>
     [OutputType([System.Management.Automation.PSObject])]

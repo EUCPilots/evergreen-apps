@@ -1,12 +1,12 @@
-Function Get-GeoGebraClassic {
+function Get-GeoGebraClassic {
     <#
         .SYNOPSIS
             Get the current version and download URL for GeoGebra Classic.
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split('-'))[1])
@@ -16,7 +16,7 @@ Function Get-GeoGebraClassic {
         $Content = Resolve-SystemNetWebRequest -Uri $res.Get.Download.Uri[$item.Key]
 
         # Construct the output; Return the custom object to the pipeline
-        If ($Null -ne $Content) {
+        if ($null -ne $Content) {
             $version = [RegEx]::Match($Content.ResponseUri, $res.Get.Download.MatchVersion).Value.TrimStart('-').Replace('-', '.')
 
             $PSObject = [PSCustomObject] @{
@@ -34,5 +34,4 @@ Function Get-GeoGebraClassic {
             Write-Output -InputObject $PSObject
         }
     }
-
 }

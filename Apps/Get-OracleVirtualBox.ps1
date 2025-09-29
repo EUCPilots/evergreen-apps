@@ -1,12 +1,12 @@
-Function Get-OracleVirtualBox {
+function Get-OracleVirtualBox {
     <#
         .SYNOPSIS
             Get the current version and download URL for the XenServer tools.
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -18,7 +18,7 @@ Function Get-OracleVirtualBox {
         Write-Verbose -Message "$($MyInvocation.MyCommand): Check channel: $($Channel.Name)"
         $Version = Invoke-EvergreenWebRequest -Uri $res.Get.Update.Uri[$Channel.Key]
 
-        if ($Null -ne $Version) {
+        if ($null -ne $Version) {
 
             $Version = $Version.Trim()
             Write-Verbose -Message "$($MyInvocation.MyCommand): Version: $Version"
@@ -32,7 +32,7 @@ Function Get-OracleVirtualBox {
                 ReturnObject = "All"
             }
             $Downloads = Invoke-EvergreenWebRequest @iwrParams
-            if ($Null -ne $Downloads) {
+            if ($null -ne $Downloads) {
 
                 # Filter downloads with the version string and the file types we want
                 $RegExVersion = $Version -replace ("\.", "\.")

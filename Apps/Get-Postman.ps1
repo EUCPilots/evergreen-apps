@@ -1,4 +1,4 @@
-Function Get-Postman {
+function Get-Postman {
     <#
         .SYNOPSIS
             Get the current version and download URIs for Postman.
@@ -8,22 +8,22 @@ Function Get-Postman {
             Twitter: @adotcoop
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
     # Query the Postman update API
-    ForEach ($item in $res.Get.Update.Uri.GetEnumerator()) {
+    foreach ($item in $res.Get.Update.Uri.GetEnumerator()) {
         $params = @{
             Uri         = $res.Get.Update.Uri[$item.Key]
             ContentType = $res.Get.Update.ContentType
         }
         $Content = Invoke-EvergreenRestMethod @params
-        If ($Null -ne $Content) {
+        if ($null -ne $Content) {
 
             # Work out latest version
             $LatestVersion = $Content.changelog | `

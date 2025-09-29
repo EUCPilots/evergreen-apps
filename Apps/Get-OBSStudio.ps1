@@ -1,4 +1,4 @@
-﻿Function Get-OBSStudio {
+﻿function Get-OBSStudio {
     <#
         .SYNOPSIS
             Get the current version and download URI for OBS Studio.
@@ -6,12 +6,12 @@
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     [OutputType([System.Management.Automation.PSObject])]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -25,11 +25,11 @@
     $Updates = Invoke-EvergreenRestMethod @params
 
     # Output the object to the pipeline
-    If ($Null -ne $Updates) {
-        ForEach ($Update in $Updates) {
+    if ($null -ne $Updates) {
+        foreach ($Update in $Updates) {
 
             # Build the latest version number
-            If ($Update.version_patch -eq 0) {
+            if ($Update.version_patch -eq 0) {
                 # Handle edge case where binaries with version_patch of 0 are published with only major.minor version
                 $Version = "$($Update.version_major).$($Update.version_minor)"
             } else {
@@ -37,7 +37,7 @@
             }
 
             # Build the output object
-            ForEach ($Architecture in $res.Get.Download.Architectures) {
+            foreach ($Architecture in $res.Get.Download.Architectures) {
                 $PSObject = [PSCustomObject] @{
                     Version      = $Version
                     Architecture = $Architecture

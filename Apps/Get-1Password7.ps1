@@ -1,4 +1,4 @@
-Function Get-1Password7 {
+function Get-1Password7 {
     <#
         .SYNOPSIS
             Get the current version and download URL for 1Password 7.
@@ -6,12 +6,12 @@ Function Get-1Password7 {
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -23,7 +23,7 @@ Function Get-1Password7 {
         ContentType = $res.Get.Update.ContentType
     }
     $updateFeed = Invoke-EvergreenRestMethod @params
-    if ($Null -ne $updateFeed) {
+    if ($null -ne $updateFeed) {
 
         # Filter for the latest version
         $item = $updateFeed.($res.Get.Update.Property) | `

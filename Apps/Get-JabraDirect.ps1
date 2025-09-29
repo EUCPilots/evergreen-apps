@@ -1,4 +1,4 @@
-Function Get-JabraDirect {
+function Get-JabraDirect {
     <#
         .SYNOPSIS
             Returns the latest Jabra Direct version.
@@ -9,16 +9,16 @@ Function Get-JabraDirect {
     #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification = "Product name is a plural")]
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
     $Content = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri
-    If ($Null -ne $Content) {
+    if ($null -ne $Content) {
 
         $PSObject = [PSCustomObject] @{
             Version       = $Content.WindowsVersion

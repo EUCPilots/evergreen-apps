@@ -6,7 +6,7 @@ function Get-MozillaFirefox {
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
 
             # https://wiki.mozilla.org/Release_Management/Product_details
     #>

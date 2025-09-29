@@ -1,4 +1,4 @@
-Function Get-MicrosoftEdgeWebView2Runtime {
+function Get-MicrosoftEdgeWebView2Runtime {
     <#
         .SYNOPSIS
             Returns the available Microsoft Edge WebView2 Runtime versions and downloads.
@@ -7,9 +7,9 @@ Function Get-MicrosoftEdgeWebView2Runtime {
             Author: Aaron Parker
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])

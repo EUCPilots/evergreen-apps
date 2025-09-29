@@ -1,24 +1,24 @@
-Function Get-AdobeAcrobat {
+function Get-AdobeAcrobat {
     <#
         .SYNOPSIS
             Gets the download URLs for Adobe Acrobat (Standard/Pro) 2020 or DC updates.
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
     #region Update downloads
-    ForEach ($Product in $res.Get.Update.Uri.GetEnumerator()) {
-        ForEach ($item in $res.Get.Update.Uri.($Product.Name).GetEnumerator()) {
+    foreach ($Product in $res.Get.Update.Uri.GetEnumerator()) {
+        foreach ($item in $res.Get.Update.Uri.($Product.Name).GetEnumerator()) {
 
             # Find the latest version number
             $params = @{
@@ -28,28 +28,28 @@ Function Get-AdobeAcrobat {
             $Content = Invoke-EvergreenWebRequest @params
 
             # Construct update download list
-            If ($Null -ne $Content) {
+            if ($null -ne $Content) {
 
                 # Format version string
                 $versionString = $Content.Replace(".", "").Trim()
                 Write-Verbose -Message "$($MyInvocation.MyCommand): Update found: [$($Content)] and converted to version string: [$($versionString)]."
 
                 # Build the output object
-                ForEach ($Architecture in $res.Get.Download.Uri.($Product.Name).GetEnumerator()) {
-                    ForEach ($Url in $res.Get.Download.Uri.($Product.Name).($Architecture.Name).GetEnumerator()) {
+                foreach ($Architecture in $res.Get.Download.Uri.($Product.Name).GetEnumerator()) {
+                    foreach ($Url in $res.Get.Download.Uri.($Product.Name).($Architecture.Name).GetEnumerator()) {
 
                         # Filter the output object for combinations that don't exist
-                        [System.Boolean] $Build = $True
-                        If (($Architecture.Name -eq "x64") -and ($item.Name -notin $res.Get.Download.Filter.x64)) {
+                        [System.Boolean] $Build = $true
+                        if (($Architecture.Name -eq "x64") -and ($item.Name -notin $res.Get.Download.Filter.x64)) {
                             Write-Verbose -Message "$($MyInvocation.MyCommand): Skip x64 architecture for track: [$($item.Name)]."
-                            [System.Boolean] $Build = $False
+                            [System.Boolean] $Build = $false
                         }
-                        If (($Product.Name -eq "Reader") -and ($Url.Name -eq "Neutral") -and ($item.Name -in $res.Get.Download.Filter.Neutral)) {
+                        if (($Product.Name -eq "Reader") -and ($Url.Name -eq "Neutral") -and ($item.Name -in $res.Get.Download.Filter.Neutral)) {
                             Write-Verbose -Message "$($MyInvocation.MyCommand): Skip Neutral language for track: [$($item.Name)]."
-                            [System.Boolean] $Build = $False
+                            [System.Boolean] $Build = $false
                         }
 
-                        If ($Build) {
+                        if ($Build) {
                             Write-Verbose -Message "$($MyInvocation.MyCommand): Construct object for: [$($Product.Name) $($item.Name) $($Url.Name) $($Architecture.Name)]."
 
                             # Construct the URI property

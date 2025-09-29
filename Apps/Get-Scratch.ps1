@@ -1,4 +1,4 @@
-Function Get-Scratch {
+function Get-Scratch {
     <#
         .SYNOPSIS
             Get the current version and download URL for Scratch.
@@ -9,9 +9,9 @@ Function Get-Scratch {
             Get-Scratch.ps1 based on Get-TelerikFiddlerEverywhere.ps1
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -21,7 +21,7 @@ Function Get-Scratch {
     $Response = Resolve-SystemNetWebRequest -Uri $res.Get.Download.Uri
 
     # Construct the output; Return the custom object to the pipeline
-    If ($Null -ne $Response) {
+    if ($null -ne $Response) {
         $PSObject = [PSCustomObject] @{
             Version = [RegEx]::Match($Response.ResponseUri.LocalPath, $res.Get.Download.MatchVersion).Captures.Groups[1].Value
             URI     = $Response.ResponseUri.AbsoluteUri

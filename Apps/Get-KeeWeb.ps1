@@ -1,4 +1,4 @@
-Function Get-KeeWeb {
+function Get-KeeWeb {
     <#
         .SYNOPSIS
             Returns the available KeeWeb versions.
@@ -7,9 +7,9 @@ Function Get-KeeWeb {
             Author: Kirill Trofimov
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])

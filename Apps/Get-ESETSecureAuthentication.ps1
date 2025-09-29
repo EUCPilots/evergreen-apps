@@ -3,12 +3,12 @@ function Get-ESETSecureAuthentication {
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     [OutputType([System.Management.Automation.PSObject])]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -50,7 +50,7 @@ function Get-ESETSecureAuthentication {
             Write-Verbose -Message "$($MyInvocation.MyCommand): Found $($Files.Count) files."
 
             # Filter the files for the updates we need
-            $Updates = $Files | Where-Object { $_.Legacy -eq $False -and $_.OSNames -match $res.Get.Update.OS }
+            $Updates = $Files | Where-Object { $_.Legacy -eq $false -and $_.OSNames -match $res.Get.Update.OS }
             Write-Verbose -Message "$($MyInvocation.MyCommand): Found $($Updates.Count) individual update files."
 
             # Output the object to the pipeline
