@@ -1,4 +1,4 @@
-Function Get-Freelens {
+function Get-Freelens {
     <#
         .SYNOPSIS
             Returns the available Freelens versions.
@@ -8,9 +8,9 @@ Function Get-Freelens {
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification = "Product name is a plural")]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -22,8 +22,6 @@ Function Get-Freelens {
         MatchVersion = $res.Get.MatchVersion
         Filter       = $res.Get.MatchFileTypes
     }
-   
     $object = Get-GitHubRepoRelease @params
-
     Write-Output -InputObject $object
 }
