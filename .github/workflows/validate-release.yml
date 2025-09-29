@@ -11,12 +11,12 @@ on:
     paths:
       - 'Apps/**'
       - 'Manifests/**'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'Apps/**'
-      - 'Manifests/**'
+  # pull_request:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - 'Apps/**'
+  #     - 'Manifests/**'
   workflow_dispatch:
 
 jobs:
