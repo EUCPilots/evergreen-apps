@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
   - name: Review known issues
-    url: https://eucpilots.com/evergreen-docs/issues
+    url: https://eucpilots.com/evergreen-docs/issues/
     about: Please ensure you have read the Evergreen known issues list before creating an issue.
   - name: Review troubleshooting
     url: https://eucpilots.com/evergreen-docs/troubleshoot/
