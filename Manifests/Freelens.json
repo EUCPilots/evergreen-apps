@@ -1,0 +1,23 @@
+{
+	"Name": "Freelens",
+	"Source": "https://github.com/freelensapp/freelens/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/freelensapp/freelens/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	},
+	"Install": {
+		"Setup": "Freelens-*.exe",
+		"Preinstall": "",
+		"Physical": {
+			"Arguments": "",
+			"PostInstall": [
+			]
+		},
+		"Virtual": {
+			"Arguments": "",
+			"PostInstall": [
+			]
+		}
+	}
+}
