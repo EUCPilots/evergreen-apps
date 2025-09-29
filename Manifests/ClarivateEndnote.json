@@ -6,12 +6,14 @@
             "Releases": [
 				"X9",
                 "20",
-                "21"
+                "21",
+                "2025"
             ],
             "Uri": {
 				"X9": "http://download.endnote.com/updates/19.0/EN19WinUpdates.xml",
 				"20": "https://download.endnote.com/updates/20.0/EN20WinUpdates.xml",
-                "21": "https://download.endnote.com/updates/21.0/EN21WinUpdates.xml"
+                "21": "https://download.endnote.com/updates/21.0/EN21WinUpdates.xml",
+                "2025": "https://download.endnote.com/updates/22.0/EN22WinUpdates.xml"
             }
         },
         "Download": {
@@ -19,12 +21,14 @@
 				"Exe": {
 					"X9": "https://download.endnote.com/downloads/X9/ENX9Inst.exe",
                 	"20": "https://download.endnote.com/downloads/20/EN20Inst.exe",
-                	"21": "https://download.endnote.com/downloads/21/EN21Inst.exe"
+                	"21": "https://download.endnote.com/downloads/21/EN21Inst.exe",
+                    "2025": "https://download.endnote.com/downloads/2025/EN2025Inst.exe"
 				},
 				"Msi": {
 					"X9": "https://download.endnote.com/downloads/X9/ENX9Inst.msi",
 					"20": "https://download.endnote.com/downloads/20/EN20Inst.msi",
-					"21": "https://download.endnote.com/downloads/21/EN21Inst.msi"
+					"21": "https://download.endnote.com/downloads/21/EN21Inst.msi",
+                    "2025": "https://download.endnote.com/downloads/2025/EN2025Inst.msi"
 					}
             }
         }
