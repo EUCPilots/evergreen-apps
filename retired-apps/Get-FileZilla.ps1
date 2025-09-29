@@ -6,7 +6,7 @@ function Get-FileZilla {
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [CmdletBinding(SupportsShouldProcess = $false)]
     [OutputType([System.Management.Automation.PSObject])]

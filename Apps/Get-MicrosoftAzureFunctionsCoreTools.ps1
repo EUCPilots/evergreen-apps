@@ -1,17 +1,17 @@
-Function Get-MicrosoftAzureFunctionsCoreTools {
+function Get-MicrosoftAzureFunctionsCoreTools {
     <#
         .SYNOPSIS
             Returns the latest Microsoft Azure Functions Core Tools version number and download.
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification="Product name is a plural")]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -22,13 +22,13 @@ Function Get-MicrosoftAzureFunctionsCoreTools {
         Uri               = $res.Get.Update.Uri
         MatchVersion      = $res.Get.Update.MatchVersion
         Filter            = $res.Get.Update.MatchFileTypes
-        ReturnVersionOnly = $True
+        ReturnVersionOnly = $true
     }
     $object = Get-GitHubRepoRelease @params
 
     # Build the output object
-    If ($Null -ne $object) {
-        ForEach ($architecture in $res.Get.Download.Uri.GetEnumerator()) {
+    if ($null -ne $object) {
+        foreach ($architecture in $res.Get.Download.Uri.GetEnumerator()) {
             $PSObject = [PSCustomObject] @{
                 Version      = $object.Version
                 Architecture = $architecture.Name

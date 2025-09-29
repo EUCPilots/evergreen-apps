@@ -1,4 +1,4 @@
-Function Get-OctopusDeployServer {
+function Get-OctopusDeployServer {
     <#
         .SYNOPSIS
             Get the current version and download URL for Octopus Deploy Server.
@@ -6,12 +6,12 @@ Function Get-OctopusDeployServer {
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -24,7 +24,7 @@ Function Get-OctopusDeployServer {
     }
     $versions = Invoke-EvergreenRestMethod @params
 
-    If ($Null -ne $versions) {
+    if ($null -ne $versions) {
         $LatestVersion = $versions | Select-Object -Last 1
         $object = [PSCustomObject] @{
             Version = $LatestVersion.Version

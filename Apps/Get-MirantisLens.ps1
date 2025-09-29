@@ -1,25 +1,25 @@
-Function Get-MirantisLens {
+function Get-MirantisLens {
     <#
         .SYNOPSIS
             Returns the available Mirantis Lens versions.
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification="Product name is a plural")]
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    ForEach ($Release in $res.Get.Update.Uri.GetEnumerator()) {
+    foreach ($Release in $res.Get.Update.Uri.GetEnumerator()) {
         $Update = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri[$Release.Key]
-        If ($Null -ne $Update) {
+        if ($null -ne $Update) {
 
             $PSObject = [PSCustomObject] @{
                 Version      = $Update.Version

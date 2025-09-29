@@ -1,4 +1,4 @@
-Function Get-eduVPN {
+function Get-eduVPN {
     <#
         .SYNOPSIS
             Returns the latest EduVPN version number and download.
@@ -8,9 +8,9 @@ Function Get-eduVPN {
             E-mail: jms@du.se
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])

@@ -1,4 +1,4 @@
-Function Get-MicrosoftEdge {
+function Get-MicrosoftEdge {
     <#
         .SYNOPSIS
             Returns the available Microsoft Edge versions and channels by querying the official Microsoft version JSON.

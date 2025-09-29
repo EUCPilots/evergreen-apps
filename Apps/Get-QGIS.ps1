@@ -2,7 +2,7 @@ function Get-QGIS {
     <#
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification="Product name ends in s")]

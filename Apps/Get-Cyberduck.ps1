@@ -1,4 +1,4 @@
-﻿Function Get-Cyberduck {
+﻿function Get-Cyberduck {
     <#
         .SYNOPSIS
             Get the current version and download URIs for Cyberduck for Windows.
@@ -6,19 +6,19 @@
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
     # Walk through each update URI (Stable, Beta and Nightly)
-    ForEach ($release in $res.Get.Update.Uri.GetEnumerator()) {
+    foreach ($release in $res.Get.Update.Uri.GetEnumerator()) {
 
         # Query the update feed
         $params = @{
@@ -27,7 +27,7 @@
         }
         $Content = Invoke-EvergreenRestMethod @params
 
-        If ($Null -ne $Content) {
+        if ($null -ne $Content) {
 
             # Capture the URL without https:// & replace // with /
             # Then put the URL back together

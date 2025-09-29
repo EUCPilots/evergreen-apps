@@ -1,15 +1,15 @@
-Function Get-BitwardenDesktop {
+function Get-BitwardenDesktop {
     <#
         .SYNOPSIS
             Returns the latest Bitwarden Desktop version number and download.
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -23,7 +23,7 @@ Function Get-BitwardenDesktop {
     }
     $Content = Invoke-EvergreenWebRequest @params
 
-    If ($Null -ne $Content) {
+    if ($null -ne $Content) {
         try {
             $Version = [RegEx]::Match($Content, $res.Get.Update.MatchVersion).Captures.Groups[1].Value
             Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version, from update source: $($res.Get.Update.Uri)."

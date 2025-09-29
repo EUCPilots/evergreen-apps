@@ -1,4 +1,4 @@
-Function Get-MicrosoftWvdRemoteDesktop {
+function Get-MicrosoftWvdRemoteDesktop {
     <#
         .SYNOPSIS
             Get the current version and download URL for the Microsoft Remote Desktop client for Azure Virtual Desktop.
@@ -6,7 +6,7 @@ Function Get-MicrosoftWvdRemoteDesktop {
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]

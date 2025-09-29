@@ -1,4 +1,4 @@
-Function Get-PuTTY {
+function Get-PuTTY {
     <#
         .SYNOPSIS
             Returns the available PuTTY versions.
@@ -8,9 +8,9 @@ Function Get-PuTTY {
             Twitter: @_BornToBeRoot
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -18,13 +18,13 @@ Function Get-PuTTY {
 
     # Get latest download url (https://the.earth.li/~sgtatham/putty/latest/ --> https://the.earth.li/~sgtatham/putty/0.xx/)
     $Response = Resolve-SystemNetWebRequest -Uri $res.Get.Update.Uri
-    If ($Null -ne $Response) {
+    if ($null -ne $Response) {
 
         # Extract the version from the redirect url
         $Version = [RegEx]::Match($Response.ResponseUri, $res.Get.Update.MatchVersion).Value
         Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version."
 
-        ForEach ($Architecture in $res.Get.Download.Uri.GetEnumerator()) {
+        foreach ($Architecture in $res.Get.Download.Uri.GetEnumerator()) {
 
             # Construct the URI
             $Uri = $res.Get.Download.Uri[$Architecture.Key] -replace $res.Get.Download.ReplaceText, $Version

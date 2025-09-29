@@ -1,4 +1,4 @@
-Function Get-TechSmithSnagit {
+function Get-TechSmithSnagit {
     <#
         .SYNOPSIS
             Get the current version and download URL for Snagit.
@@ -8,9 +8,9 @@ Function Get-TechSmithSnagit {
             Twitter: @adotcoop
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])

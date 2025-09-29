@@ -1,17 +1,17 @@
-Function Get-RCoreTeamRforWindows {
+function Get-RCoreTeamRforWindows {
     <#
         .SYNOPSIS
             Get the current version and download URL for R for Windows.
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification="Product name is a plural")]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -24,7 +24,7 @@ Function Get-RCoreTeamRforWindows {
     }
     $Content = Invoke-EvergreenWebRequest @params
 
-    if ($Null -ne $Content) {
+    if ($null -ne $Content) {
         try {
             $Version = [RegEx]::Match($Content, $res.Get.Update.MatchVersion).Captures.Groups[1].Value
         }

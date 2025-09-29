@@ -1,13 +1,13 @@
-Function Get-AirtameApp {
+function Get-AirtameApp {
     <#
         .NOTES
             Author: Andrew Cooper
             Twitter: @adotcoop
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -18,7 +18,7 @@ Function Get-AirtameApp {
         $Url = Resolve-SystemNetWebRequest -Uri $res.Get.Download.Uri[$Installer.Key]
 
         # Construct the output; Return the custom object to the pipeline
-        if ($Null -ne $Url) {
+        if ($null -ne $Url) {
             $PSObject = [PSCustomObject] @{
                 Version   = [RegEx]::Match($Url.ResponseUri.AbsoluteUri, $res.Get.Download.MatchVersion).Captures.Groups[1].Value
                 Installer = $Installer.Name

@@ -1,30 +1,30 @@
-﻿Function Get-VMwareOSOptimizationTool {
+﻿function Get-VMwareOSOptimizationTool {
     <#
         .SYNOPSIS
             Get the current version and download URL for the VMware OS Optimization Tool.
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
     $Update = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri
-    if ($Null -eq $Update) {
+    if ($null -eq $Update) {
         Write-Error -Message "$($MyInvocation.MyCommand): Failed to return usable content from $($res.Get.Update.Uri)."
     }
     else {
 
         $FileUrl = $res.Get.Update.File -replace "#releasePackageId", $Update.product.releasePackageId
         $File = Invoke-EvergreenRestMethod -Uri $FileUrl
-        if ($Null -eq $File) {
+        if ($null -eq $File) {
             Write-Error -Message "$($MyInvocation.MyCommand): Failed to return usable content from $FileUrl."
         }
         else {

@@ -1,16 +1,16 @@
-Function Get-SumatraPDFReader {
+function Get-SumatraPDFReader {
     <#
         .SYNOPSIS
             Get the current version and download URL for Sumatra PDF Reader.
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -22,7 +22,7 @@ Function Get-SumatraPDFReader {
     }
     $Content = Invoke-EvergreenWebRequest @params
 
-    If ($Null -ne $Content) {
+    if ($null -ne $Content) {
         try {
             $Version = [RegEx]::Match($Content, $res.Get.Update.MatchVersion).Captures.Groups[1].Value
             Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version, from update source: $($res.Get.Update.Uri)."
@@ -33,7 +33,7 @@ Function Get-SumatraPDFReader {
         }
 
         # Construct the output for each architecture
-        ForEach ($architecture in $res.Get.Download.Uri.GetEnumerator()) {
+        foreach ($architecture in $res.Get.Download.Uri.GetEnumerator()) {
 
             # Construct the output; Return the custom object to the pipeline
             $PSObject = [PSCustomObject] @{

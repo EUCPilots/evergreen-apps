@@ -1,16 +1,16 @@
-Function Get-MicrosoftPowerShell {
+function Get-MicrosoftPowerShell {
     <#
         .SYNOPSIS
             Returns the latest PowerShell version number and download.
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -27,14 +27,14 @@ Function Get-MicrosoftPowerShell {
     }
 
     # Query the releases API for each release tag specified in the manifest
-    ForEach ($release in $res.Get.Download.Tags.GetEnumerator()) {
+    foreach ($release in $res.Get.Download.Tags.GetEnumerator()) {
 
         # Determine the tag
         $Tags = $updateFeed.($res.Get.Download.Tags[$release.key])
         Write-Verbose -Message "$($MyInvocation.MyCommand): Query release for tag: $Tag."
 
         # Pass the repo releases API URL and return a formatted object
-        ForEach ($Tag in $Tags) {
+        foreach ($Tag in $Tags) {
             $params = @{
                 Uri          = "$($res.Get.Download.Uri)$($Tag)"
                 MatchVersion = $res.Get.Download.MatchVersion

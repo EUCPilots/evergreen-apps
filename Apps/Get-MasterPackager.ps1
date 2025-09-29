@@ -1,16 +1,16 @@
-﻿Function Get-MasterPackager {
+﻿function Get-MasterPackager {
     <#
         .SYNOPSIS
             Returns the available Master Packager versions and download URIs.
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -23,10 +23,10 @@
     $Version = Invoke-EvergreenRestMethod @params
 
     # Read the JSON and build an array of platform, channel, version
-    If ($Null -ne $Version) {
+    if ($null -ne $Version) {
 
         # Step through each installer type
-        ForEach ($item in $res.Get.Download.Uri.GetEnumerator()) {
+        foreach ($item in $res.Get.Download.Uri.GetEnumerator()) {
 
             # Build the output object; Output object to the pipeline
             $PSObject = [PSCustomObject] @{

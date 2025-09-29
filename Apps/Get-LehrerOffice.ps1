@@ -1,12 +1,12 @@
-Function Get-LehrerOffice {
+function Get-LehrerOffice {
     <#
         .SYNOPSIS
             Get the current version and download URL for LehrerOffice.
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split('-'))[1])
@@ -22,7 +22,7 @@ Function Get-LehrerOffice {
     $newestVersion = $versions.Matches.Item(0).Groups.Item(1).Value
 
     # Construct the output; Return the custom object to the pipeline
-    If ($Null -ne $Content) {
+    if ($null -ne $Content) {
         $PSObject = [PSCustomObject] @{
             Version = $newestVersion
             Type    = 'Exe'

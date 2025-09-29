@@ -27,7 +27,7 @@ function Get-LibreOffice {
             Uri                  = $res.Get.Update.Uri
             UserAgent            = $res.Get.Update.UserAgent[$item.Key]
             ContentType          = $res.Get.Update.ContentType
-            SkipCertificateCheck = $True
+            SkipCertificateCheck = $true
         }
         $Update = Invoke-EvergreenRestMethod @params
         if ($null -ne $Update) {

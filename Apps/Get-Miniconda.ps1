@@ -1,16 +1,16 @@
-Function Get-Miniconda {
+function Get-Miniconda {
     <#
         .SYNOPSIS
             Get the current version and download URL for Miniconda.
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -22,7 +22,7 @@ Function Get-Miniconda {
     # Query the repo to get the full list of files
     $updateFeed = Invoke-EvergreenRestMethod -Uri $Uri
 
-    If ($Null -ne $updateFeed) {
+    if ($null -ne $updateFeed) {
 
         # Grab the Windows files
         $FileNames = $updateFeed.PSObject.Properties.name -match $res.Get.MatchFileTypes
@@ -46,7 +46,7 @@ Function Get-Miniconda {
         $UnixEpoch = ([System.DateTime] '1970-01-01Z').ToUniversalTime()
 
         # Build the output object for each release
-        ForEach ($Release in $LatestReleases) {
+        foreach ($Release in $LatestReleases) {
             # Construct the output; Return the custom object to the pipeline
             $PSObject = [PSCustomObject] @{
                 Version      = $Version

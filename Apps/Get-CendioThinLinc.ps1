@@ -1,4 +1,4 @@
-Function Get-CendioThinLinc {
+function Get-CendioThinLinc {
     <#
         .SYNOPSIS
             Get the current version and download URI for the current release of ThinLinc.
@@ -8,9 +8,9 @@ Function Get-CendioThinLinc {
             Twitter: @adotcoop
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -20,7 +20,7 @@ Function Get-CendioThinLinc {
     $Url = Resolve-SystemNetWebRequest -Uri $res.Get.Download.Uri
 
     # Construct the output; Return the custom object to the pipeline
-    if ($Null -ne $Url) {
+    if ($null -ne $Url) {
         $PSObject = [PSCustomObject] @{
             Version = [RegEx]::Match($Url.ResponseUri.AbsoluteUri, $res.Get.Download.MatchVersion).Captures.Groups[1].Value
             URI     = $Url.ResponseUri.AbsoluteUri

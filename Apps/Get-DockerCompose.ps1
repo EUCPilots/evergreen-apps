@@ -1,4 +1,4 @@
-Function Get-DockerCompose {
+function Get-DockerCompose {
     <#
         .SYNOPSIS
             Returns the available Docker Compose versions.
@@ -7,9 +7,9 @@ Function Get-DockerCompose {
             Author: Kirill Trofimov
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])

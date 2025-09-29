@@ -1,19 +1,19 @@
-Function Get-AdobeAcrobatProStdDC {
+function Get-AdobeAcrobatProStdDC {
     <#
         .SYNOPSIS
             Gets the download URLs for Adobe Acrobat Standard and Pro DC Continuous track updates.
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
 
         .LINK
             https://github.com/aaronparker/Evergreen
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -26,7 +26,7 @@ Function Get-AdobeAcrobatProStdDC {
     $Content = Invoke-EvergreenRestMethod @params
 
     # Construct update download list
-    if ($Null -ne $Content) {
+    if ($null -ne $Content) {
 
         # Build the object
         foreach ($Architecture in $res.Get.Download.Uri.GetEnumerator()) {

@@ -1,4 +1,4 @@
-Function Get-AutodeskFusion360 {
+function Get-AutodeskFusion360 {
     <#
         .SYNOPSIS
             Returns downloads for the latest Autodesk Fusion 360 releases.
@@ -21,7 +21,7 @@ Function Get-AutodeskFusion360 {
     foreach ($installer in $res.Get.Download.Uri.GetEnumerator()) {
         $Url = $res.Get.Download.Uri[$installer.Key]
 
-        if ($Null -ne $Url) {
+        if ($null -ne $Url) {
             # Build object and output to the pipeline
             $PSObject = [PSCustomObject] @{
                 Version           = $Versions.'build-version'

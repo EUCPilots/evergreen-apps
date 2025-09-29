@@ -1,4 +1,4 @@
-Function Get-mRemoteNG {
+function Get-mRemoteNG {
     <#
         .SYNOPSIS
             Returns the available mRemoteNG versions.
@@ -8,9 +8,9 @@ Function Get-mRemoteNG {
             Twitter: @xenappblog
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])

@@ -1,12 +1,12 @@
-Function Get-SafingPortmaster {
+function Get-SafingPortmaster {
     <#
         .NOTES
             Author: Aaron Parker
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -17,13 +17,13 @@ Function Get-SafingPortmaster {
         Uri               = $res.Get.Update.Uri
         MatchVersion      = $res.Get.Update.MatchVersion
         Filter            = $res.Get.Update.MatchFileTypes
-        ReturnVersionOnly = $True
+        ReturnVersionOnly = $true
     }
     $object = Get-GitHubRepoRelease @params
 
     # Build the output object
-    If ($Null -ne $object) {
-        ForEach ($Architecture in $res.Get.Download.Uri.GetEnumerator()) {
+    if ($null -ne $object) {
+        foreach ($Architecture in $res.Get.Download.Uri.GetEnumerator()) {
             $Uri = $res.Get.Download.Uri[$Architecture.Key] -replace $res.Get.Download.ReplaceText, $object.Version
             $PSObject = [PSCustomObject] @{
                 Version      = $object.Version

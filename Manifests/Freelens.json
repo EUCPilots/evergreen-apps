@@ -1,6 +1,6 @@
 {
 	"Name": "Freelens",
-	"Source": "https://github.com/freelensapp/freelens/",
+	"Source": "https://freelensapp.github.io/",
 	"Get": {
 		"Uri": "https://api.github.com/repos/freelensapp/freelens/releases/latest",
 		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",

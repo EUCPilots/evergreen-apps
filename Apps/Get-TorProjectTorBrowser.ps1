@@ -1,16 +1,16 @@
-Function Get-TorProjectTorBrowser {
+function Get-TorProjectTorBrowser {
     <#
         .SYNOPSIS
             Returns the latest Tor Browser version number and download.
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
@@ -25,16 +25,16 @@ Function Get-TorProjectTorBrowser {
     $Installer = $res.Get.Update.Property.Installer
 
     # If the update content includes the required property
-    If ($Downloads -in ($Update | Get-Member -MemberType "NoteProperty" | Select-Object -ExpandProperty "Name")) {
+    if ($Downloads -in ($Update | Get-Member -MemberType "NoteProperty" | Select-Object -ExpandProperty "Name")) {
         Write-Verbose -Message "$($MyInvocation.MyCommand): Found required property: $Downloads."
         Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $($Update.$Version)."
 
         # Step through each Windows x86 and x64 architecture
-        ForEach ($Platform in $res.Get.Update.Platform) {
+        foreach ($Platform in $res.Get.Update.Platform) {
             Write-Verbose -Message "$($MyInvocation.MyCommand):  Platform: $Platform."
 
             $Languages = $Update.$Downloads.$Platform | Get-Member -MemberType "NoteProperty" | Select-Object -ExpandProperty "Name"
-            ForEach ($Language in $Languages) {
+            foreach ($Language in $Languages) {
                 Write-Verbose -Message "$($MyInvocation.MyCommand): Language: $Language."
 
                 $PSObject = [PSCustomObject] @{

@@ -1,19 +1,19 @@
-Function Get-AdobeAcrobatReaderDC {
+function Get-AdobeAcrobatReaderDC {
     <#
         .SYNOPSIS
             Gets the download URLs for Adobe Acrobat Reader DC Continuous track installers.
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
 
         .LINK
             https://github.com/aaronparker/Evergreen
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])

@@ -1,4 +1,4 @@
-Function Get-MattermostDesktop {
+function Get-MattermostDesktop {
     <#
         .SYNOPSIS
             Returns the latest available Mattermost desktop version.
@@ -8,16 +8,16 @@ Function Get-MattermostDesktop {
             Twitter: @_BornToBeRoot
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [CmdletBinding(SupportsShouldProcess = $False)]
+    [CmdletBinding(SupportsShouldProcess = $false)]
     param (
-        [Parameter(Mandatory = $False, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0)]
         [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
     $Content = Invoke-EvergreenRestMethod $res.Get.Update.Uri
-    if ($Null -ne $Content) {
+    if ($null -ne $Content) {
 
         foreach ($Line in ($Content -split "\n")) {
             if ($Line -match $res.Get.Update.Match.Version) {

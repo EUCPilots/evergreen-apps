@@ -1,11 +1,11 @@
-﻿Function Get-OracleJava8 {
+﻿function Get-OracleJava8 {
     <#
         .SYNOPSIS
             Gets the current available Oracle Java release versions.
 
         .NOTES
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]

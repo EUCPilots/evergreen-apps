@@ -6,7 +6,7 @@ function Get-MicrosoftVisualStudioCode {
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-            Twitter: @stealthpuppy
+
 
             Download URLs
             "https://aka.ms/win32-x64-user-stable"
