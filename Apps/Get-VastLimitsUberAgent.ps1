@@ -6,8 +6,7 @@ function Get-VastLimitsUberAgent {
             .NOTES
                 Site: https://stealthpuppy.com
                 Author: Aaron Parker
-    
-        #>
+    #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
     param (
