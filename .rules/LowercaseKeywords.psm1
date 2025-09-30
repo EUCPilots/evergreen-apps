@@ -18,50 +18,55 @@ function Measure-LowercaseKeywords {
         $targets = $keywords + $constants
 
         # Find all CommandElements and VariableExpressions in the AST
-        $nodes = $ScriptAst.FindAll({
+        $nodes = @()
+        $ScriptAst.FindAll({
             param($node)
-            # Only return true for relevant command keywords or variable constants
             if ($node -is [System.Management.Automation.Language.CommandElementAst]) {
                 $actual = $node.Extent.Text
                 $lower = $actual.ToLower()
                 if ($keywords -contains $lower) {
-                    return $true
-                }
-            } elseif ($node -is [System.Management.Automation.Language.VariableExpressionAst]) {
-                $actual = $node.Extent.Text
-                $lower = $actual.ToLower()
-                if ($constants -contains $lower) {
-                    return $true
-                }
-            }
-            return $false
-        }, $true)
-
-        foreach ($node in $nodes) {
-            if ($node -is [System.Management.Automation.Language.CommandElementAst]) {
-                $actual = $node.Extent.Text
-                $lower = $actual.ToLower()
-                if ($keywords -contains $lower) {
-                    if ($actual -cne $lower) {
-                        [DiagnosticRecord]@{
-                            Message  = "Keyword '$actual' should be lowercase ('$lower')."
-                            Extent   = $node.Extent
-                            RuleName = 'LowercaseKeywords'
-                            Severity = 'Warning'
-                        }
+                    $script:nodes += [PSCustomObject]@{
+                        Node   = $node
+                        Actual = $actual
+                        Lower  = $lower
+                        Type   = 'Keyword'
                     }
                 }
             } elseif ($node -is [System.Management.Automation.Language.VariableExpressionAst]) {
                 $actual = $node.Extent.Text
                 $lower = $actual.ToLower()
                 if ($constants -contains $lower) {
-                    if ($actual -cne $lower) {
-                        [DiagnosticRecord]@{
-                            Message  = "Constant '$actual' should be lowercase ('$lower')."
-                            Extent   = $node.Extent
-                            RuleName = 'LowercaseKeywords'
-                            Severity = 'Warning'
-                        }
+                    $script:nodes += [PSCustomObject]@{
+                        Node   = $node
+                        Actual = $actual
+                        Lower  = $lower
+                        Type   = 'Constant'
+                    }
+                }
+            }
+            return $false
+        }, $true) | Out-Null
+
+        foreach ($item in $nodes) {
+            $node = $item.Node
+            $actual = $item.Actual
+            $lower = $item.Lower
+            if ($item.Type -eq 'Keyword') {
+                if ($actual -cne $lower) {
+                    [DiagnosticRecord]@{
+                        Message  = "Keyword '$actual' should be lowercase ('$lower')."
+                        Extent   = $node.Extent
+                        RuleName = 'LowercaseKeywords'
+                        Severity = 'Warning'
+                    }
+                }
+            } elseif ($item.Type -eq 'Constant') {
+                if ($actual -cne $lower) {
+                    [DiagnosticRecord]@{
+                        Message  = "Constant '$actual' should be lowercase ('$lower')."
+                        Extent   = $node.Extent
+                        RuleName = 'LowercaseKeywords'
+                        Severity = 'Warning'
                     }
                 }
             }
