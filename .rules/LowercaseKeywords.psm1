@@ -20,13 +20,19 @@ function Measure-LowercaseKeywords {
         # Find all CommandElements and VariableExpressions in the AST
         $nodes = $ScriptAst.FindAll({
             param($node)
-            # Check for command keywords
+            # Only return true for relevant command keywords or variable constants
             if ($node -is [System.Management.Automation.Language.CommandElementAst]) {
-                return $true
-            }
-            # Check for variable constants
-            if ($node -is [System.Management.Automation.Language.VariableExpressionAst]) {
-                return $true
+                $actual = $node.Extent.Text
+                $lower = $actual.ToLower()
+                if ($keywords -contains $lower) {
+                    return $true
+                }
+            } elseif ($node -is [System.Management.Automation.Language.VariableExpressionAst]) {
+                $actual = $node.Extent.Text
+                $lower = $actual.ToLower()
+                if ($constants -contains $lower) {
+                    return $true
+                }
             }
             return $false
         }, $true)
