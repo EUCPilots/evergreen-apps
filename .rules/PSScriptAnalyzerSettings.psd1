@@ -1,8 +1,8 @@
 @{
-    CustomRulePath = @(
-        "$PSScriptRoot\LowercaseKeywords.psm1"
-    )
-    IncludeRules   = @(
-        'LowercaseKeywords'
+    CustomRulePath      = @(".rules/LowercaseKeywords.psm1")
+    IncludeDefaultRules = $true
+    Severity            = @("Error", "Warning")
+    IncludeRules        = @(
+        "Measure*"
     )
 }

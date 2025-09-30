@@ -3,73 +3,52 @@ using namespace Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic
 
 function Measure-LowercaseKeywords {
     [CmdletBinding()]
+    [OutputType([Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.DiagnosticRecord[]])]
     param (
-        [Parameter(Mandatory)]
-        [System.Management.Automation.Language.Ast] $ScriptAst,
-
-        [Parameter(Mandatory)]
-        [string] $ScriptPath
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
+        [System.Management.Automation.Language.ScriptBlockAst]$ScriptAst
     )
 
     process {
+        # Tokenize the script
+        $parseErrors = @()
+        $tokens = [System.Management.Automation.PSParser]::Tokenize($ScriptAst, [ref]$parseErrors)
+        if ($parseErrors) {
+            return $null
+        }
+
         # Define what we care about
-        $keywords = @('function', 'foreach', 'if')
-        $constants = @('$true', '$false', '$null')
+        $keywords = @('function', 'foreach', 'if', 'else', 'elseif', 'return', 'switch', 'param', 'begin', 'process', 'end', 'in', 'do', 'while', 'until', 'for', 'trap', 'throw', 'catch', 'try', 'finally', 'data', 'dynamicparam')
+        $constants = @('$true', '$false', '$null', '$pwd', '$home', '$shellid', '$host', '$error', '$args', '$this', '$input', '$matches', '$nullstring')
         $targets = $keywords + $constants
 
-        # Find all CommandElements and VariableExpressions in the AST
-        $nodes = @()
-        $ScriptAst.FindAll({
-            param($node)
-            if ($node -is [System.Management.Automation.Language.CommandElementAst]) {
-                $actual = $node.Extent.Text
-                $lower = $actual.ToLower()
-                if ($keywords -contains $lower) {
-                    $script:nodes += [PSCustomObject]@{
-                        Node   = $node
-                        Actual = $actual
-                        Lower  = $lower
-                        Type   = 'Keyword'
-                    }
-                }
-            } elseif ($node -is [System.Management.Automation.Language.VariableExpressionAst]) {
-                $actual = $node.Extent.Text
-                $lower = $actual.ToLower()
-                if ($constants -contains $lower) {
-                    $script:nodes += [PSCustomObject]@{
-                        Node   = $node
-                        Actual = $actual
-                        Lower  = $lower
-                        Type   = 'Constant'
-                    }
-                }
-            }
-            return $false
-        }, $true) | Out-Null
+        foreach ($t in $tokens) {
+            $actual = $t.Content
+            $lower = $actual.ToLower()
 
-        foreach ($item in $nodes) {
-            $node = $item.Node
-            $actual = $item.Actual
-            $lower = $item.Lower
-            if ($item.Type -eq 'Keyword') {
+            if ($targets -contains $lower) {
                 if ($actual -cne $lower) {
-                    [DiagnosticRecord]@{
-                        Message  = "Keyword '$actual' should be lowercase ('$lower')."
-                        Extent   = $node.Extent
-                        RuleName = 'LowercaseKeywords'
-                        Severity = 'Warning'
+                    [System.String]$correction = 'Update keyword/constant to lowercase.'
+                    [System.String]$file = $MyInvocation.MyCommand.Definition
+                    $params = @{
+                        TypeName     = 'Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.CorrectionExtent'
+                        ArgumentList = $t.StartLine, $t.EndLine, $t.StartColumn, $t.EndColumn, $correction, $file
                     }
-                }
-            } elseif ($item.Type -eq 'Constant') {
-                if ($actual -cne $lower) {
-                    [DiagnosticRecord]@{
-                        Message  = "Constant '$actual' should be lowercase ('$lower')."
-                        Extent   = $node.Extent
-                        RuleName = 'LowercaseKeywords'
-                        Severity = 'Warning'
+                    $correctionExtent = New-Object @params
+                    $suggestedCorrections = New-Object -TypeName System.Collections.ObjectModel.Collection[$($params.TypeName)]
+                    $suggestedCorrections.Add($correctionExtent) | Out-Null
+                    [Microsoft.Windows.Powershell.ScriptAnalyzer.Generic.DiagnosticRecord]@{
+                        Message              = "Keyword/constant '$actual' should be lowercase '$lower'."
+                        Extent               = $t.Extent
+                        RuleName             = 'LowercaseKeywords'
+                        Severity             = 'Warning'
+                        SuggestedCorrections = $suggestedCorrections
                     }
                 }
             }
         }
     }
 }
+
+Export-ModuleMember -Function Measure-LowercaseKeywords
