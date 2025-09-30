@@ -30,7 +30,7 @@ jobs:
           with:
             path: "./Apps"
             recurse: true
-            includeDefaultRules: true 
+            includeDefaultRules: true
             settings: "./.rules/PSScriptAnalyzerSettings.psd1"
             customRulePath: "./.rules/LowercaseKeywords.psm1"
             output: results.sarif
