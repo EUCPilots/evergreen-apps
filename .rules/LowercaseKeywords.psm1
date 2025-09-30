@@ -7,7 +7,10 @@ function Measure-LowercaseKeywords {
     param (
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [System.Management.Automation.Language.ScriptBlockAst]$ScriptAst
+        [System.Management.Automation.Language.ScriptBlockAst]$ScriptAst,
+
+        [Parameter(Mandatory = $false)]
+        [System.String]$FilePath
     )
 
     process {
@@ -30,10 +33,9 @@ function Measure-LowercaseKeywords {
             if ($targets -contains $lower) {
                 if ($actual -cne $lower) {
                     [System.String]$correction = 'Update keyword/constant to lowercase.'
-                    [System.String]$file = $MyInvocation.MyCommand.Definition
                     $params = @{
                         TypeName     = 'Microsoft.Windows.PowerShell.ScriptAnalyzer.Generic.CorrectionExtent'
-                        ArgumentList = $t.StartLine, $t.EndLine, $t.StartColumn, $t.EndColumn, $correction, $file
+                        ArgumentList = $t.StartLine, $t.EndLine, $t.StartColumn, $t.EndColumn, $correction, $FilePath
                     }
                     $correctionExtent = New-Object @params
                     $suggestedCorrections = New-Object -TypeName System.Collections.ObjectModel.Collection[$($params.TypeName)]
