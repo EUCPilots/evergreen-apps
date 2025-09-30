@@ -31,8 +31,7 @@
                 "jdk",
                 "jdk-full",
                 "jdk-lite",
-                "jre",
-                "jre-full"
+                "jre"
             ],
 			"ContentType": "application/json"
         }
