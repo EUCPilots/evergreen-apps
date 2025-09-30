@@ -10,7 +10,6 @@ function Measure-LowercaseKeywords {
         [System.Management.Automation.Language.ScriptBlockAst]$ScriptAst,
 
         [Parameter(Mandatory = $false)]
-        [ValidateNotNullOrEmpty()]
         [System.String]$FilePath
     )
 
