@@ -22,7 +22,7 @@ function Measure-LowercaseKeywords {
 
         # Define what we care about
         $keywords = @('function', 'foreach', 'if')
-        $constants = @('`$true', '`$false', '`$null')
+        $constants = @('$true', '$false', '$null')
         $targets = $keywords + $constants
 
         foreach ($t in $tokens) {
