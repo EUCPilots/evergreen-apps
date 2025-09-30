@@ -7,7 +7,7 @@
         },
         "Download": {
             "Uri": "https://api.bell-sw.com/v1/liberica/releases?version-modifier=latest&version-feature=#Version&bitness=#Bitness&os=#Platform&arch=#Architecture",
-        "Uri2": "https://api.bell-sw.com/v1/liberica/releases?version-modifier=latest&version-feature=#Version&bitness=#Bitness&os=#Platform&arch=#Architecture&package-type=#Type&bundle-type=#BundleType",
+            "Uri2": "https://api.bell-sw.com/v1/liberica/releases?version-modifier=latest&version-feature=#Version&bitness=#Bitness&os=#Platform&arch=#Architecture&package-type=#Type&bundle-type=#BundleType",
         "Versions": [
             "25"
         ],
