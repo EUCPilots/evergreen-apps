@@ -1,8 +1,5 @@
-function Get-OperaCryptoBrowser {
+function Get-AmazonCorretto25 {
     <#
-        .SYNOPSIS
-            Returns the available OperaCryptoBrowser versions and download URIs.
-
         .NOTES
             Author: Aaron Parker
 
@@ -11,11 +8,12 @@ function Get-OperaCryptoBrowser {
     [CmdletBinding(SupportsShouldProcess = $false)]
     param (
         [Parameter(Mandatory = $false, Position = 0)]
-        [ValidateNotNullOrEmpty()]
+        [ValidateNotNull()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    $Output = Get-OperaApp -res $res
-    Write-Output -InputObject $Output
+    # Get the latest download
+    $Object = Get-AmazonCorretto -res $res
+    Write-Output -InputObject $Object
 }
