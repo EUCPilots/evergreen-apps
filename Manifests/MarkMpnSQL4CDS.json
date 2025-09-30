@@ -4,7 +4,7 @@
     "Get": {
         "Uri": "https://api.github.com/repos/MarkMpn/Sql4Cds/releases/latest",
         "MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
-        "MatchFileTypes": "\\.msi$"
+        "MatchFileTypes": "\\.msi$|\\.vsix$"
     },
     "Install": {
         "Setup": " MarkMpn.Sql4Cds.SSMS.20.Setup.msi",
