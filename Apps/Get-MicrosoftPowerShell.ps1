@@ -22,8 +22,8 @@ function Get-MicrosoftPowerShell {
         $updateFeed = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri
     }
     catch {
-        Throw "Failed to resolve metadata: $($res.Get.Update.Uri)."
-        Break
+        throw "Failed to resolve metadata: $($res.Get.Update.Uri)."
+        break
     }
 
     # Query the releases API for each release tag specified in the manifest
