@@ -42,7 +42,7 @@ function Measure-PascalCase {
                 [bool]$ReturnValue = $false
                 if ($Ast -is [System.Management.Automation.Language.AssignmentStatementAst]) {
                     [System.Management.Automation.Language.AssignmentStatementAst]$VariableAst = $Ast
-                    if ($VariableAst.Left.VariablePath.UserPath -cnotmatch '^([A-Z][a-z]+)+$') {
+                    if ($VariableAst.Left.VariablePath.UserPath -cnotmatch '^[A-Z][a-zA-Z0-9]*$') {
                         $ReturnValue = $true
                     }
                 }
