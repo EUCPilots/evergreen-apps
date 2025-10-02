@@ -1,8 +1,10 @@
 @{
-    CustomRulePath      = @(".rules/LowercaseKeywords.psm1")
+    CustomRulePath      = @(
+        ".rules/LowercaseKeyword.psm1"
+    )
     IncludeDefaultRules = $true
     Severity            = @("Error", "Warning")
     IncludeRules        = @(
-        "Measure*"
+        "Measure-LowercaseKeyword"
     )
 }
