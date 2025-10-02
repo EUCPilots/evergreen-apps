@@ -27,7 +27,7 @@ function Get-jrsoftwareInnoSetup {
             $Version = [RegEx]::Match($Response.ResponseUri.LocalPath, $res.Get.Download.MatchVersion).Captures.Groups[1].Value
         }
         catch {
-            Throw "$($MyInvocation.MyCommand): Failed to extract the version information from the uri."
+            throw "$($MyInvocation.MyCommand): Failed to extract the version information from the uri."
         }
 
         # Construct the output; Return the custom object to the pipeline

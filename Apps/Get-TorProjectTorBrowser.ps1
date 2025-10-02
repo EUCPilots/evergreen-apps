@@ -48,7 +48,7 @@ function Get-TorProjectTorBrowser {
             }
         }
     }
-    Else {
+    else {
         Write-Warning -Message "$($MyInvocation.MyCommand): Failed to find '$Downloads' property."
     }
 }
