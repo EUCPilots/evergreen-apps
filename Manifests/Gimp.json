@@ -11,9 +11,10 @@
 			]
 		},
 		"Download": {
-            "Uri": "https://download.gimp.org/mirror/pub/gimp/v#minorversion/windows/#filename",
+            "Uri": "https://download.gimp.org/mirror/pub/gimp/v#version/windows/#filename",
+			"FallbackUri": "https://download.gimp.org/gimp/v#version/windows/#filename",
             "ReplaceFileName": "#filename",
-            "ReplaceVersion": "#minorversion"
+            "ReplaceVersion": "#version"
 		}
 	},
 	"Install": {
