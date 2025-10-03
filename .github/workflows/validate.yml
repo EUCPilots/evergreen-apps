@@ -9,6 +9,8 @@ on:
     paths:
       - 'Apps/**'
       - 'Manifests/**'
+    branches-ignore:
+      - main
   pull_request:
     paths:
       - 'Apps/**'
