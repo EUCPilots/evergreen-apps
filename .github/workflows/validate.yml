@@ -6,7 +6,13 @@ defaults:
 
 on:
   push:
+    paths:
+      - 'Apps/**'
+      - 'Manifests/**'
     branches-ignore:
+      - main
+  pull_request:
+    branches:
       - main
     paths:
       - 'Apps/**'
