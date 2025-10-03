@@ -54,23 +54,26 @@ jobs:
             - name: 'Get changed files for this commit'
               id: changed_files
               run: |
-                    if [[ "$GITHUB_EVENT_NAME" == "push" || "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
-                      git fetch origin ${{ github.event.before }}  
-                      git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
-                    else
-                      echo "No changed files detected." > changed_files.txt
-                    fi
+                if [[ "$GITHUB_EVENT_NAME" == "push" || "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+                  git fetch origin ${{ github.event.before }}
+                  git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '^Apps/|^Manifests/' > changed_files.txt
+                else
+                  echo "No changed files detected." > changed_files.txt
+                fi
               env:
                 GITHUB_EVENT_NAME: ${{ github.event_name }}
 
             - name: 'Create release notes'
               id: release_notes
               run: |
-                    echo "### Files changed in this release:" > release_notes.md
-                    cat changed_files.txt | sed 's/^/- /' >> release_notes.md
-                    echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
-                    cat release_notes.md >> $GITHUB_ENV
-                    echo "EOF" >> $GITHUB_ENV
+                  git log -1 --pretty=format:"%s" > release_notes.md
+                  echo "" >> release_notes.md
+                  echo "" >> release_notes.md
+                  echo "### Files changed in this release:" >> release_notes.md
+                  cat changed_files.txt | sed 's/^/- /' >> release_notes.md
+                  echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+                  cat release_notes.md >> $GITHUB_ENV
+                  echo "EOF" >> $GITHUB_ENV
 
             - name: 'Create Git tag'
               run: |
