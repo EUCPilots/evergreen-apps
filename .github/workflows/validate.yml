@@ -6,8 +6,10 @@ defaults:
 
 on:
   push:
-    branches-ignore:
-      - main
+    paths:
+      - 'Apps/**'
+      - 'Manifests/**'
+  pull_request:
     paths:
       - 'Apps/**'
       - 'Manifests/**'
