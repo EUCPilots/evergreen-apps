@@ -32,11 +32,11 @@ Everything here is designed to keep your Evergreen module fresh, flexible, and a
 
 4. **Deploy or Update**
 
-    - Need help? Check out [Evergreen Documentation](https://stealthpuppy.com/evergreen) for detailed guides.
+    - Need help? Check out [Evergreen Documentation](https://eucpilots.com/evergreen-docs) for detailed guides.
 
 ## 📚 Helpful Links
 
-- [Evergreen Module Docs](https://stealthpuppy.com/evergreen)
+- [Evergreen Module Docs](https://eucpilots.com/evergreen-docs)
 
 ## 😃 Stay Evergreen!
 
