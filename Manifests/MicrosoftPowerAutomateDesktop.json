@@ -1,0 +1,13 @@
+{
+    "Name": "Microsoft Power Automate Desktop",
+    "Source": "https://learn.microsoft.com/en-us/power-automate/desktop-flows/install",
+    "Get": {
+        "Update": {
+            "Uri": "https://go.microsoft.com/fwlink/?linkid=2166902",
+            "File": "PADUpdate.json"
+        },
+        "Download": {
+            "Uri": "https://go.microsoft.com/fwlink/?linkid=2102613"
+        }
+    }
+}
