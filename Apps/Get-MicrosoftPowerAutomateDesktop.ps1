@@ -1,4 +1,4 @@
-#Requires -Module @{ ModuleName="Evergreen"; ModuleVersion="2510.2799.0" }
+#Requires -Module @{ ModuleName="Evergreen"; ModuleVersion="2510.2802.0" }
 function Get-MicrosoftPowerAutomateDesktop {
     <#
         .SYNOPSIS
