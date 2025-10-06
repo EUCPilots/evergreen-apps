@@ -8,7 +8,6 @@ function Get-MicrosoftPowerAutomateDesktop {
             Author: Aaron Parker
     #>
     [OutputType([System.Management.Automation.PSObject])]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification = "Product name is a plural")]
     [CmdletBinding(SupportsShouldProcess = $false)]
     param (
         [Parameter(Mandatory = $false, Position = 0)]
@@ -18,7 +17,7 @@ function Get-MicrosoftPowerAutomateDesktop {
     )
 
     # Get the update information
-    $Resolved = Resolve-MicrosoftFwLink -Uri $res.Get.Update.Uri -WarningAction "Ignore"
+    $Resolved = Resolve-MicrosoftFwLink -Uri $res.Get.Update.Uri -WarningAction "SilentlyContinue"
     Write-Verbose -Message "$($MyInvocation.MyCommand): Resolved update URL: $($Resolved.Uri)."
 
     # Download the CAB file
