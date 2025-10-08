@@ -1,0 +1,9 @@
+{
+	"Name": "RustDesk Client",
+	"Source": "https://rustdesk.com/docs/en/self-host/client-deployment/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/rustdesk/rustdesk/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}
