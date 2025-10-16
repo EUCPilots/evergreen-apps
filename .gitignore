@@ -43,3 +43,8 @@ json/**
 .cache
 TestResults.xml
 CodeCoverage.xml
+
+# Evergreen cache files
+.evergreen_version
+sha256_hashes.csv
+evergreen-apps.zip
