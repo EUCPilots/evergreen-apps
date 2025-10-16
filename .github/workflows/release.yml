@@ -56,7 +56,12 @@ jobs:
               run: |
                 if [[ "$GITHUB_EVENT_NAME" == "push" || "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
                   git fetch origin ${{ github.event.before }}
-                  git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -E '^Apps/|^Manifests/' > changed_files.txt
+                  # Get all changed files (added, modified, deleted) in Apps/ and Manifests/ directories
+                  git diff --name-status ${{ github.event.before }} ${{ github.sha }} | grep -E '^[AMD]\s+(Apps/|Manifests/)' | awk '{print $2}' > changed_files.txt
+                  # If no files found, create empty file
+                  if [ ! -s changed_files.txt ]; then
+                    echo "No changed files detected." > changed_files.txt
+                  fi
                 else
                   echo "No changed files detected." > changed_files.txt
                 fi
