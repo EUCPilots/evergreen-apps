@@ -27,7 +27,7 @@ function Get-FoxitReader {
     if ($null -ne $UpdateFeed.package_info.version[0]) {
         $Version = $UpdateFeed.package_info.version[0]
     } else {
-        $Version = [RegEx]::Match($UpdateFeed.package_info.down, $res.Get.Update.MatchVersion).Captures.Groups[0].Value
+        $Version = [RegEx]::Match($UpdateFeed.package_info.down, $res.Get.Update.MatchVersion).Groups[0].Value
     }
     Write-Verbose -Message "$($MyInvocation.MyCommand): Matched version: $Version."
 
