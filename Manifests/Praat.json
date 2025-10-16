@@ -3,7 +3,7 @@
 	"Source": "https://www.fon.hum.uva.nl/praat/",
 
 	"Get": {
-		"Uri": "https://api.github.com/repos/praat/praat/releases/latest",
+		"Uri": "https://api.github.com/repos/praat/praat.github.io/releases/latest",
 		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
 		"MatchFileTypes": "^(?!.*xcode).*zip$|.*exe$"
 	},
