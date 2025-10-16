@@ -1,12 +1,11 @@
 function Get-FoxitReader {
     <#
         .SYNOPSIS
-            Get the current version and download URL for Foxit Reader.
+            Get the current version and download URL for Foxit PDF Reader.
 
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
@@ -17,51 +16,44 @@ function Get-FoxitReader {
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    # Query the Foxit Reader package download form to get the JSON
-    # TODO: Fix issue with Invoke-EvergreenRestMethod that produces "Operation is not valid due to the current state of the object."
-    # $params = @{
-    #     Uri             = $res.Get.Update.Uri
-    #     UseBasicParsing = $true
-    # }
-    # if (Test-ProxyEnv) {
-    #     $params.Proxy = $script:EvergreenProxy
-    # }
-    # if (Test-ProxyEnv -Creds) {
-    #     $params.ProxyCredential = $script:EvergreenProxyCreds
-    # }
-    # Write-Verbose -Message "$($MyInvocation.MyCommand): Query: $($res.Get.Update.Uri)"
-    # $updateFeed = Invoke-RestMethod @params
+    # Query the Foxit package download form to get the JSON
     $UpdateFeed = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri
 
-    if ($null -ne $UpdateFeed) {
+    # Grab latest version. Removed Sort-Object because Foxit moved to a 5 part version number
+    $BigVersion = $UpdateFeed.package_info.big_version | Select-Object -First 1
+    Write-Verbose -Message "$($MyInvocation.MyCommand): Found 'big' version: $BigVersion."
 
-        # Grab latest version. Removed Sort-Object because Foxit moved to a 5 part version number
-        # $Version = ($updateFeed.package_info.version | Sort-Object { [System.Version]$_ } -Descending) | Select-Object -First 1
-        $Version = $UpdateFeed.package_info.version | Select-Object -First 1
-
-        if ($null -ne $Version) {
-            Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version."
-
-            # Build the output object for each language. Excludes languages with out-of-date versions
-            foreach ($language in ($UpdateFeed.package_info.language | Get-Member -MemberType "NoteProperty")) {
-
-                # Build the download URL; Follow the download link which will return a 301/302
-                Write-Verbose -Message "$($MyInvocation.MyCommand): Return details for language: $($updateFeed.package_info.language.($language.Name))."
-                $Uri = (($res.Get.Download.Uri -replace "#Version", $Version) -replace "#Language", $($updateFeed.package_info.language.($language.Name))) `
-                    -replace "#Package", $updateFeed.package_info.type[0]
-                $Url = $(Resolve-SystemNetWebRequest -Uri $Uri).ResponseUri.AbsoluteUri
-
-                # Construct the output; Return the custom object to the pipeline
-                if ($null -ne $Url) {
-                    $PSObject = [PSCustomObject] @{
-                        Version  = $Version
-                        Date     = ConvertTo-DateTime -DateTime $updateFeed.package_info.release -Pattern $res.Get.Update.DateTimePattern
-                        Language = $($updateFeed.package_info.language.($language.Name))
-                        URI      = $Url
-                    }
-                    Write-Output -InputObject $PSObject
-                }
-            }
-        }
+    # Match version using the .package_info.down property
+    if ($null -ne $UpdateFeed.package_info.version[0]) {
+        $Version = $UpdateFeed.package_info.version[0]
+    } else {
+        $Version = [RegEx]::Match($UpdateFeed.package_info.down, $res.Get.Update.MatchVersion).Captures.Groups[0].Value
     }
+    Write-Verbose -Message "$($MyInvocation.MyCommand): Matched version: $Version."
+
+    # Build the download URL; Follow the download link which will return a 301/302
+    $DownloadUrl = $res.Get.Download.Uri -replace "#version", $Version
+    $Url = $(Resolve-SystemNetWebRequest -Uri $DownloadUrl).ResponseUri.AbsoluteUri
+
+    # Construct the output; Return the custom object to the pipeline
+    Write-Verbose -Message "$($MyInvocation.MyCommand): Return details for dynamic download URL."
+    $PSObject = [PSCustomObject] @{
+        Version  = $Version
+        Date     = ConvertTo-DateTime -DateTime $updateFeed.package_info.release -Pattern $res.Get.Update.DateTimePattern
+        Language = $res.Get.Download.Language
+        Type     = Get-FileType -File $Url
+        URI      = $Url
+    }
+    Write-Output -InputObject $PSObject
+
+    Write-Verbose -Message "$($MyInvocation.MyCommand): Return details for static download URL."
+    $StaticUrl = "$([RegEx]::Match($Url, $res.Get.Download.MatchHost).Value)$($UpdateFeed.package_info.down)"
+    $PSObject = [PSCustomObject] @{
+        Version  = $Version
+        Date     = ConvertTo-DateTime -DateTime $updateFeed.package_info.release -Pattern $res.Get.Update.DateTimePattern
+        Language = $res.Get.Download.Language
+        Type     = Get-FileType -File $StaticUrl
+        URI      = $StaticUrl
+    }
+    Write-Output -InputObject $PSObject
 }
