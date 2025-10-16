@@ -12,10 +12,13 @@
                 "Korean",
                 "ML"
             ],
-			"DateTimePattern": "MM/dd/yy"
+			"DateTimePattern": "MM/dd/yy",
+            "MatchVersion": "(?<=/)\\d{4}\\.\\d+\\.\\d+(?=/)"
         },
         "Download": {
-            "Uri": "https://www.foxitsoftware.com/downloads/latest.html?product=Foxit-PhantomPDF-Business&platform=Windows&version=#Version&package_type=msi&language=#Language&distID="
+            "Uri": "https://www.foxitsoftware.com/downloads/latest.html?product=Foxit-PhantomPDF-Business&platform=Windows&version=#version&package_type=msi&language=ML&distID=",
+            "Language": "Multi-Language",
+            "MatchHost": "^https?:\\/\\/[^/]+"
         }
     },
     "Install": {
