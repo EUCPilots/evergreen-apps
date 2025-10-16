@@ -1,3 +1,4 @@
+#Requires -Module @{ ModuleName="Evergreen"; ModuleVersion="2510.2811.0" }
 function Get-Praat {
     <#
         .SYNOPSIS
