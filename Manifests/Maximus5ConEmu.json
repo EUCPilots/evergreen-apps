@@ -1,8 +1,8 @@
 {
 	"Name": "Maximus5 ConEmu",
-	"Source": "https://github.com/Maximus5/ConEmu",
+	"Source": "https://conemu.github.io/",
 	"Get": {
-		"Uri": "https://api.github.com/repos/Maximus5/ConEmu/releases/latest",
+		"Uri": "https://api.github.com/repos/ConEmu/ConEmu/releases/latest",
 		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
 		"MatchFileTypes": "\\.exe$|\\.7z$"
 	},
