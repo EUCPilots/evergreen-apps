@@ -1,0 +1,16 @@
+{
+    "Name": "Trimble SketchUp",
+    "Source": "https://help.sketchup.com/en/sketchup/performing-silent-install-sketchup",
+    "Get": {
+        "Update": {
+            "Uri": "https://api.sketchup.com/updater/v1/windows/en/25.0.429",
+            "UserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.7151.121 SketchUp Pro/26.0 (PC) Safari/537.36",
+            "DateTimePattern": "yyyy-MM-dd"
+        },
+        "Download": {
+            "Uri": "",
+            "ConvertUrl": "(https://download\\.sketchup\\.com/SketchUp)(-\\d)",
+            "ReplaceText": "Full"
+        }
+    }
+}
