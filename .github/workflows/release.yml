@@ -1,5 +1,8 @@
 name: Release
 
+permissions:
+  contents: write
+
 defaults:
   run:
     shell: bash
