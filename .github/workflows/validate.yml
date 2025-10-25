@@ -49,6 +49,8 @@ jobs:
         runs-on: ubuntu-latest
         name: 'Validate JSON files'
         needs: psscriptanalyzer
+        permissions:
+            contents: read
         steps:
             - name: 'Checkout repository'
               uses: actions/checkout@v3
