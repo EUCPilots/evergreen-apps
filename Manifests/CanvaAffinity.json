@@ -1,0 +1,18 @@
+{
+    "Name": "Canva Affinity",
+    "Source": "https://www.affinity.studio/",
+    "Get": {
+        "Update": {
+            "Uri": "https://affinity-update.s3.amazonaws.com/windows/3/studio/retail/update-unpackaged-arm64.json",
+            "UserAgent": "Affinity 3.0.0.3791"
+        },
+        "Download": {
+            "Uri": [
+                "https://downloads.affinity.studio/Affinity%20x64.msix",
+                "https://downloads.affinity.studio/Affinity%20x64.exe",
+                "https://downloads.affinity.studio/Affinity%20arm64.msix",
+                "https://downloads.affinity.studio/Affinity%20arm64.exe"
+            ]
+        }
+    }
+}
