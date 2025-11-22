@@ -8,8 +8,12 @@
         "Download": {
             "Uri": [
                 "https://corretto.aws/downloads/latest/amazon-corretto-8-x64-windows-jdk.msi",
+                "https://corretto.aws/downloads/latest/amazon-corretto-8-x64-windows-jdk.zip",
+                "https://corretto.aws/downloads/latest/amazon-corretto-8-x64-windows-jre.msi",
                 "https://corretto.aws/downloads/latest/amazon-corretto-8-x64-windows-jre.zip",
                 "https://corretto.aws/downloads/latest/amazon-corretto-8-x86-windows-jdk.msi",
+                "https://corretto.aws/downloads/latest/amazon-corretto-8-x86-windows-jdk.zip",
+                "https://corretto.aws/downloads/latest/amazon-corretto-8-x86-windows-jre.msi",
                 "https://corretto.aws/downloads/latest/amazon-corretto-8-x86-windows-jre.zip"
             ],
             "Property": "ResponseUri.Headers.Location",
