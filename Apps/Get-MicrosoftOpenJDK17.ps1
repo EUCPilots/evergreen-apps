@@ -20,7 +20,7 @@ function Get-MicrosoftOpenJDK17 {
     if ($Output -and $Output.Count -gt 0) {
         # Capture the version number from the first output object
         $Output[0].Version -match $res.Get.Download.VersionPattern | Out-Null
-        $Version = $Matches[0].ToString()
+        $Version = $Matches[0]
 
         # Output the download links for additional file types
         foreach ($Uri in $res.Get.Download.Uri) {
