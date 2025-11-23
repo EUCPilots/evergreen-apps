@@ -7,6 +7,13 @@
             "ContentType": "application/json",
             "MatchImage": "jdk|jre",
             "ResolveUri": true
+        },
+        "Download": {
+            "Uri": [
+                "https://aka.ms/download-jdk/microsoft-jdk-#version-windows-x64.exe",
+                "https://aka.ms/download-jdk/microsoft-jdk-#version-windows-aarch64.exe"
+            ],
+            "VersionPattern": "^(.*?)(?=\\+)"
         }
     },
     "Install": {

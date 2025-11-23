@@ -1,4 +1,3 @@
-
 {
     "Name": "Microsoft OpenJDK 25",
     "Source": "https://www.microsoft.com/openjdk",
@@ -8,6 +7,12 @@
             "ContentType": "application/json",
             "MatchImage": "jdk|jre",
             "ResolveUri": true
+        },
+        "Download": {
+            "Uri": [
+                "https://aka.ms/download-jdk/microsoft-jdk-#version-windows-x64.exe"
+            ],
+            "VersionPattern": "^(.*?)(?=\\+)"
         }
     },
     "Install": {
