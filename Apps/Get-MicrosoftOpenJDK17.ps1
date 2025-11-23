@@ -17,18 +17,21 @@ function Get-MicrosoftOpenJDK17 {
     $Output = Get-AdoptiumTemurin -res $res
     Write-Output -InputObject $Output
 
-    # Capture the version number from the first output object
-    $Version = $($Output[0].Version -match $res.Get.Download.VersionPattern | Out-Null; $Matches[0].ToString())
+    if ($Output -and $Output.Count -gt 0) {
+        # Capture the version number from the first output object
+        $Output[0].Version -match $res.Get.Download.VersionPattern | Out-Null
+        $Version = $Matches[0].ToString()
 
-    # Output the download links for additional file types
-    foreach ($Uri in $res.Get.Download.Uri) {
-        [PSCustomObject]@{
-            Version      = $Output[0].Version
-            Date         = $Output[0].Date
-            ImageType    = $Output[0].ImageType
-            Architecture = Get-Architecture -String $Uri
-            Type         = Get-FileType -File $Uri
-            URI          = (Resolve-SystemNetWebRequest -Uri ($Uri -replace "#version", $Version)).ResponseUri.AbsoluteUri
+        # Output the download links for additional file types
+        foreach ($Uri in $res.Get.Download.Uri) {
+            [PSCustomObject]@{
+                Version      = $Output[0].Version
+                Date         = $Output[0].Date
+                ImageType    = $Output[0].ImageType
+                Architecture = Get-Architecture -String $Uri
+                Type         = Get-FileType -File $Uri
+                URI          = (Resolve-SystemNetWebRequest -Uri ($Uri -replace "#version", $Version)).ResponseUri.AbsoluteUri
+            }
         }
     }
 }
