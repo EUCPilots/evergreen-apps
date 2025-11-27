@@ -2,13 +2,16 @@ name: Release
 
 permissions:
   contents: write
+  pull-requests: read
 
 defaults:
   run:
     shell: bash
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
       - main
     paths:
@@ -20,6 +23,7 @@ jobs:
     release:
         runs-on: ubuntu-latest
         name: 'Create release'
+        if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
         steps:
             - name: 'Checkout repository'
               uses: actions/checkout@v4
@@ -71,14 +75,49 @@ jobs:
               env:
                 GITHUB_EVENT_NAME: ${{ github.event_name }}
 
+            - name: 'Get PR information'
+              id: pr_info
+              run: |
+                # Find the PR that was merged into main for this commit
+                PR_NUMBER=$(gh pr list --search "${{ github.sha }}" --state merged --json number --jq '.[0].number')
+                if [ -n "$PR_NUMBER" ]; then
+                  echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
+                  # Get PR title and body
+                  gh pr view $PR_NUMBER --json title,body --jq '.title' > pr_title.txt
+                  gh pr view $PR_NUMBER --json title,body --jq '.body' > pr_body.txt
+                else
+                  echo "No associated PR found" > pr_title.txt
+                  echo "" > pr_body.txt
+                  echo "PR_NUMBER=" >> $GITHUB_OUTPUT
+                fi
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
             - name: 'Create release notes'
               id: release_notes
               run: |
+                  # Start with commit message
                   git log -1 --pretty=format:"%s" > release_notes.md
                   echo "" >> release_notes.md
                   echo "" >> release_notes.md
+                  
+                  # Add PR information if available
+                  if [ -n "${{ steps.pr_info.outputs.PR_NUMBER }}" ]; then
+                    echo "### Pull Request #${{ steps.pr_info.outputs.PR_NUMBER }}" >> release_notes.md
+                    echo "" >> release_notes.md
+                    echo "**$(cat pr_title.txt)**" >> release_notes.md
+                    echo "" >> release_notes.md
+                    if [ -s pr_body.txt ] && [ "$(cat pr_body.txt)" != "null" ]; then
+                      cat pr_body.txt >> release_notes.md
+                      echo "" >> release_notes.md
+                      echo "" >> release_notes.md
+                    fi
+                  fi
+                  
+                  # Add changed files
                   echo "### Files changed in this release:" >> release_notes.md
                   cat changed_files.txt | sed 's/^/- /' >> release_notes.md
+                  
                   echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
                   cat release_notes.md >> $GITHUB_ENV
                   echo "EOF" >> $GITHUB_ENV
