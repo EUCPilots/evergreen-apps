@@ -58,6 +58,31 @@ jobs:
                 ref: main
                 token: ${{ secrets.GITHUB_TOKEN }}
 
+            - name: 'Validate file types'
+              run: |
+                  # Check Apps directory contains only .ps1 files
+                  if find Apps -type f ! -name '*.ps1' | grep -q .; then
+                      echo "Error: Apps directory contains non-.ps1 files:"
+                      find Apps -type f ! -name '*.ps1'
+                      exit 1
+                  fi
+                  
+                  # Check Manifests directory contains only .json files
+                  if find Manifests -type f ! -name '*.json' | grep -q .; then
+                      echo "Error: Manifests directory contains non-.json files:"
+                      find Manifests -type f ! -name '*.json'
+                      exit 1
+                  fi
+
+            - name: 'Check for empty files'
+              run: |
+                  find Apps Manifests -type f -empty > empty_files.txt
+                  if [ -s empty_files.txt ]; then
+                    echo "Empty files found:"
+                    cat empty_files.txt
+                    exit 1
+                  fi
+
             - name: 'Validate JSON files'
               run: |
                   find Manifests -type f -name '*.json' | while read -r file; do
@@ -67,18 +92,18 @@ jobs:
                       fi
                   done
 
-            - name: 'Check for empty files in Apps and Manifests'
-              run: |
-                  find Apps Manifests -type f -empty > empty_files.txt
-                  if [ -s empty_files.txt ]; then
-                    echo "Empty files found:"
-                    cat empty_files.txt
-                    exit 1
-                  fi
-
             - name: 'Validate UTF-8 encoding for PowerShell files'
               run: |
                   find Apps -type f -name '*.ps1' | while read -r file; do
+                      if ! file -b --mime-encoding "$file" | grep -qE '^(utf-8|us-ascii)$'; then
+                          echo "Not UTF-8 encoded: $file ($(file -b --mime-encoding "$file"))"
+                          exit 1
+                      fi
+                  done
+
+            - name: 'Validate UTF-8 encoding for JSON files'
+              run: |
+                  find Manifests -type f -name '*.json' | while read -r file; do
                       if ! file -b --mime-encoding "$file" | grep -qE '^(utf-8|us-ascii)$'; then
                           echo "Not UTF-8 encoded: $file ($(file -b --mime-encoding "$file"))"
                           exit 1
