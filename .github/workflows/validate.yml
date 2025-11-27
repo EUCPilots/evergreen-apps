@@ -75,3 +75,12 @@ jobs:
                     cat empty_files.txt
                     exit 1
                   fi
+
+            - name: 'Validate UTF-8 encoding for PowerShell files'
+              run: |
+                  find Apps -type f -name '*.ps1' | while read -r file; do
+                      if ! file -b --mime-encoding "$file" | grep -qE '^(utf-8|us-ascii)$'; then
+                          echo "Not UTF-8 encoded: $file ($(file -b --mime-encoding "$file"))"
+                          exit 1
+                      fi
+                  done
