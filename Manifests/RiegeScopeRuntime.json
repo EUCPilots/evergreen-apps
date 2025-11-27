@@ -1,0 +1,15 @@
+{
+    "Name": "Riege Scope Runtime",
+    "Source": "https://www.riege.com/",
+    "Get": {
+        "Update": {
+            "Uri": ""
+        },
+        "Download": {
+            "Uri": [
+                "https://getscope.riege.com/live/Scope_Runtime-x64.exe"
+            ],
+            "MatchVersion": "64_(\\d+_\\d+(?:_\\d+){0,2})\\b"
+        }
+    }
+}
