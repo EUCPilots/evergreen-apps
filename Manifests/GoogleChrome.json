@@ -17,7 +17,7 @@
         },
         "Download": {
             "Uri": {
-                "Extended": "https://dl.google.com/dl/chrome/install/googlechromestandaloneenterprise64.msi",
+                "Extended": "https://dl.google.com/dl/chrome/install/extended/googlechromestandaloneenterprise64.msi",
                 "Stable": "https://dl.google.com/dl/chrome/install/googlechromestandaloneenterprise64.msi",
                 "Beta": "https://dl.google.com/dl/chrome/install/beta/googlechromebetastandaloneenterprise64.msi",
                 "Dev": "https://dl.google.com/dl/chrome/install/dev/googlechromedevstandaloneenterprise64.msi",
