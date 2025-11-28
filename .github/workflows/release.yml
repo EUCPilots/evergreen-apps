@@ -67,13 +67,6 @@ jobs:
                   if [ ! -s changed_files.txt ]; then
                     echo "No changed files detected." > changed_files.txt
                   fi
-                elif [[ "$GITHUB_EVENT_NAME" == "push" ]]; then
-                  # For push events, use git diff
-                  git fetch origin ${{ github.event.before }}
-                  git diff --name-status ${{ github.event.before }} ${{ github.sha }} | grep -E '^[AMD]\s+(Apps/|Manifests/)' | awk '{print $2}' > changed_files.txt || true
-                  if [ ! -s changed_files.txt ]; then
-                    echo "No changed files detected." > changed_files.txt
-                  fi
                 else
                   echo "No changed files detected." > changed_files.txt
                 fi
