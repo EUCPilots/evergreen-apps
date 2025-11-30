@@ -1,8 +1,8 @@
 {
-	"Name": "Grafana Agent",
-	"Source": "https://grafana.com/docs/agent/",
+	"Name": "Grafana Alloy",
+	"Source": "https://grafana.com/docs/alloy/latest/",
 	"Get": {
-		"Uri": "https://api.github.com/repos/grafana/agent/releases/latest",
+		"Uri": "https://api.github.com/repos/grafana/alloy/releases/latest",
 		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
 		"MatchFileTypes": "\\.exe$|\\.msi$|\\.zip$"
 	},
