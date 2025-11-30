@@ -1,5 +1,5 @@
 #Requires -Module @{ ModuleName="Evergreen"; ModuleVersion="2511.2823.0" }
-function Get-AzulZulu8 {
+function Get-AzulZulu25 {
     <#
         .NOTES
             Author: Aaron Parker

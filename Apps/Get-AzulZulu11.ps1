@@ -1,3 +1,4 @@
+#Requires -Module @{ ModuleName="Evergreen"; ModuleVersion="2511.2823.0" }
 function Get-AzulZulu11 {
     <#
         .NOTES
@@ -13,6 +14,7 @@ function Get-AzulZulu11 {
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    $Output = Get-AdoptiumTemurin -res $res
+    # Return details freom the AzulZulu function
+    $Output = Get-AzulZulu -res $res
     Write-Output -InputObject $Output
 }
