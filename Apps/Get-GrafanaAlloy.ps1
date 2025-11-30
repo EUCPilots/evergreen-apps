@@ -1,11 +1,7 @@
-function Get-VisualCppRedistAIO {
+function Get-GrafanaAlloy {
     <#
-        .SYNOPSIS
-            Returns the latest VisualCppRedistAIO version number and download.
-
         .NOTES
-            Author: Dan Gough
-            Twitter: @packageologist
+            Author: Aaron Parker
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]

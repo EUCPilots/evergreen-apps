@@ -1,4 +1,4 @@
-function Get-GrafanaAgent {
+﻿function Get-OracleJava25 {
     <#
         .NOTES
             Author: Aaron Parker
@@ -8,17 +8,11 @@ function Get-GrafanaAgent {
     [CmdletBinding(SupportsShouldProcess = $false)]
     param (
         [Parameter(Mandatory = $false, Position = 0)]
-        [ValidateNotNull()]
+        [ValidateNotNullOrEmpty()]
         [System.Management.Automation.PSObject]
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    # Pass the repo releases API URL and return a formatted object
-    $params = @{
-        Uri          = $res.Get.Uri
-        MatchVersion = $res.Get.MatchVersion
-        Filter       = $res.Get.MatchFileTypes
-    }
-    $object = Get-GitHubRepoRelease @params
-    Write-Output -InputObject $object
+    $Output = Get-OracleJava -res $res
+    Write-Output -InputObject $Output
 }
