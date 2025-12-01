@@ -5,7 +5,6 @@ function Get-GoogleChrome {
 
         .NOTES
             Author: Aaron Parker
-
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
@@ -16,90 +15,39 @@ function Get-GoogleChrome {
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    foreach ($Channel in $res.Get.Update.Channels) {
-        Write-Verbose -Message "$($MyInvocation.MyCommand): Channel: $Channel."
+    begin {
+        Write-Warning -Message "$($MyInvocation.MyCommand): The MSI file available for Stable and Extended channels are the same. The file version matches the Extended channel."
+    }
+    process {
+        # Iterate through each channel defined in the manifest
+        foreach ($Channel in $res.Get.Update.Channels) {
+            Write-Verbose -Message "$($MyInvocation.MyCommand): Channel: $Channel."
 
-        # Get the list of versions for the channel
-        $params = @{
-            Uri       = $($res.Get.Update.Uri -replace "#channel", $Channel)
-            UserAgent = $res.Get.Update.UserAgent
-        }
-        $Versions = Invoke-EvergreenRestMethod @params
+            # Return details about the latest version for this channel
+            $Versions = Invoke-EvergreenRestMethod -Uri ($res.Get.Update.Uri -replace "#channel", $Channel.ToLower())
+            $LatestVersion = $Versions.versions | Select-Object -First 1 | Select-Object -ExpandProperty "version"
 
-        # Sort versions for the latest version
-        $Version = $Versions | `
-            Sort-Object -Property @{ Expression = { [System.Version]$_.version }; Descending = $true } | `
-            Select-Object -First 1 | `
-            Select-Object -ExpandProperty "version"
-        Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version"
+            # Iterate through each platform defined in the manifest
+            foreach ($Platform in $res.Get.Update.Platforms) {
 
-        # Get date for this version
-        $params = @{
-            Uri       = $($res.Get.Update.DateUri -replace "#channel", $Channel).ToLower()
-            UserAgent = $res.Get.Update.UserAgent
-        }
-        Write-Verbose -Message "$($MyInvocation.MyCommand): Get release data for this channel."
-        $Dates = Invoke-EvergreenRestMethod @params
-        $LatestDate = $Dates.releases | Where-Object { $_.version -eq $Version }
+                # Get release details for this version
+                $Release = Invoke-EvergreenRestMethod -Uri ($res.Get.Update.ReleaseUri -replace "#platform", $Platform -replace "#channel", $Channel.ToLower() -replace "#version", $LatestVersion)
 
-        # Get the short date
-        Write-Verbose -Message "$($MyInvocation.MyCommand): Get short date from $($LatestDate.serving.startTime)."
-        if ($LatestDate.serving.startTime -is [System.DateTime]) {
-            $Date = $LatestDate.serving.startTime[0].ToShortDateString()
-        }
-        else {
-            Write-Verbose -Message "$($MyInvocation.MyCommand): Convert string to DateTime."
-            $Date = ([System.DateTime]$LatestDate.serving.startTime[0]).ToShortDateString()
-        }
+                # Iterate through each download URI for this platform and channel
+                foreach ($DownloadUri in $res.Get.Download.Uri.$Channel.$Platform) {
+                    Write-Verbose -Message "$($MyInvocation.MyCommand): Download URI: $DownloadUri"
 
-        # Output the version and URI object
-        $PSObject = [PSCustomObject] @{
-            Version      = $Version
-            Channel      = $Channel
-            StartDate    = $Date
-            Architecture = Get-Architecture -String $res.Get.Download.Uri.$Channel
-            Type         = Get-FileType -File $res.Get.Download.Uri.$Channel
-            URI          = $res.Get.Download.Uri.$Channel
-        }
-        Write-Output -InputObject $PSObject
-
-        if ($Channel -eq $res.Get.Download.BundleFilter) {
-            # Output the version and URI for the bundle download
-            $PSObject = [PSCustomObject] @{
-                Version      = $Version
-                Channel      = $Channel
-                StartDate    = $Date
-                Architecture = Get-Architecture -String $res.Get.Download.Bundle
-                Type         = Get-FileType -File $res.Get.Download.Bundle
-                URI          = $res.Get.Download.Bundle
+                    [PSCustomObject] @{
+                        Version      = $LatestVersion
+                        StartDate    = $( if ($null -ne $Release.releases.serving.startTime) { $Release.releases.serving.startTime[-1] } else { "N/A" } )
+                        EndDate      = $( if ($null -ne $Release.releases.serving.endTime) { $Release.releases.serving.endTime[-1] } else { "N/A" } )
+                        Channel      = $Channel
+                        Architecture = Get-Architecture -String $Platform
+                        Type         = Get-FileType -File $DownloadUri
+                        URI          = $DownloadUri
+                    }
+                }
             }
-            Write-Output -InputObject $PSObject
-        }
-
-        if ($Channel -match $res.Get.Download.'32bitFilter') {
-            # Output the version and URI object for the 32-bit version
-            $PSObject = [PSCustomObject] @{
-                Version      = $Version
-                Channel      = $Channel
-                StartDate    = $Date
-                Architecture = Get-Architecture -String $($res.Get.Download.Uri.$Channel -replace "64", "")
-                Type         = Get-FileType -File $res.Get.Download.Uri.$Channel
-                URI          = $res.Get.Download.Uri.$Channel -replace "64", ""
-            }
-            Write-Output -InputObject $PSObject
-        }
-
-        if ($Channel -match $res.Get.Download.'ArmFilter') {
-            # Output the version and URI object for the ARM version
-            $PSObject = [PSCustomObject] @{
-                Version      = $Version
-                Channel      = $Channel
-                StartDate    = $Date
-                Architecture = Get-Architecture -String $($res.Get.Download.Uri.$Channel -replace "64", "_Arm64")
-                Type         = Get-FileType -File $res.Get.Download.Uri.$Channel
-                URI          = $res.Get.Download.Uri.$Channel -replace "64", "_Arm64"
-            }
-            Write-Output -InputObject $PSObject
         }
     }
 }
