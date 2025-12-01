@@ -6,30 +6,25 @@
 			"Uri": "https://www.gimp.org/gimp_versions.json",
 			"DatePattern": "yyyy-MM-dd",
 			"Channels": [
-				"STABLE",
-				"DEVELOPMENT"
+				"STABLE"
 			]
 		},
 		"Download": {
-            "Uri": "https://download.gimp.org/mirror/pub/gimp/v#version/windows/#filename",
+			"Uri": "https://download.gimp.org/mirror/pub/gimp/v#version/windows/#filename",
 			"FallbackUri": "https://download.gimp.org/gimp/v#version/windows/#filename",
-            "ReplaceFileName": "#filename",
-            "ReplaceVersion": "#version"
+			"ReplaceFileName": "#filename",
+			"ReplaceVersion": "#version"
 		}
 	},
 	"Install": {
 		"Setup": "gimp*setup.exe",
 		"Physical": {
 			"Arguments": "/VERYSILENT /NORESTART /ALLUSERS",
-			"PostInstall": [
-
-			]
+			"PostInstall": []
 		},
 		"Virtual": {
 			"Arguments": "/VERYSILENT /NORESTART /ALLUSERS",
-			"PostInstall": [
-
-			]
+			"PostInstall": []
 		}
 	}
 }
