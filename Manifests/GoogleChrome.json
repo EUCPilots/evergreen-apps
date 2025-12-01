@@ -22,35 +22,35 @@
             "Uri": {
                 "Extended": {
                     "win_arm64": [
-                        "https://dl.google.com/dl/chrome/install/extended/GoogleChromeEnterpriseBundle_Arm64.zip",
-                        "https://dl.google.com/dl/chrome/install/extended/GoogleChromeStandaloneEnterprise_Arm64.msi"
+                        "https://dl.google.com/dl/chrome/install/extended/googlechromeenterprisebundle_arm64.zip",
+                        "https://dl.google.com/dl/chrome/install/extended/googlechromestandaloneenterprise_arm64.msi"
                     ],
                     "win64": [
                         "https://dl.google.com/dl/chrome/install/extended/googlechromestandaloneenterprise64.msi",
-                        "https://dl.google.com/dl/chrome/install/extended/GoogleChromeEnterpriseBundle64.zip"
+                        "https://dl.google.com/dl/chrome/install/extended/googlechromeenterprisebundle64.zip"
                     ],
                     "win": [
                         "https://dl.google.com/dl/chrome/install/extended/googlechromestandaloneenterprise.msi",
-                        "https://dl.google.com/dl/chrome/install/extended/GoogleChromeEnterpriseBundle.zip"
+                        "https://dl.google.com/dl/chrome/install/extended/googlechromeenterprisebundle.zip"
                     ]
                 },
                 "Stable": {
                     "win_arm64": [
-                        "https://dl.google.com/dl/chrome/install/GoogleChromeEnterpriseBundle_Arm64.zip",
-                        "https://dl.google.com/dl/chrome/install/GoogleChromeStandaloneEnterprise_Arm64.msi"
+                        "https://dl.google.com/dl/chrome/install/googlechromeenterprisebundle_arm64.zip",
+                        "https://dl.google.com/dl/chrome/install/googlechromestandaloneenterprise_arm64.msi"
                     ],
                     "win64": [
                         "https://dl.google.com/dl/chrome/install/googlechromestandaloneenterprise64.msi",
-                        "https://dl.google.com/dl/chrome/install/GoogleChromeEnterpriseBundle64.zip"
+                        "https://dl.google.com/dl/chrome/install/googlechromeenterprisebundle64.zip"
                     ],
                     "win": [
                         "https://dl.google.com/dl/chrome/install/googlechromestandaloneenterprise.msi",
-                        "https://dl.google.com/dl/chrome/install/GoogleChromeEnterpriseBundle.zip"
+                        "https://dl.google.com/dl/chrome/install/googlechromeenterprisebundle.zip"
                     ]
                 },
                 "Beta": {
                     "win_arm64": [
-                        "https://dl.google.com/dl/chrome/install/beta/GoogleChromeBetaStandaloneEnterprise_Arm64.msi"
+                        "https://dl.google.com/dl/chrome/install/beta/googlechromebetastandaloneenterprise_arm64.msi"
                     ],
                     "win64": [
                         "https://dl.google.com/dl/chrome/install/beta/googlechromebetastandaloneenterprise64.msi"
@@ -69,7 +69,7 @@
                 },
                 "Canary": {
                     "win64": [
-                        "https://dl.google.com/update2/installers/ChromeSetup.exe"
+                        "https://dl.google.com/update2/installers/chromesetup.exe"
                     ]
                 }
             }
