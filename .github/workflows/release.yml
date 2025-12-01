@@ -109,14 +109,20 @@ jobs:
                     if [ -s pr_body.txt ] && [ "$(cat pr_body.txt)" != "null" ]; then
                       cat pr_body.txt >> release_notes.md
                       echo "" >> release_notes.md
-                      echo "" >> release_notes.md
                     fi
                   fi
                   
                   # Add changed files
                   echo "### Files changed in this release:" >> release_notes.md
+                  echo "" >> release_notes.md
                   cat changed_files.txt | sed 's/^/- /' >> release_notes.md
                   
+                  # Add the update-evergreen note
+                  echo "### How to update" >> release_notes.md
+                  echo "" >> release_notes.md
+                  echo "Use [Update-Evergreen](https://eucpilots.com/evergreen-docs/updateapps) to update to this release." >> release_notes.md
+                  echo "" >> release_notes.md
+
                   echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
                   cat release_notes.md >> $GITHUB_ENV
                   echo "EOF" >> $GITHUB_ENV
