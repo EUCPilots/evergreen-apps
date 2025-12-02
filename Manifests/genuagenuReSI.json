@@ -1,0 +1,14 @@
+{
+	"Name": "genua genuReSI",
+	"Source": "https://kunde.genua.de/downloads/releases",
+	"Get": {
+		"Update": {
+			"Uri": "https://support.genua.de/genubox/resi/resi_version.txt"
+		},
+		"Download": {
+			"Uri": "https://support.genua.de/genubox/resi/#version/ReSI.exe",
+			"ChecksumUri": "https://support.genua.de/genubox/resi/#version/CHECKSUM",
+			"MatchChecksum": "SHA256\\s*\\([^)]+\\)\\s*=\\s*([A-Fa-f0-9]{64})"
+		}
+	}
+}
