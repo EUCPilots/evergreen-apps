@@ -1,0 +1,24 @@
+{
+	"Name": "Mendeley Reference Manager",
+	"Source": "https://www.mendeley.com/reference-management/reference-manager",
+	"Get": {
+		"Update": {
+			"Uri": "https://static.mendeley.com/bin/desktop/latest.yml",
+			"DateTimeFormat": "yyyy-MM-ddTHH:mm:ss.fffZ"
+		},
+		"Download": {
+			"Uri": "https://static.mendeley.com/bin/desktop/#filename"
+		}
+	},
+	"Install": {
+		"Setup": "Mendeley-Reference-Manager*.exe",
+		"Physical": {
+			"Arguments": "/S",
+			"PostInstall": []
+		},
+		"Virtual": {
+			"Arguments": "/S",
+			"PostInstall": []
+		}
+	}
+}
