@@ -33,15 +33,15 @@ function Get-LibreOffice {
         if ($null -ne $Update) {
 
             if ($null -eq $Update.description.version) {
-                Write-Warning "$($MyInvocation.MyCommand): failed to return a version number for release $($item.Name) from: $($res.Get.Update.Uri)."
+                Write-Warning -Message "$($MyInvocation.MyCommand): failed to return a version number for release $($item.Name) from: $($res.Get.Update.Uri)."
             }
             else {
-                Write-Verbose "$($MyInvocation.MyCommand): $($res.Get.Update.Uri) returned version: $($Update.description.version)."
+                Write-Verbose -Message "$($MyInvocation.MyCommand): $($res.Get.Update.Uri) returned version: $($Update.description.version)."
 
                 # Get downloads for each platform for the latest version
                 foreach ($platform in $res.Get.Download.Platforms.GetEnumerator()) {
 
-                    Write-Verbose "$($MyInvocation.MyCommand): parsing: $($res.Get.Download.Uri)/$($Update.description.version)/$($platform.Name)/."
+                    Write-Verbose -Message "$($MyInvocation.MyCommand): parsing: $($res.Get.Download.Uri)/$($Update.description.version)/$($platform.Name)/."
                     $params = @{
                         Uri          = "$($res.Get.Download.Uri)/$($Update.description.version)/$($platform.Name)/"
                         ReturnObject = "All"
@@ -49,14 +49,14 @@ function Get-LibreOffice {
                     $PlatformList = Invoke-EvergreenWebRequest @params
 
                     if ($null -eq $PlatformList) {
-                        Write-Warning "$($MyInvocation.MyCommand): Check that the following URL is valid: $($res.Get.Download.Uri)/$($Update.description.version)/$($platform.Name)/."
+                        Write-Warning -Message "$($MyInvocation.MyCommand): Check that the following URL is valid: $($res.Get.Download.Uri)/$($Update.description.version)/$($platform.Name)/."
                     }
                     else {
                         $Architectures = ($PlatformList.Links | Where-Object { $_.href -match $res.Get.Download.MatchArchitectures }).href -replace "/", ""
                         foreach ($arch in $Architectures) {
 
                             # Get downloads for each architecture for the latest version/platform
-                            Write-Verbose "$($MyInvocation.MyCommand): parsing: $($res.Get.Download.Uri)/$($Update.description.version)/$($platform.Name)/$arch/."
+                            Write-Verbose -Message "$($MyInvocation.MyCommand): parsing: $($res.Get.Download.Uri)/$($Update.description.version)/$($platform.Name)/$arch/."
                             $params = @{
                                 Uri          = "$($res.Get.Download.Uri)/$($Update.description.version)/$($platform.Name)/$arch/"
                                 ReturnObject = "All"
@@ -64,7 +64,7 @@ function Get-LibreOffice {
                             $ArchitectureList = Invoke-EvergreenWebRequest @params
 
                             if ($null -eq $ArchitectureList) {
-                                Write-Warning "$($MyInvocation.MyCommand): Check that the following URL is valid: $($res.Get.Download.Uri)/$($Update.description.version)/$($platform.Name)/$arch/."
+                                Write-Warning -Message "$($MyInvocation.MyCommand): Check that the following URL is valid: $($res.Get.Download.Uri)/$($Update.description.version)/$($platform.Name)/$arch/."
                             }
                             else {
                                 $Files = ($ArchitectureList.Links | Where-Object { $_.href -match $res.Get.Download.MatchExtensions }).href -replace "/", ""

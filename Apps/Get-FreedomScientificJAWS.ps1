@@ -30,7 +30,7 @@ function Get-FreedomScientificJAWS {
 
     # Get latest version
     $LatestVersion = $MajorVersions | Sort-Object -Property { [Int] $_.MajorVersion } -Descending | Select-Object -First 1
-    Write-Verbose "$($MyInvocation.MyCommand): Latest version is $LatestVersion"
+    Write-Verbose -Message "$($MyInvocation.MyCommand): Latest version is $LatestVersion"
 
     # Query the API to get the list of releases
     $DownloadFeedURI = ($res.Get.Download.Uri -replace $res.Get.Download.ReplaceMajorVersion, $LatestVersion.MajorVersion ) -replace $res.Get.Update.ReplaceTimestamp, $UnixTimestamp
