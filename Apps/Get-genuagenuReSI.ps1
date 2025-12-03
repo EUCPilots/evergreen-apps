@@ -21,9 +21,9 @@ function Get-genuagenuReSI {
         return
     }
 
-    # Normalize version number to two decimal places
-    $NormalizedVersion = "{0:N2}" -f $LatestVersion
-    $Version = $NormalizedVersion.ToString()
+    # Normalize version number to two decimal places (culture-invariant)
+    $NormalizedVersion = [System.Double]::Parse($LatestVersion).ToString("F2", [System.Globalization.CultureInfo]::InvariantCulture)
+    $Version = $NormalizedVersion
 
     # Get the checksum details
     $Checksum = Invoke-EvergreenRestMethod -Uri ($res.Get.Download.ChecksumUri -replace "#version", $Version)
