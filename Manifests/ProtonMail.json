@@ -1,0 +1,27 @@
+{
+    "Name": "Proton Mail",
+    "Source": "https://proton.me/mail/",
+    "Get": {
+        "Update": {
+            "Uri": "https://proton.me/download/mail/windows/version.json",
+            "DatePattern": "yyyy-MM-dd",
+            "ReplaceString": "(\\s+\\\"Sha512Checksum\\\":\\s+\\\".*\\\"\\,)",
+            "CategoryName": [
+                "EarlyAccess",
+                "Stable",
+                "Aplha"
+            ]
+        }
+    },
+    "Install": {
+        "Setup": "",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}

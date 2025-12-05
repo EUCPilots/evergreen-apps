@@ -1,0 +1,27 @@
+{
+    "Name": "Proton Authenticator",
+    "Source": "https://proton.me/authenticator/",
+    "Get": {
+        "Update": {
+            "Uri": "https://proton.me/download/authenticator/windows/version.json",
+            "DatePattern": "yyyy-MM-dd",
+            "ReplaceString": "(\\s+\\\"Sha512Checksum\\\":\\s+\\\".*\\\"\\,)",
+            "CategoryName": [
+                "EarlyAccess",
+                "Stable",
+                "Aplha"
+            ]
+        }
+    },
+    "Install": {
+        "Setup": "",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}
