@@ -27,19 +27,28 @@ function Get-ProtonDrive {
         }
     }
 
-    # Sort for the latest version
-    $LatestVersion = $Updates.Releases | `
-        Sort-Object -Property @{ Expression = { [System.Version]$_.Version }; Descending = $true } -ErrorAction "SilentlyContinue" | `
-        Select-Object -First 1
+    # Simplify access to releases
+    $Releases = $Updates.Releases
 
-    # Construct the output; Return the custom object to the pipeline
-    $PSObject = [PSCustomObject] @{
-        Version = $LatestVersion.Version
-        Date    = ConvertTo-DateTime -DateTime $LatestVersion.ReleaseDate -Pattern $res.Get.Update.DatePattern
-        Release = $LatestVersion.CategoryName
-        Sha512  = $LatestVersion.File.Sha512CheckSum
-        Type    = Get-FileType -File $LatestVersion.File.Url
-        URI     = $LatestVersion.File.Url
+    # Process each category
+    foreach ($Category in ($Releases.CategoryName | Select-Object -Unique)) {
+        Write-Verbose -Message "$($MyInvocation.MyCommand): Processing category: $Category"
+
+        # Sort for the latest version
+        $LatestVersion = $Releases | Where-Object { $_.CategoryName -eq $Category } | `
+            Sort-Object -Property @{ Expression = { [System.Version]$_.Version }; Descending = $true } -ErrorAction "SilentlyContinue" | `
+            Select-Object -First 1
+        Write-Verbose -Message "$($MyInvocation.MyCommand): Latest version in category '$Category' is $($LatestVersion.Version)"
+
+        # Construct the output; Return the custom object to the pipeline
+        $PSObject = [PSCustomObject] @{
+            Version = $LatestVersion.Version
+            Date    = ConvertTo-DateTime -DateTime $LatestVersion.ReleaseDate -Pattern $res.Get.Update.DatePattern
+            Release = $LatestVersion.CategoryName
+            Sha512  = $LatestVersion.File.Sha512CheckSum
+            Type    = Get-FileType -File $LatestVersion.File.Url
+            URI     = $LatestVersion.File.Url
+        }
+        Write-Output -InputObject $PSObject
     }
-    Write-Output -InputObject $PSObject
 }
