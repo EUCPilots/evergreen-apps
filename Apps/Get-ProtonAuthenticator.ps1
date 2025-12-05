@@ -1,4 +1,4 @@
-function Get-ProtonDrive {
+function Get-ProtonAuthenticator {
     <#
     #>
     [OutputType([System.Management.Automation.PSObject])]

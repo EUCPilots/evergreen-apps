@@ -1,4 +1,4 @@
-function Get-ProtonDrive {
+function Get-ProtonMail {
     <#
     #>
     [OutputType([System.Management.Automation.PSObject])]

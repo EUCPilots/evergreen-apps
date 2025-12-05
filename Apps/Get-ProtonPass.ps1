@@ -1,4 +1,4 @@
-function Get-ProtonDrive {
+function Get-ProtonPass {
     <#
     #>
     [OutputType([System.Management.Automation.PSObject])]
