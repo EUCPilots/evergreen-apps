@@ -1,0 +1,23 @@
+{
+	"Name": "Transmission",
+	"Source": "https://transmissionbt.com/download",
+	"Get": {
+		"Uri": "https://api.github.com/repos/transmission/transmission/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	},
+	"Install": {
+		"Setup": "Transmission*.msi",
+		"Preinstall": "",
+		"Physical": {
+			"Arguments": "/quiet /norestart",
+			"PostInstall": [
+			]
+		},
+		"Virtual": {
+			"Arguments": "/quiet /norestart",
+			"PostInstall": [
+			]
+		}
+	}
+}
