@@ -32,7 +32,7 @@
         # Create the output object
         $PSObject = [PSCustomObject] @{
             Version = $Latest.enclosure.version
-            Date    = ConvertTo-DateTime -DateTime $($Latest.pubDate) -Pattern $($res.Get.Update.DatePattern)
+            Date    = $Latest.pubDate #ConvertTo-DateTime -DateTime $Latest.pubDate -Pattern $res.Get.Update.DatePattern
             Size    = $(if ($Latest.enclosure.length) { $Latest.enclosure.length } else { "Unknown" })
             Hash    = $Latest.enclosure.dsaSignature
             URI     = $Latest.enclosure.url
