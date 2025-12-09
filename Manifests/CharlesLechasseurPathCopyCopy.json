@@ -1,0 +1,9 @@
+{
+	"Name": "Charles Lechasseur Path Copy Copy",
+	"Source": "https://pathcopycopy.github.io/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/clechasseur/pathcopycopy/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

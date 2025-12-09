@@ -1,0 +1,9 @@
+{
+	"Name": "Deskflow Deskflow",
+	"Source": "https://deskflow.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/deskflow/deskflow/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Peculiar Ventures Fortify",
+	"Source": "https://fortifyapp.com",
+	"Get": {
+		"Uri": "https://api.github.com/repos/PeculiarVentures/fortify-releases/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

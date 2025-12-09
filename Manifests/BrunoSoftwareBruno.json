@@ -1,0 +1,9 @@
+{
+	"Name": "Bruno Software Bruno",
+	"Source": "https://www.usebruno.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/usebruno/bruno/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

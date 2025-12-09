@@ -1,0 +1,9 @@
+{
+	"Name": "Ferdium Ferdium",
+	"Source": "https://ferdium.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/ferdium/ferdium-app/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

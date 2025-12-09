@@ -1,0 +1,9 @@
+{
+	"Name": "RandomEngy VidCoder",
+	"Source": "https://vidcoder.net/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/RandomEngy/VidCoder/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

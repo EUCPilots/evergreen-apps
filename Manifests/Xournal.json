@@ -1,0 +1,9 @@
+{
+	"Name": "Xournal++",
+	"Source": "https://xournalpp.github.io/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/xournalpp/xournalpp/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Rocket.Chat",
+	"Source": "https://rocket.chat/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/RocketChat/Rocket.Chat.Electron/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

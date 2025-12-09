@@ -1,0 +1,9 @@
+{
+	"Name": "Kong Insomnia",
+	"Source": "https://insomnia.rest/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/Kong/insomnia/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

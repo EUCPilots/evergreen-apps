@@ -1,0 +1,9 @@
+{
+	"Name": "Meet Franz",
+	"Source": "https://meetfranz.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/meetfranz/franz/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "SaeraSoft Caesium Image Compressor",
+	"Source": "https://saerasoft.com/caesium",
+	"Get": {
+		"Uri": "https://api.github.com/repos/Lymphatus/caesium-image-compressor/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

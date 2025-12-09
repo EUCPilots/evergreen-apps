@@ -1,0 +1,9 @@
+{
+	"Name": "Microsoft Azure PowerShell",
+	"Source": "https://learn.microsoft.com/en-us/powershell/azure/install-azps-windows",
+	"Get": {
+		"Uri": "https://api.github.com/repos/Azure/azure-powershell/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Splunk ACS CLI",
+	"Source": "https://docs.splunk.com/Documentation/SplunkCloud/latest/Config/ACSCLI",
+	"Get": {
+		"Uri": "https://api.github.com/repos/splunk/acs-cli/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

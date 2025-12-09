@@ -1,0 +1,9 @@
+{
+	"Name": "Rambox Rambox",
+	"Source": "https://rambox.app/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/ramboxapp/download/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Kovid Goyal Calibre",
+	"Source": "https://calibre-ebook.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/kovidgoyal/calibre/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

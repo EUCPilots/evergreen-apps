@@ -1,0 +1,9 @@
+{
+	"Name": "GeoDa Center GeoDa",
+	"Source": "https://geodacenter.github.io/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/GeoDaCenter/geoda/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$|\\.zip$"
+	}
+}

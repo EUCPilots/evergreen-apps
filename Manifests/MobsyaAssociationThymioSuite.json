@@ -1,0 +1,9 @@
+{
+	"Name": "Mobsya Association Thymio Suite",
+	"Source": "https://www.thymio.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/Mobsya/aseba/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

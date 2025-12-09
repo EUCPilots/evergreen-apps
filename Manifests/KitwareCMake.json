@@ -1,0 +1,9 @@
+{
+	"Name": "Kitware CMake",
+	"Source": "https://gitlab.kitware.com/cmake/cmake",
+	"Get": {
+		"Uri": "https://api.github.com/repos/Kitware/CMake/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

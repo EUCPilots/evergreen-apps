@@ -1,0 +1,9 @@
+{
+	"Name": "Ollama",
+	"Source": "https://ollama.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/ollama/ollama/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

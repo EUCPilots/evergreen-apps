@@ -1,0 +1,9 @@
+{
+	"Name": "PostgreSQL Global Development Group PostgreSQL ODBC Driver",
+	"Source": "https://odbc.postgresql.org",
+	"Get": {
+		"Uri": "https://api.github.com/repos/postgresql-interfaces/psqlodbc/releases/latest",
+		"MatchVersion": "(?<=REL-)(\\d{2}_\\d{2}_\\d{4})",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "RIA DigiDoc4 Client",
+	"Source": "https://www.id.ee/en/article/install-id-software/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/open-eid/DigiDoc4-Client/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

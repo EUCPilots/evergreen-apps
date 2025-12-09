@@ -1,0 +1,9 @@
+{
+	"Name": "Prometheus Windows Exporter",
+	"Source": "https://prometheus.io/community",
+	"Get": {
+		"Uri": "https://api.github.com/repos/prometheus-community/windows_exporter/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

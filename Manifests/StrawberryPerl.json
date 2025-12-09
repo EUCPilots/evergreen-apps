@@ -1,0 +1,9 @@
+{
+	"Name": "Strawberry Perl",
+	"Source": "https://strawberryperl.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/StrawberryPerl/Perl-Dist-Strawberry/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

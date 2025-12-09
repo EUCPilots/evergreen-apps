@@ -1,0 +1,9 @@
+{
+	"Name": "Yubico YubiKey Manager CLI",
+	"Source": "https://developers.yubico.com/yubikey-manager/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/Yubico/yubikey-manager/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

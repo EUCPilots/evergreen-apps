@@ -1,0 +1,9 @@
+{
+	"Name": "copasi.org COPASI",
+	"Source": "https://copasi.org",
+	"Get": {
+		"Uri": "https://api.github.com/repos/copasi/COPASI/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

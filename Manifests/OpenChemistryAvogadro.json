@@ -1,0 +1,9 @@
+{
+	"Name": "Open Chemistry Avogadro",
+	"Source": "https://two.avogadro.cc/docs/index.html",
+	"Get": {
+		"Uri": "https://api.github.com/repos/OpenChemistry/avogadrolibs/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

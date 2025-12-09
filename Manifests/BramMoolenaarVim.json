@@ -1,0 +1,9 @@
+{
+	"Name": "Bram Moolenaar Vim",
+	"Source": "https://www.vim.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/vim/vim-win32-installer/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

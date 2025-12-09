@@ -1,0 +1,9 @@
+{
+	"Name": "PTRTECH UVtools",
+	"Source": "https://github.com/sn4k3/UVtools",
+	"Get": {
+		"Uri": "https://api.github.com/repos/sn4k3/UVtools/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

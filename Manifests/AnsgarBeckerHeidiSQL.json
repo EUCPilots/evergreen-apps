@@ -1,0 +1,9 @@
+{
+	"Name": "Ansgar Becker HeidiSQL",
+	"Source": "https://www.heidisql.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/HeidiSQL/HeidiSQL/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

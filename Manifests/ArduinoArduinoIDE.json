@@ -1,0 +1,9 @@
+{
+	"Name": "Arduino Arduino IDE",
+	"Source": "https://www.arduino.cc/en/software",
+	"Get": {
+		"Uri": "https://api.github.com/repos/arduino/arduino-ide/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

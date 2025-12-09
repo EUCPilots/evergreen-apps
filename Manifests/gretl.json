@@ -1,6 +1,6 @@
 {
 	"Name": "gretl",
-	"Source": "http://gretl.sourceforge.net/",
+	"Source": "https://gretl.sourceforge.net/",
 	"Get": {
 		"Update": {
 			"Uri": "https://sourceforge.net/projects/gretl/best_release.json",

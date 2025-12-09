@@ -1,0 +1,9 @@
+{
+	"Name": "Jendrik Seipp RedNotebook",
+	"Source": "https://rednotebook.app/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/jendrikseipp/rednotebook/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "angryziber Angry IP Scanner",
+	"Source": "https://angryip.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/angryip/ipscan/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

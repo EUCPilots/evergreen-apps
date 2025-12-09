@@ -1,0 +1,9 @@
+{
+	"Name": "Kandra Labs Zulip",
+	"Source": "https://zulip.com/apps",
+	"Get": {
+		"Uri": "https://api.github.com/repos/zulip/zulip-desktop/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

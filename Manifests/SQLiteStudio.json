@@ -1,0 +1,9 @@
+{
+	"Name": "sqlitestudio.pl SQLiteStudio",
+	"Source": "https://sqlitestudio.pl/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/pawelsalawa/sqlitestudio/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

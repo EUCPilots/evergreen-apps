@@ -1,0 +1,9 @@
+{
+	"Name": "KiCad KiCad",
+	"Source": "https://gitlab.com/kicad/code/kicad",
+	"Get": {
+		"Uri": "https://api.github.com/repos/KiCad/kicad-source-mirror/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

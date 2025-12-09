@@ -1,0 +1,9 @@
+{
+	"Name": "Alexander Koblov Double Commander",
+	"Source": "https://doublecmd.sourceforge.io/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/doublecmd/doublecmd/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

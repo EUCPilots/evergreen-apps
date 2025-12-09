@@ -1,0 +1,9 @@
+{
+	"Name": "ActiveState Open Komodo IDE",
+	"Source": "https://www.activestate.com/products/open-komodo-ide/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/ActiveState/OpenKomodoIDE/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

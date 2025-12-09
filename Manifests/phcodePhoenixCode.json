@@ -1,0 +1,9 @@
+{
+	"Name": "phcode Phoenix Code",
+	"Source": "https://phcode.dev",
+	"Get": {
+		"Uri": "https://api.github.com/repos/phcode-dev/phoenix-desktop/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

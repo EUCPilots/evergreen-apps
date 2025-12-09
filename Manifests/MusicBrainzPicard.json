@@ -1,0 +1,9 @@
+{
+	"Name": "MusicBrainz MusicBrainz Picard",
+	"Source": "https://picard.musicbrainz.org/downloads/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/metabrainz/picard/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "osquery osquery",
+	"Source": "https://osquery.io/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/osquery/osquery/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

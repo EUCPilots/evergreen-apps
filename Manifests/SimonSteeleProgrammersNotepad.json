@@ -1,0 +1,9 @@
+{
+	"Name": "Simon Steele Programmer's Notepad",
+	"Source": "https://www.pnotepad.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/simonsteele/pn/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

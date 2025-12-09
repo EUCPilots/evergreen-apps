@@ -1,0 +1,9 @@
+{
+	"Name": "Oleg Shparber Zeal",
+	"Source": "https://zealdocs.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/zealdocs/zeal/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Logseq Logseq",
+	"Source": "https://logseq.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/logseq/logseq/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

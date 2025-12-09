@@ -1,0 +1,9 @@
+{
+	"Name": "Stefans Tools grepWin",
+	"Source": "https://tools.stefankueng.com/grepWin.html",
+	"Get": {
+		"Uri": "https://api.github.com/repos/stefankueng/grepWin/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

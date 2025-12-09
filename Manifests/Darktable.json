@@ -1,0 +1,9 @@
+{
+	"Name": "The Darktable Project darktable",
+	"Source": "https://www.darktable.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/darktable-org/darktable/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

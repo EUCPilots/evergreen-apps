@@ -1,0 +1,9 @@
+{
+	"Name": "Microsoft Bot Framework Composer",
+	"Source": "https://docs.microsoft.com/en-us/composer/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/microsoft/BotFramework-Composer/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Sprinx Systems DbGate",
+	"Source": "https://www.dbgate.io/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/dbgate/dbgate/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

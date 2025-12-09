@@ -1,0 +1,9 @@
+{
+	"Name": "OpenShot Studios OpenShot Video Editor",
+	"Source": "https://www.openshot.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/OpenShot/openshot-qt/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Antmicro Renode",
+	"Source": "https://renode.io/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/renode/renode/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

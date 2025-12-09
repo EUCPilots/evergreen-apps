@@ -1,0 +1,9 @@
+{
+	"Name": "ACLAP Video DownloadHelper CoApp",
+	"Source": "https://www.downloadhelper.net",
+	"Get": {
+		"Uri": "https://api.github.com/repos/aclap-dev/vdhcoapp/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

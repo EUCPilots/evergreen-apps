@@ -1,0 +1,9 @@
+{
+	"Name": "MPC-BE Team Media Player Classic Black Edition",
+	"Source": "https://mpc-be.net",
+	"Get": {
+		"Uri": "https://api.github.com/repos/Aleksoid1978/MPC-BE/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$|\\.zip$"
+	}
+}

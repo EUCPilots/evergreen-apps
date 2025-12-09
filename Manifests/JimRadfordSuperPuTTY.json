@@ -1,0 +1,9 @@
+{
+	"Name": "Jim Radford SuperPuTTY",
+	"Source": "https://github.com/jimradford/superputty",
+	"Get": {
+		"Uri": "https://api.github.com/repos/jimradford/superputty/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "beeftext.org Beeftext",
+	"Source": "https://beeftext.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/xmichelo/Beeftext/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

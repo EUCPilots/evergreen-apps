@@ -1,0 +1,9 @@
+{
+	"Name": "Rainmeter",
+	"Source": "https://rainmeter.net/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/rainmeter/rainmeter/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

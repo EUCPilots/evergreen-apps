@@ -1,0 +1,9 @@
+{
+	"Name": "Snapmaker Luban",
+	"Source": "https://snapmaker.com/snapmaker-luban",
+	"Get": {
+		"Uri": "https://api.github.com/repos/Snapmaker/Luban/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

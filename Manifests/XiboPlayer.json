@@ -1,0 +1,9 @@
+{
+	"Name": "XiboPlayer",
+	"Source": "https://xibosignage.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/xibosignage/xibo-dotnetclient/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

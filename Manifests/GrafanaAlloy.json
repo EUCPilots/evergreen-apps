@@ -1,5 +1,5 @@
 {
-	"Name": "Grafana Alloy",
+	"Name": "Grafana Lab Grafana Alloy",
 	"Source": "https://grafana.com/docs/alloy/latest/",
 	"Get": {
 		"Uri": "https://api.github.com/repos/grafana/alloy/releases/latest",

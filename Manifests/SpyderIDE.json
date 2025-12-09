@@ -1,0 +1,9 @@
+{
+	"Name": "Spyder Project Contributors Spyder IDE",
+	"Source": "https://www.spyder-ide.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/spyder-ide/spyder/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "GitHub CLI",
+	"Source": "https://cli.github.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/cli/cli/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}
