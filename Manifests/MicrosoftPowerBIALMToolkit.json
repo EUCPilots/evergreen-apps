@@ -1,0 +1,9 @@
+{
+	"Name": "Microsoft Power BI ALM Toolkit",
+	"Source": "https://github.com/microsoft/Analysis-Services/tree/master/AlmToolkit",
+	"Get": {
+		"Uri": "https://api.github.com/repos/microsoft/Analysis-Services/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

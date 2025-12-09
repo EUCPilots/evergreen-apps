@@ -1,0 +1,9 @@
+{
+	"Name": "Weasis DICOM Viewer",
+	"Source": "https://weasis.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/nroduit/Weasis/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "PowerON Platforms AOVPN Dynamic Profile Configurator",
+	"Source": "https://github.com/ld0614/DPC",
+	"Get": {
+		"Uri": "https://api.github.com/repos/ld0614/DPC/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

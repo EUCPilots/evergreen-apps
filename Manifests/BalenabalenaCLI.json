@@ -1,0 +1,9 @@
+{
+	"Name": "Balena balena CLI",
+	"Source": "https://docs.balena.io/reference/balena-cli/latest/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/balena-io/balena-cli/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Celestia Project Celestia",
+	"Source": "https://celestiaproject.space",
+	"Get": {
+		"Uri": "https://api.github.com/repos/CelestiaProject/Celestia/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Laurent Cozic Joplin",
+	"Source": "https://joplinapp.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/laurent22/joplin/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

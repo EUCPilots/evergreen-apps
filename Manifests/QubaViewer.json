@@ -1,0 +1,9 @@
+{
+	"Name": "Quba Viewer",
+	"Source": "https://quba-viewer.org",
+	"Get": {
+		"Uri": "https://api.github.com/repos/ZUGFeRD/quba-viewer/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

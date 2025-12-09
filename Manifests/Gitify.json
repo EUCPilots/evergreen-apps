@@ -1,0 +1,9 @@
+{
+	"Name": "Gitify Team Gitify",
+	"Source": "https://gitify.io/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/gitify-app/gitify/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

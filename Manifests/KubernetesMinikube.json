@@ -1,0 +1,9 @@
+{
+	"Name": "Kubernetes Minikube",
+	"Source": "https://minikube.sigs.k8s.io/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/kubernetes/minikube/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

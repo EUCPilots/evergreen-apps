@@ -1,0 +1,9 @@
+{
+	"Name": "FxSound LLC FxSound",
+	"Source": "https://www.fxsound.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/fxsound2/fxsound-app/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

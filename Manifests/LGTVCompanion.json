@@ -1,0 +1,9 @@
+{
+	"Name": "Jörgen Persson LGTV Companion",
+	"Source": "https://github.com/JPersson77/LGTVCompanion",
+	"Get": {
+		"Uri": "https://api.github.com/repos/JPersson77/LGTVCompanion/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

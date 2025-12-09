@@ -1,0 +1,9 @@
+{
+	"Name": "Windscribe VPN Client",
+	"Source": "https://windscribe.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/Windscribe/Desktop-App/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

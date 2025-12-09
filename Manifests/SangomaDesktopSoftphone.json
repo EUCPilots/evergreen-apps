@@ -1,0 +1,9 @@
+{
+	"Name": "Sangoma Desktop Softphone",
+	"Source": "https://www.sangoma.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/sangoma/desktop-softphone/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Brave Software Brave Browser",
+	"Source": "https://brave.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/brave/brave-browser/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

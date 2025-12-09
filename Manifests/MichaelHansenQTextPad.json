@@ -1,0 +1,9 @@
+{
+	"Name": "Michael Hansen QTextPad",
+	"Source": "https://github.com/zrax/qtextpad",
+	"Get": {
+		"Uri": "https://api.github.com/repos/zrax/qtextpad/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Aegisub",
+	"Source": "https://www.aegisub.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/TypesettingTools/Aegisub/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

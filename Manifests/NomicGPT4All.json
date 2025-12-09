@@ -1,0 +1,9 @@
+{
+	"Name": "Nomic GPT4All",
+	"Source": "https://nomic.ai/gpt4all",
+	"Get": {
+		"Uri": "https://api.github.com/repos/nomic-ai/gpt4all/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Pritunl OpenVPN Client",
+	"Source": "https://client.pritunl.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/pritunl/pritunl-client-electron/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "pyRevitLabs pyRevit",
+	"Source": "https://www.pyrevitlabs.io/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/pyrevitlabs/pyRevit/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

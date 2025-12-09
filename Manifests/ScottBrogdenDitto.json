@@ -1,0 +1,9 @@
+{
+	"Name": "Scott Brogden Ditto",
+	"Source": "https://ditto-cp.sourceforge.io/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/sabrogden/Ditto/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

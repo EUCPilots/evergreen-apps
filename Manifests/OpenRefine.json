@@ -1,0 +1,9 @@
+{
+	"Name": "OpenRefine OpenRefine",
+	"Source": "https://openrefine.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/OpenRefine/OpenRefine/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Nikse Subtitle Edit",
+	"Source": "https://www.nikse.dk/SubtitleEdit/Help",
+	"Get": {
+		"Uri": "https://api.github.com/repos/SubtitleEdit/subtitleedit/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

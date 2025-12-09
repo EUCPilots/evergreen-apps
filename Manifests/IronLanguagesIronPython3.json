@@ -1,0 +1,9 @@
+{
+	"Name": "IronLanguages IronPython 3",
+	"Source": "https://ironpython.net/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/IronLanguages/ironpython3/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

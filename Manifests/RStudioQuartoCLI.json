@@ -1,0 +1,9 @@
+{
+	"Name": "RStudio Quarto CLI",
+	"Source": "https://quarto.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/quarto-dev/quarto-cli/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

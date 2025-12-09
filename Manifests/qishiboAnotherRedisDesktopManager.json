@@ -1,0 +1,9 @@
+{
+	"Name": "qishibo Another Redis Desktop Manager",
+	"Source": "https://goanother.com",
+	"Get": {
+		"Uri": "https://api.github.com/repos/qishibo/AnotherRedisDesktopManager/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Open Education Foundation OpenBoard",
+	"Source": "https://openboard.ch/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/OpenBoard-org/OpenBoard/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

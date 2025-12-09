@@ -1,0 +1,9 @@
+{
+	"Name": "Mountain Loop Labs Yaak",
+	"Source": "https://yaak.app/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/mountain-loop/yaak/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

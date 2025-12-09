@@ -1,0 +1,9 @@
+{
+	"Name": "Calibrite PROFILER",
+	"Source": "https://calibrite.com/eu/calibrite-profiler/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/LUMESCA/calibrite-profiler-releases/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

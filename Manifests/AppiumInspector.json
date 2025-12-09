@@ -1,0 +1,9 @@
+{
+	"Name": "Appium Developers Appium Inspector",
+	"Source": "https://appium.github.io/appium-inspector/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/appium/appium-inspector/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

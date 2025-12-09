@@ -1,0 +1,9 @@
+{
+	"Name": "Sandboxie Plus",
+	"Source": "https://sandboxie-plus.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/sandboxie-plus/Sandboxie/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Balena balenaEtcher",
+	"Source": "https://etcher.balena.io",
+	"Get": {
+		"Uri": "https://api.github.com/repos/balena-io/etcher/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

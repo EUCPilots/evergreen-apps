@@ -1,0 +1,9 @@
+{
+	"Name": "Stellarium Team Stellarium",
+	"Source": "https://stellarium.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/Stellarium/stellarium/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

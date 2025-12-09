@@ -1,0 +1,9 @@
+{
+	"Name": "Gynzy Desktop",
+	"Source": "https://www.gynzy.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/gynzy/gynzy-desktop-releases/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

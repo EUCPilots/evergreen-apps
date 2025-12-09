@@ -1,0 +1,9 @@
+{
+	"Name": "TU Wien nomacs",
+	"Source": "https://nomacs.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/nomacs/nomacs/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Anton Filimonov klogg",
+	"Source": "https://klogg.filimonov.dev/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/variar/klogg/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

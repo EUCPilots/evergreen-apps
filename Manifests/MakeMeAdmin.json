@@ -1,0 +1,9 @@
+{
+	"Name": "Make Me Admin",
+	"Source": "https://makemeadmin.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/pseymour/MakeMeAdmin/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

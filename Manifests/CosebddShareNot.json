@@ -1,0 +1,9 @@
+{
+	"Name": "Cosebdd ShareNot",
+	"Source": "https://cosebdd.github.io/ShareNot/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/Cosebdd/ShareNot/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

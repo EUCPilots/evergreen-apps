@@ -1,0 +1,9 @@
+{
+	"Name": "sylikc JPEGView",
+	"Source": "https://github.com/sylikc/jpegview",
+	"Get": {
+		"Uri": "https://api.github.com/repos/sylikc/jpegview/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

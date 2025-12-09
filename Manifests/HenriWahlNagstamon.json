@@ -1,0 +1,9 @@
+{
+	"Name": "Henri Wahl Nagstamon",
+	"Source": "https://nagstamon.de/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/HenriWahl/Nagstamon/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Paolo Cignoni MeshLab",
+	"Source": "https://www.meshlab.net/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/cnr-isti-vclab/meshlab/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

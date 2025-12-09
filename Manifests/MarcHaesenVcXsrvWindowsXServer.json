@@ -1,0 +1,9 @@
+{
+	"Name": "Marc Haesen VcXsrv Windows X Server",
+	"Source": "https://github.com/marchaesen/vcxsrv",
+	"Get": {
+		"Uri": "https://api.github.com/repos/marchaesen/vcxsrv/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

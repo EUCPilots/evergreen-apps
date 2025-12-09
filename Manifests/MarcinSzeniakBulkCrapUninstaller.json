@@ -1,0 +1,9 @@
+{
+	"Name": "Marcin Szeniak Bulk Crap Uninstaller",
+	"Source": "https://www.bcuninstaller.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/Klocman/Bulk-Crap-Uninstaller/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

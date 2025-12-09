@@ -1,0 +1,9 @@
+{
+	"Name": "Tidepool Project Tidepool Uploader",
+	"Source": "https://developer.tidepool.org",
+	"Get": {
+		"Uri": "https://api.github.com/repos/tidepool-org/uploader/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

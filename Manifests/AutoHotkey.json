@@ -1,0 +1,9 @@
+{
+	"Name": "AutoHotkey Foundation AutoHotkey",
+	"Source": "https://autohotkey.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/AutoHotkey/AutoHotkey/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "vCluster Labs DevPod",
+	"Source": "https://devpod.sh/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/loft-sh/devpod/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

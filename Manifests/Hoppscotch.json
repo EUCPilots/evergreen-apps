@@ -1,0 +1,9 @@
+{
+	"Name": "Hoppscotch Limited Hoppscotch",
+	"Source": "https://hoppscotch.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/hoppscotch/releases/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

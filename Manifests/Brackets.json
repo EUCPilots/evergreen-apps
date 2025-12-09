@@ -1,0 +1,9 @@
+{
+	"Name": "brackets.io Brackets",
+	"Source": "https://brackets.io",
+	"Get": {
+		"Uri": "https://api.github.com/repos/brackets-cont/brackets/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

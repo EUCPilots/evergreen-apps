@@ -1,0 +1,9 @@
+{
+	"Name": "Keeper Security Keeper Commander",
+	"Source": "https://www.keepersecurity.com/commander.html",
+	"Get": {
+		"Uri": "https://api.github.com/repos/Keeper-Security/Commander/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

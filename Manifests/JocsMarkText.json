@@ -1,0 +1,9 @@
+{
+	"Name": "Jocs MarkText",
+	"Source": "https://www.marktext.me/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/marktext/marktext/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

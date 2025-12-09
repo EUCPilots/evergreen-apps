@@ -1,0 +1,9 @@
+{
+	"Name": "Meltytech Shotcut",
+	"Source": "https://www.shotcut.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/mltframework/shotcut/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

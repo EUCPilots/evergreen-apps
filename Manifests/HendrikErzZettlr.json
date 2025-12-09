@@ -1,0 +1,9 @@
+{
+	"Name": "Hendrik Erz Zettlr",
+	"Source": "https://www.zettlr.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/Zettlr/Zettlr/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Lukas Holecek CopyQ",
+	"Source": "https://hluk.github.io/CopyQ/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/hluk/CopyQ/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

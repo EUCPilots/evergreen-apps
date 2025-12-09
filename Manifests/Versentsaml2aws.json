@@ -1,0 +1,9 @@
+{
+	"Name": "Versent saml2aws",
+	"Source": "https://github.com/Versent/saml2aws",
+	"Get": {
+		"Uri": "https://api.github.com/repos/Versent/saml2aws/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

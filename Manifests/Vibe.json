@@ -1,0 +1,9 @@
+{
+	"Name": "Vibe",
+	"Source": "https://thewh1teagle.github.io/vibe/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/thewh1teagle/vibe/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

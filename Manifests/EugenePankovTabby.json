@@ -1,0 +1,9 @@
+{
+	"Name": "Eugene Pankov Tabby",
+	"Source": "https://tabby.sh/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/Eugeny/tabby/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

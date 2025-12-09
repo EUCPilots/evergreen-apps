@@ -1,0 +1,9 @@
+{
+	"Name": "neovim.io Neovim",
+	"Source": "https://neovim.io/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/neovim/neovim/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"Name": "Aivar Annamaa Thonny",
+	"Source": "https://thonny.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/thonny/thonny/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

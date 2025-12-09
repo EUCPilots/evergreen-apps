@@ -1,0 +1,9 @@
+{
+	"Name": "Grafana Labs Grafana k6",
+	"Source": "https://grafana.com/oss/k6/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/grafana/k6/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

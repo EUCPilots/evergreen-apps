@@ -1,0 +1,9 @@
+{
+	"Name": "The VirtualGL Project TurboVNC",
+	"Source": "https://turbovnc.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/TurboVNC/turbovnc/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

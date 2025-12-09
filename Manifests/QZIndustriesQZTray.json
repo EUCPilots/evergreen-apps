@@ -1,0 +1,9 @@
+{
+	"Name": "QZ Industries QZ Tray",
+	"Source": "https://qz.io/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/qzind/tray/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

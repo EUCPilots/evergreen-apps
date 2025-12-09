@@ -1,0 +1,9 @@
+{
+	"Name": "The gPodder Team gPodder",
+	"Source": "https://gpodder.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/gpodder/gpodder/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}

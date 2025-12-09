@@ -1,0 +1,9 @@
+{
+	"Name": "FreeCAD Team FreeCAD",
+	"Source": "https://www.freecad.org",
+	"Get": {
+		"Uri": "https://api.github.com/repos/FreeCAD/FreeCAD/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}
