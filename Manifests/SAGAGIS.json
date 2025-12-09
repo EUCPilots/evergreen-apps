@@ -1,6 +1,6 @@
 {
 	"Name": "SAGA-GIS",
-	"Source": "http://www.saga-gis.org/",
+	"Source": "https://www.saga-gis.org/",
 	"Get": {
 		"Update": {
 			"Uri": "https://sourceforge.net/projects/saga-gis/best_release.json",
