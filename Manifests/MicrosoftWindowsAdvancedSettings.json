@@ -1,0 +1,9 @@
+{
+    "Name": "Microsoft Windows Advanced Settings",
+    "Source": "https://aka.ms/WindowsAdvancedSettingsDocs",
+    "Get": {
+        "Uri": "https://api.github.com/repos/microsoft/WindowsAdvancedSettings/releases/latest",
+        "MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+        "MatchFileTypes": "\\.exe$|\\.msi$|\\.msixbundle$"
+    }
+}
