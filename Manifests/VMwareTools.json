@@ -3,7 +3,7 @@
 	"Source": "https://docs.vmware.com/en/VMware-Tools/index.html",
 	"Get": {
 		"Update": {
-			"Uri": "https://packages.vmware.com/tools/versions",
+			"Uri": "https://packages-prod.broadcom.com/tools/versions",
 			"ContentType": "text/plain",
 			"CsvHeaders": [
 				"Client",
@@ -14,7 +14,7 @@
 			]
 		},
 		"Download": {
-			"Uri": "https://packages.vmware.com/tools/releases/#version/windows/#architecture/VMware-tools-#version-#build-#processor.exe",
+			"Uri": "https://packages-prod.broadcom.com/tools/releases/latest/windows/#architecture/VMware-tools-#version-#build-#processor.exe",
 			"Architecture": {
 				"x64": "x64",
 				"arm": "arm"
