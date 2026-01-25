@@ -19,6 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
       
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -29,8 +30,8 @@ jobs:
         run: |
           pip install requests beautifulsoup4 lxml
       
-      - name: Parse Microsoft Learn page and update JSON
-        id: update-urls
+      - name: Parse Microsoft OLE DB Driver page and update JSON
+        id: update-urls-oledb
         run: |
           python3 << 'EOF'
           import requests
@@ -40,7 +41,7 @@ jobs:
           import sys
           import os
           
-          # Fetch the Microsoft Learn page
+          # Fetch the Microsoft OLE DB Driver page
           url = "https://learn.microsoft.com/en-us/sql/connect/oledb/download-oledb-driver-for-sql-server"
           print(f"Fetching page: {url}")
           
@@ -125,11 +126,106 @@ jobs:
           EOF
         env:
           GITHUB_OUTPUT: ${{ github.output }}
+
+      - name: Parse Microsoft ODBC Driver page and update JSON
+        id: update-urls-odbc
+        run: |
+            python3 << 'EOF'
+            import requests
+            from bs4 import BeautifulSoup
+            import json
+            import re
+            import sys
+            import os
+          
+            # Fetch the Microsoft ODBC Driver page
+            url = "https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server"
+            print(f"Fetching page: {url}")
+          
+            try:
+              response = requests.get(url, timeout=30)
+              response.raise_for_status()
+              soup = BeautifulSoup(response.content, 'html.parser')
+              
+              # Find all links
+              links = soup.find_all('a', href=True)
+              
+              # Target texts to search for
+              target_texts = [
+                "Download Microsoft ODBC Driver 18 for SQL Server (x64)",
+                "Download Microsoft ODBC Driver 18 for SQL Server (x86)",
+                "Download Microsoft ODBC Driver 18 for SQL Server (ARM64)"
+              ]
+              
+              # Store found URLs
+              found_urls = {}
+              
+              for link in links:
+                link_text = link.get_text(strip=True)
+                link_href = link.get('href', '')
+                  
+                # Check if link text matches one of our targets
+                for target_text in target_texts:
+                  if target_text in link_text:
+                    # Check if URL matches the pattern
+                    if 'https://go.microsoft.com/fwlink/?linkid=' in link_href:
+                      print(f"Found: {target_text}")
+                      print(f"URL: {link_href}")
+                      found_urls[target_text] = link_href
+              
+              # Read the current JSON file
+              json_file_path = "Manifests/MicrosoftODBCDriverForSQLServer.json"
+              with open(json_file_path, 'r') as f:
+                data = json.load(f)
+              
+              # Store old URLs for comparison
+              old_urls = data['Get']['Download']['Uri'].copy()
+              
+              # Update URLs in order (x64, x86, ARM64)
+              new_urls = []
+              for key in target_texts:
+                if key in found_urls:
+                  new_urls.append(found_urls[key])
+              
+              if len(new_urls) == 3:
+                data['Get']['Download']['Uri'] = new_urls
+                  
+                # Write updated JSON back to file
+                with open(json_file_path, 'w') as f:
+                  json.dump(data, f, indent=4)
+                  
+                # Check if URLs actually changed
+                if old_urls != new_urls:
+                  print(f"\nODBC URLs updated:")
+                  print(f"Old URLs: {old_urls}")
+                  print(f"New URLs: {new_urls}")
+                  github_output = os.environ.get('GITHUB_OUTPUT')
+                  if github_output:
+                    with open(github_output, 'a') as f:
+                      f.write("odbc_urls_changed=true\n")
+                else:
+                  print("\nNo ODBC changes detected - URLs are already up to date")
+                  github_output = os.environ.get('GITHUB_OUTPUT')
+                  if github_output:
+                    with open(github_output, 'a') as f:
+                      f.write("odbc_urls_changed=false\n")
+              else:
+                print(f"Error: Expected 3 URLs but found {len(new_urls)}")
+                sys.exit(1)
+                  
+            except Exception as e:
+              print(f"Error: {e}")
+              import traceback
+              traceback.print_exc()
+              sys.exit(1)
+            EOF
+        env:
+            GITHUB_OUTPUT: ${{ github.output }}
       
       - name: Check for changes
         id: check-changes
         run: |
-          if git diff --quiet Manifests/MicrosoftOLEDBDriverForSQLServer.json; then
+          if git diff --quiet -- Manifests/MicrosoftOLEDBDriverForSQLServer.json Manifests/MicrosoftODBCDriverForSQLServer.json; then
             echo "changes_detected=false" >> $GITHUB_OUTPUT
             echo "No changes detected"
           else
@@ -142,29 +238,34 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git checkout -b update-oledb-driver-urls
-          git add Manifests/MicrosoftOLEDBDriverForSQLServer.json
-          git commit -m 'Update Microsoft OLE DB Driver download URLs'
-          git push -f origin update-oledb-driver-urls
+          git checkout -b update-sql-driver-urls
+          git add Manifests/MicrosoftOLEDBDriverForSQLServer.json Manifests/MicrosoftODBCDriverForSQLServer.json
+          git commit -m 'Update Microsoft SQL Server driver download URLs'
+          git push -f origin update-sql-driver-urls
       
       - name: Create Pull Request
         if: steps.check-changes.outputs.changes_detected == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           gh pr create \
-            --title "MicrosoftOLEDBDriver" \
-            --body "## Automated Update: Microsoft OLE DB Driver URLs
+            --title "MicrosoftOLEDBDriver / MicrosoftODBCDriver" \
+            --body "## Automated Update: Microsoft SQL Server Driver URLs
 
-          This PR updates the download URLs for Microsoft OLE DB Driver 19 for SQL Server.
+          This PR updates the download URLs for Microsoft OLE DB Driver 19 and Microsoft ODBC Driver 18 for SQL Server.
 
           **Changes:**
-          - Updated x64 and Arm64 download URL
-          - Updated x86 download URL
+          - Updated OLE DB x64 and Arm64 download URL
+          - Updated OLE DB x86 download URL
+          - Updated ODBC x64 download URL
+          - Updated ODBC x86 download URL
+          - Updated ODBC ARM64 download URL
 
-          **Source:** https://learn.microsoft.com/en-us/sql/connect/oledb/download-oledb-driver-for-sql-server
+          **Sources:**
+          - https://learn.microsoft.com/en-us/sql/connect/oledb/download-oledb-driver-for-sql-server
+          - https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server
 
           **Auto-generated by:** GitHub Actions workflow" \
             --base main \
-            --head update-oledb-driver-urls \
-            --label automated || echo "PR already exists or could not be created"
+            --head update-sql-driver-urls \
+            --label automated || true
