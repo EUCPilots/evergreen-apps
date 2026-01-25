@@ -1,4 +1,4 @@
-name: Update Microsoft OLE DB Driver URLs
+name: Update Microsoft SQL Driver URLs
 
 on:
   schedule:
