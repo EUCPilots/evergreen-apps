@@ -38,6 +38,7 @@ jobs:
           import json
           import re
           import sys
+          import os
           
           # Fetch the Microsoft Learn page
           url = "https://learn.microsoft.com/en-us/sql/connect/oledb/download-oledb-driver-for-sql-server"
@@ -102,12 +103,16 @@ jobs:
                       print(f"New URLs: {new_urls}")
                       print("URLS_CHANGED=true")
                       # Set output for GitHub Actions
-                      with open('GITHUB_OUTPUT', 'a') if 'GITHUB_OUTPUT' in open('/proc/1/environ').read() else open('/dev/null', 'w') as f:
-                          f.write("urls_changed=true\n")
+                      github_output = os.environ.get('GITHUB_OUTPUT')
+                      if github_output:
+                          with open(github_output, 'a') as f:
+                              f.write("urls_changed=true\n")
                   else:
                       print("\nNo changes detected - URLs are already up to date")
-                      with open('GITHUB_OUTPUT', 'a') if 'GITHUB_OUTPUT' in open('/proc/1/environ').read() else open('/dev/null', 'w') as f:
-                          f.write("urls_changed=false\n")
+                      github_output = os.environ.get('GITHUB_OUTPUT')
+                      if github_output:
+                          with open(github_output, 'a') as f:
+                              f.write("urls_changed=false\n")
               else:
                   print(f"Error: Expected 2 URLs but found {len(new_urls)}")
                   sys.exit(1)
