@@ -1,14 +1,14 @@
 {
-	"Name": "Microsoft SQL Server Management Studio 22",
-	"Source": "https://learn.microsoft.com/en-us/ssms/release-notes-22",
+	"Name": "Microsoft SQL Server Management Studio 21",
+	"Source": "https://learn.microsoft.com/en-us/ssms/release-notes-21",
 	"Get": {
 		"Update": {
 			"Uri": "https://go.microsoft.com/fwlink/?linkid=2267020",
 			"DatePattern": "yyyy-MM-ddTHH:mm:ss"
 		},
 		"Download": {
-			"Version": "22.2.1",
-			"Uri": "https://aka.ms/ssms/22/release/vs_SSMS.exe",
+			"Version": "21.6.17",
+			"Uri": "https://aka.ms/ssms/21/release/vs_SSMS.exe",
 			"DatePattern": "yyyy-MM-ddTHH:mm:ss"
 		}
 	},

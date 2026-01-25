@@ -1,4 +1,4 @@
-function Get-MicrosoftSsms {
+function Get-MicrosoftSsms21 {
     <#
         .SYNOPSIS
             Returns the latest SQL Server Management Studio
