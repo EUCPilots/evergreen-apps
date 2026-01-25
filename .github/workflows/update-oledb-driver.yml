@@ -1,0 +1,156 @@
+name: Update Microsoft OLE DB Driver URLs
+
+on:
+  schedule:
+    # Run weekly on Mondays at 9:00 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-oledb-urls:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 lxml
+      
+      - name: Parse Microsoft Learn page and update JSON
+        id: update-urls
+        run: |
+          python3 << 'EOF'
+          import requests
+          from bs4 import BeautifulSoup
+          import json
+          import re
+          import sys
+          
+          # Fetch the Microsoft Learn page
+          url = "https://learn.microsoft.com/en-us/sql/connect/oledb/download-oledb-driver-for-sql-server"
+          print(f"Fetching page: {url}")
+          
+          try:
+              response = requests.get(url, timeout=30)
+              response.raise_for_status()
+              soup = BeautifulSoup(response.content, 'html.parser')
+              
+              # Find all links
+              links = soup.find_all('a', href=True)
+              
+              # Target texts to search for
+              target_texts = [
+                  "Download Microsoft OLE DB Driver 19 for SQL Server (x64 and Arm64)",
+                  "Download Microsoft OLE DB Driver 19 for SQL Server (x86)"
+              ]
+              
+              # Store found URLs
+              found_urls = {}
+              
+              for link in links:
+                  link_text = link.get_text(strip=True)
+                  link_href = link.get('href', '')
+                  
+                  # Check if link text matches one of our targets
+                  for target_text in target_texts:
+                      if target_text in link_text:
+                          # Check if URL matches the pattern
+                          if 'https://go.microsoft.com/fwlink/?linkid=' in link_href:
+                              print(f"Found: {target_text}")
+                              print(f"URL: {link_href}")
+                              found_urls[target_text] = link_href
+              
+              # Read the current JSON file
+              json_file_path = "Manifests/MicrosoftOLEDBDriverForSQLServer.json"
+              with open(json_file_path, 'r') as f:
+                  data = json.load(f)
+              
+              # Store old URLs for comparison
+              old_urls = data['Get']['Download']['Uri'].copy()
+              
+              # Update URLs in order (x64/Arm64 first, then x86)
+              new_urls = []
+              if target_texts[0] in found_urls:
+                  new_urls.append(found_urls[target_texts[0]])
+              if target_texts[1] in found_urls:
+                  new_urls.append(found_urls[target_texts[1]])
+              
+              if len(new_urls) == 2:
+                  data['Get']['Download']['Uri'] = new_urls
+                  
+                  # Write updated JSON back to file
+                  with open(json_file_path, 'w') as f:
+                      json.dump(data, f, indent=4)
+                  
+                  # Check if URLs actually changed
+                  if old_urls != new_urls:
+                      print(f"\nURLs updated:")
+                      print(f"Old URLs: {old_urls}")
+                      print(f"New URLs: {new_urls}")
+                      print("URLS_CHANGED=true")
+                      # Set output for GitHub Actions
+                      with open('GITHUB_OUTPUT', 'a') if 'GITHUB_OUTPUT' in open('/proc/1/environ').read() else open('/dev/null', 'w') as f:
+                          f.write("urls_changed=true\n")
+                  else:
+                      print("\nNo changes detected - URLs are already up to date")
+                      with open('GITHUB_OUTPUT', 'a') if 'GITHUB_OUTPUT' in open('/proc/1/environ').read() else open('/dev/null', 'w') as f:
+                          f.write("urls_changed=false\n")
+              else:
+                  print(f"Error: Expected 2 URLs but found {len(new_urls)}")
+                  sys.exit(1)
+                  
+          except Exception as e:
+              print(f"Error: {e}")
+              import traceback
+              traceback.print_exc()
+              sys.exit(1)
+          EOF
+        env:
+          GITHUB_OUTPUT: ${{ github.output }}
+      
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if git diff --quiet Manifests/MicrosoftOLEDBDriverForSQLServer.json; then
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Create Pull Request
+        if: steps.check-changes.outputs.changes_detected == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'Update Microsoft OLE DB Driver download URLs'
+          branch: update-oledb-driver-urls
+          delete-branch: true
+          title: 'MicrosoftOLEDBDriver'
+          body: |
+            ## Automated Update: Microsoft OLE DB Driver URLs
+            
+            This PR updates the download URLs for Microsoft OLE DB Driver 19 for SQL Server.
+            
+            **Changes:**
+            - Updated x64 and Arm64 download URL
+            - Updated x86 download URL
+            
+            **Source:** https://learn.microsoft.com/en-us/sql/connect/oledb/download-oledb-driver-for-sql-server
+            
+            **Auto-generated by:** GitHub Actions workflow
+          labels: |
+            automated
+            dependencies
