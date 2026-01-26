@@ -1,0 +1,179 @@
+name: Update Microsoft SQL Server Management Studio
+
+on:
+  schedule:
+    # Run weekly on Tuesdays at 9:00 AM UTC
+    - cron: '0 9 * * 2'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-ssms-versions:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 lxml
+      
+      - name: Parse SSMS version pages and update JSON
+        id: update-versions
+        run: |
+          python3 << 'EOF'
+          import requests
+          from bs4 import BeautifulSoup
+          import json
+          import re
+          import sys
+          import os
+          
+          # Define URLs and corresponding manifest files
+          versions = {
+              "22": {
+                  "url": "https://learn.microsoft.com/en-us/ssms/release-notes-22",
+                  "manifest": "Manifests/MicrosoftSsms.json"
+              },
+              "21": {
+                  "url": "https://learn.microsoft.com/en-us/ssms/release-notes-21",
+                  "manifest": "Manifests/MicrosoftSsms21.json"
+              },
+              "20": {
+                  "url": "https://learn.microsoft.com/en-us/ssms/release-notes-20",
+                  "manifest": "Manifests/MicrosoftSsms20.json"
+              }
+          }
+          
+          # Version regex pattern (e.g., 22.2.1, 21.0.0, 20.1.2)
+          version_pattern = re.compile(r'^\d+\.\d+\.\d+$')
+          
+          changes_made = False
+          
+          for version_key, config in versions.items():
+              url = config["url"]
+              manifest_path = config["manifest"]
+              
+              print(f"\nProcessing SSMS {version_key}")
+              print(f"URL: {url}")
+              
+              try:
+                  response = requests.get(url, timeout=30)
+                  response.raise_for_status()
+                  soup = BeautifulSoup(response.content, 'html.parser')
+                  
+                  # Find the first h3 element
+                  h3_element = soup.find('h3')
+                  
+                  if not h3_element:
+                      print(f"Warning: No h3 element found for SSMS {version_key}")
+                      continue
+                  
+                  version_string = h3_element.get_text(strip=True)
+                  print(f"Found version string: {version_string}")
+                  
+                  # Validate version format
+                  if not version_pattern.match(version_string):
+                      print(f"Error: Version '{version_string}' does not match expected pattern (X.Y.Z)")
+                      sys.exit(1)
+                  
+                  # Read the manifest file
+                  with open(manifest_path, 'r') as f:
+                      data = json.load(f)
+                  
+                  # Get old version for comparison
+                  old_version = data['Get']['Download']['Version']
+                  print(f"Old version: {old_version}")
+                  
+                  # Update the version
+                  data['Get']['Download']['Version'] = version_string
+                  
+                  # Write updated JSON back to file
+                  with open(manifest_path, 'w') as f:
+                      json.dump(data, f, indent=4)
+                  
+                  # Check if version actually changed
+                  if old_version != version_string:
+                      print(f"Version updated from {old_version} to {version_string}")
+                      changes_made = True
+                  else:
+                      print(f"Version unchanged ({version_string})")
+                      
+              except Exception as e:
+                  print(f"Error processing SSMS {version_key}: {e}")
+                  import traceback
+                  traceback.print_exc()
+                  sys.exit(1)
+          
+          # Output whether changes were made
+          github_output = os.environ.get('GITHUB_OUTPUT')
+          if github_output and changes_made:
+              with open(github_output, 'a') as f:
+                  f.write("changes_made=true\n")
+          elif github_output:
+              with open(github_output, 'a') as f:
+                  f.write("changes_made=false\n")
+          
+          EOF
+        env:
+          GITHUB_OUTPUT: ${{ github.output }}
+      
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if git diff --quiet -- Manifests/MicrosoftSsms.json Manifests/MicrosoftSsms21.json Manifests/MicrosoftSsms20.json; then
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          else
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+            echo "Changes detected"
+            git diff -- Manifests/MicrosoftSsms.json Manifests/MicrosoftSsms21.json Manifests/MicrosoftSsms20.json
+          fi
+      
+      - name: Commit and push changes
+        if: steps.check-changes.outputs.changes_detected == 'true'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout -b update-ssms-versions
+          git add Manifests/MicrosoftSsms.json Manifests/MicrosoftSsms21.json Manifests/MicrosoftSsms20.json
+          git commit -m 'Update Microsoft SQL Server Management Studio versions'
+          git push -f origin update-ssms-versions
+      
+      - name: Create Pull Request
+        if: steps.check-changes.outputs.changes_detected == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --title "Update SQL Server Management Studio (SSMS) Versions" \
+            --body "## Automated Update: SSMS Versions
+
+          This PR updates the version numbers for Microsoft SQL Server Management Studio (SSMS) 20, 21, and 22.
+
+          **Changes:**
+          - Updated SSMS 22 version in Manifests/MicrosoftSsms.json
+          - Updated SSMS 21 version in Manifests/MicrosoftSsms21.json
+          - Updated SSMS 20 version in Manifests/MicrosoftSsms20.json
+
+          **Sources:**
+          - https://learn.microsoft.com/en-us/ssms/release-notes-22
+          - https://learn.microsoft.com/en-us/ssms/release-notes-21
+          - https://learn.microsoft.com/en-us/ssms/release-notes-20
+
+          **Auto-generated by:** GitHub Actions workflow" \
+            --base main \
+            --head update-ssms-versions \
+            --label automated || true
