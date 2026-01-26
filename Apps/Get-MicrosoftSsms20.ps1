@@ -22,17 +22,16 @@ function Get-MicrosoftSsms20 {
         $Query = "&clcid="
         $Uri = "$($res.Get.Download.Uri)$($Query)$($res.Get.Download.Language[$language.key])"
         Write-Verbose -Message "$($MyInvocation.MyCommand): Resolving: $Uri"
-        $ResponseUri = Resolve-SystemNetWebRequest -Uri $Uri
+        $ResolvedUrl = Resolve-SystemNetWebRequest -Uri $Uri
 
-        if ($ResponseUri.ResponseUri -is [System.Uri]) {
-
+        if ($ResolvedUrl.ResponseUri -is [System.Uri]) {
             # Construct the output; Return the custom object to the pipeline
             $PSObject = [PSCustomObject] @{
                 Version  = $res.Get.Download.Version
-                Date     = $ResponseUri.LastModified.ToShortDateString()
+                Date     = $ResolvedUrl.LastModified.ToShortDateString()
                 Language = $language.key
                 Type     = Get-FileType -File $ResolvedUrl.ResponseUri.AbsoluteUri
-                URI      = $ResponseUri.ResponseUri.AbsoluteUri
+                URI      = $ResolvedUrl.ResponseUri.AbsoluteUri
             }
             Write-Output -InputObject $PSObject
         }
