@@ -1,30 +1,26 @@
 {
-	"Name": "Microsoft SQL Server Management Studio 22",
-	"Source": "https://learn.microsoft.com/en-us/ssms/release-notes-22",
-	"Get": {
-		"Update": {
-			"Uri": "https://go.microsoft.com/fwlink/?linkid=2267020",
-			"DatePattern": "yyyy-MM-ddTHH:mm:ss"
-		},
-		"Download": {
-			"Version": "22.2.1",
-			"Uri": "https://aka.ms/ssms/22/release/vs_SSMS.exe",
-			"DatePattern": "yyyy-MM-ddTHH:mm:ss"
-		}
-	},
-	"Install": {
-		"Setup": "SSMS-Setup*.exe",
-		"Physical": {
-			"Arguments": "/install /quiet /norestart",
-			"PostInstall": [
-
-			]
-		},
-		"Virtual": {
-			"Arguments": "/install /quiet /norestart",
-			"PostInstall": [
-
-			]
-		}
-	}
+    "Name": "Microsoft SQL Server Management Studio 22",
+    "Source": "https://learn.microsoft.com/en-us/ssms/release-notes-22",
+    "Get": {
+        "Update": {
+            "Uri": "https://go.microsoft.com/fwlink/?linkid=2267020",
+            "DatePattern": "yyyy-MM-ddTHH:mm:ss"
+        },
+        "Download": {
+            "Version": "22.2.1",
+            "Uri": "https://aka.ms/ssms/22/release/vs_SSMS.exe",
+            "DatePattern": "yyyy-MM-ddTHH:mm:ss"
+        }
+    },
+    "Install": {
+        "Setup": "SSMS-Setup*.exe",
+        "Physical": {
+            "Arguments": "/install /quiet /norestart",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "/install /quiet /norestart",
+            "PostInstall": []
+        }
+    }
 }
