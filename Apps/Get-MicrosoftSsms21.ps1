@@ -18,7 +18,7 @@ function Get-MicrosoftSsms21 {
     )
 
     $ResolvedUrl = Resolve-SystemNetWebRequest -Uri $res.Get.Download.Uri
-    if ($ResolvedUrl) {
+    if ($ResolvedUrl.ResponseUri -is [System.Uri]) {
         # Construct the output; Return the custom object to the pipeline
         $PSObject = [PSCustomObject] @{
             Version = $res.Get.Download.Version
