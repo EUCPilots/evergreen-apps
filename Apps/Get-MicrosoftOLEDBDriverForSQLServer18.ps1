@@ -22,7 +22,7 @@ function Get-MicrosoftOLEDBDriverForSQLServer18 {
                 Uri                = $Uri
                 MaximumRedirection = $res.Get.Download.MaximumRedirection
             }
-            Resolve-MicrosoftFwLink @params | ForEach-Object { $_.Language = $language.key; $_ } | Write-Output
+            Resolve-MicrosoftFwLink @params | ForEach-Object { $_.Version = $res.Get.Download.Version; $_.Language = $language.key; $_ } | Write-Output
         }
     }
 }

@@ -6,6 +6,7 @@
             "Uri": ""
         },
         "Download": {
+            "Version": "17.10.6.1",
             "Uri": [
                 "https://go.microsoft.com/fwlink/?linkid=2266337",
                 "https://go.microsoft.com/fwlink/?linkid=2266446"
