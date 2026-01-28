@@ -50,6 +50,22 @@ jobs:
               response.raise_for_status()
               soup = BeautifulSoup(response.content, 'html.parser')
               
+              # Extract version number
+              page_text = soup.get_text()
+              version_match = re.search(r'Release number:\s*([0-9]+\.[0-9]+\.[0-9]+)', page_text)
+              
+              if not version_match:
+                  print("Error: Could not find version number on page")
+                  sys.exit(1)
+              
+              version = version_match.group(1)
+              print(f"Found version number: {version}")
+              
+              # Validate version format
+              if not re.match(r'^[0-9]+\.[0-9]+\.[0-9]+$', version):
+                  print(f"Error: Invalid version format: {version}")
+                  sys.exit(1)
+              
               # Find all links
               links = soup.find_all('a', href=True)
               
@@ -80,8 +96,9 @@ jobs:
               with open(json_file_path, 'r') as f:
                   data = json.load(f)
               
-              # Store old URLs for comparison
+              # Store old URLs and version for comparison
               old_urls = data['Get']['Download']['Uri'].copy()
+              old_version = data['Get']['Download'].get('Version', '')
               
               # Update URLs in order (x64/Arm64 first, then x86)
               new_urls = []
@@ -92,24 +109,28 @@ jobs:
               
               if len(new_urls) == 2:
                   data['Get']['Download']['Uri'] = new_urls
+                  data['Get']['Download']['Version'] = version
                   
                   # Write updated JSON back to file
                   with open(json_file_path, 'w') as f:
                       json.dump(data, f, indent=4)
                   
-                  # Check if URLs actually changed
-                  if old_urls != new_urls:
-                      print(f"\nURLs updated:")
-                      print(f"Old URLs: {old_urls}")
-                      print(f"New URLs: {new_urls}")
-                      print("URLS_CHANGED=true")
+                  # Check if URLs or version changed
+                  if old_urls != new_urls or old_version != version:
+                      print(f"\nChanges detected:")
+                      if old_urls != new_urls:
+                          print(f"Old URLs: {old_urls}")
+                          print(f"New URLs: {new_urls}")
+                      if old_version != version:
+                          print(f"Old Version: {old_version}")
+                          print(f"New Version: {version}")
                       # Set output for GitHub Actions
                       github_output = os.environ.get('GITHUB_OUTPUT')
                       if github_output:
                           with open(github_output, 'a') as f:
                               f.write("urls_changed=true\n")
                   else:
-                      print("\nNo changes detected - URLs are already up to date")
+                      print("\nNo changes detected - URLs and version are already up to date")
                       github_output = os.environ.get('GITHUB_OUTPUT')
                       if github_output:
                           with open(github_output, 'a') as f:
@@ -147,6 +168,22 @@ jobs:
               response.raise_for_status()
               soup = BeautifulSoup(response.content, 'html.parser')
               
+              # Extract version number
+              page_text = soup.get_text()
+              version_match = re.search(r'Release number:\s*([0-9]+\.[0-9]+\.[0-9]+)', page_text)
+              
+              if not version_match:
+                print("Error: Could not find ODBC version number on page")
+                sys.exit(1)
+              
+              odbc_version = version_match.group(1)
+              print(f"Found ODBC version number: {odbc_version}")
+              
+              # Validate version format
+              if not re.match(r'^[0-9]+\.[0-9]+\.[0-9]+$', odbc_version):
+                print(f"Error: Invalid ODBC version format: {odbc_version}")
+                sys.exit(1)
+              
               # Find all links
               links = soup.find_all('a', href=True)
               
@@ -178,8 +215,9 @@ jobs:
               with open(json_file_path, 'r') as f:
                 data = json.load(f)
               
-              # Store old URLs for comparison
+              # Store old URLs and version for comparison
               old_urls = data['Get']['Download']['Uri'].copy()
+              old_odbc_version = data['Get']['Download'].get('Version', '')
               
               # Update URLs in order (x64, x86, ARM64)
               new_urls = []
@@ -189,22 +227,27 @@ jobs:
               
               if len(new_urls) == 3:
                 data['Get']['Download']['Uri'] = new_urls
+                data['Get']['Download']['Version'] = odbc_version
                   
                 # Write updated JSON back to file
                 with open(json_file_path, 'w') as f:
                   json.dump(data, f, indent=4)
                   
-                # Check if URLs actually changed
-                if old_urls != new_urls:
-                  print(f"\nODBC URLs updated:")
-                  print(f"Old URLs: {old_urls}")
-                  print(f"New URLs: {new_urls}")
+                # Check if URLs or version changed
+                if old_urls != new_urls or old_odbc_version != odbc_version:
+                  print(f"\nODBC changes detected:")
+                  if old_urls != new_urls:
+                    print(f"Old URLs: {old_urls}")
+                    print(f"New URLs: {new_urls}")
+                  if old_odbc_version != odbc_version:
+                    print(f"Old Version: {old_odbc_version}")
+                    print(f"New Version: {odbc_version}")
                   github_output = os.environ.get('GITHUB_OUTPUT')
                   if github_output:
                     with open(github_output, 'a') as f:
                       f.write("odbc_urls_changed=true\n")
                 else:
-                  print("\nNo ODBC changes detected - URLs are already up to date")
+                  print("\nNo ODBC changes detected - URLs and version are already up to date")
                   github_output = os.environ.get('GITHUB_OUTPUT')
                   if github_output:
                     with open(github_output, 'a') as f:
