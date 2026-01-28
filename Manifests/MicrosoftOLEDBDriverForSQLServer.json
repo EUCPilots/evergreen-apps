@@ -6,6 +6,7 @@
             "Uri": ""
         },
         "Download": {
+            "Version": "19.4.1",
             "Uri": [
                 "https://go.microsoft.com/fwlink/?linkid=2318101",
                 "https://go.microsoft.com/fwlink/?linkid=2318001"
