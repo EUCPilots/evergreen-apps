@@ -22,11 +22,10 @@ function Get-genuagenuReSI {
     }
 
     # Normalize version number to two decimal places (culture-invariant)
-    $NormalizedVersion = [System.Double]::Parse($LatestVersion).ToString("F2", [System.Globalization.CultureInfo]::InvariantCulture)
-    $Version = $NormalizedVersion
+    $NormalizedVersion = [System.Double]::Parse($LatestVersion.ToString().Replace(",", "."), [System.Globalization.CultureInfo]::InvariantCulture).ToString("F2", [System.Globalization.CultureInfo]::InvariantCulture)
 
     # Get the checksum details
-    $Checksum = Invoke-EvergreenRestMethod -Uri ($res.Get.Download.ChecksumUri -replace "#version", $Version)
+    $Checksum = Invoke-EvergreenRestMethod -Uri ($res.Get.Download.ChecksumUri -replace "#version", $NormalizedVersion)
     if ($null -ne $Checksum) {
         $Sha256 = $null
         if ($Checksum -match $res.Get.Download.MatchChecksum) {
@@ -35,8 +34,8 @@ function Get-genuagenuReSI {
     }
 
     [PSCustomObject]@{
-        Version = $Version
+        Version = $NormalizedVersion
         Sha256  = $Sha256
-        URI     = $res.Get.Download.Uri -replace "#version", $Version
+        URI     = $res.Get.Download.Uri -replace "#version", $NormalizedVersion
     }
 }
