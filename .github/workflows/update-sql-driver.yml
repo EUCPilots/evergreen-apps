@@ -1,4 +1,4 @@
-name: Update Microsoft SQL Driver URLs
+name: Update SQL Drivers
 
 on:
   schedule:
@@ -11,7 +11,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  update-oledb-urls:
+  update-sql-drivers:
     runs-on: ubuntu-latest
     
     steps:
@@ -31,7 +31,7 @@ jobs:
           pip install requests beautifulsoup4 lxml
       
       - name: Parse Microsoft OLE DB Driver page and update JSON
-        id: update-urls-oledb
+        id: update-sql-driver
         run: |
           python3 << 'EOF'
           import requests
@@ -50,9 +50,9 @@ jobs:
               response.raise_for_status()
               soup = BeautifulSoup(response.content, 'html.parser')
               
-              # Extract version number
+              # Extract version number (supports 3 or 4 part version numbers)
               page_text = soup.get_text()
-              version_match = re.search(r'Release number:\s*([0-9]+\.[0-9]+\.[0-9]+)', page_text)
+              version_match = re.search(r'Release number:\s*([0-9]+\.[0-9]+\.[0-9]+(?:\.[0-9]+)?)', page_text)
               
               if not version_match:
                   print("Error: Could not find version number on page")
@@ -61,8 +61,8 @@ jobs:
               version = version_match.group(1)
               print(f"Found version number: {version}")
               
-              # Validate version format
-              if not re.match(r'^[0-9]+\.[0-9]+\.[0-9]+$', version):
+              # Validate version format (3 or 4 part)
+              if not re.match(r'^[0-9]+\.[0-9]+\.[0-9]+(?:\.[0-9]+)?$', version):
                   print(f"Error: Invalid version format: {version}")
                   sys.exit(1)
               
@@ -168,9 +168,9 @@ jobs:
               response.raise_for_status()
               soup = BeautifulSoup(response.content, 'html.parser')
               
-              # Extract version number
+              # Extract version number (supports 3 or 4 part version numbers)
               page_text = soup.get_text()
-              version_match = re.search(r'Release number:\s*([0-9]+\.[0-9]+\.[0-9]+)', page_text)
+              version_match = re.search(r'Release number:\s*([0-9]+\.[0-9]+\.[0-9]+(?:\.[0-9]+)?)', page_text)
               
               if not version_match:
                 print("Error: Could not find ODBC version number on page")
@@ -179,8 +179,8 @@ jobs:
               odbc_version = version_match.group(1)
               print(f"Found ODBC version number: {odbc_version}")
               
-              # Validate version format
-              if not re.match(r'^[0-9]+\.[0-9]+\.[0-9]+$', odbc_version):
+              # Validate version format (3 or 4 part)
+              if not re.match(r'^[0-9]+\.[0-9]+\.[0-9]+(?:\.[0-9]+)?$', odbc_version):
                 print(f"Error: Invalid ODBC version format: {odbc_version}")
                 sys.exit(1)
               

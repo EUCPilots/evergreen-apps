@@ -1,4 +1,4 @@
-name: Update Microsoft SQL Server Management Studio
+name: Update SQL Server Management Studio
 
 on:
   schedule:
