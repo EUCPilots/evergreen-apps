@@ -3,7 +3,7 @@
     "Source": "https://appventix.com/",
     "Get": {
         "Update": {
-            "Uri": "https://appventix.com/latest",
+            "Uri": "https://download.appventix.com/updatenotification",
 			"ContentType": "text/html"
         },
         "Download": {
