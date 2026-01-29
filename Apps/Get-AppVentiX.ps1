@@ -20,13 +20,13 @@ function Get-AppVentiX {
         Uri         = $res.Get.Update.Uri
         ContentType = $res.Get.Update.ContentType
     }
-    $Content = Invoke-EvergreenRestMethod @params
-    if ($null -ne $Content) {
+    $Update = Invoke-EvergreenRestMethod @params
+    if ($null -ne $Update) {
 
         # Construct the output; Return the custom object to the pipeline
         $PSObject = [PSCustomObject] @{
-            Version      = $Content.Trim()
-            Filename     = $res.Get.Download.Filename -replace "#version", $Content.Trim()
+            Version      = $Update.version
+            Filename     = $res.Get.Download.Filename -replace "#version", $Update.version
             URI          = $res.Get.Download.Uri
         }
         Write-Output -InputObject $PSObject
