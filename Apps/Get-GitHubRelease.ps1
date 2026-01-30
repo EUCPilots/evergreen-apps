@@ -27,11 +27,11 @@ function Get-GitHubRelease {
 
         [Parameter(Mandatory = $false, Position = 1)]
         [ValidateScript( {
-                if ($_ -match "^(https://api\.github\.com/repos/)([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)(/releases)$") {
+                if ($_ -match "^(https://api\.github\.com/repos/)([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/releases(?:/latest|/[a-zA-Z0-9._-]+)?$") {
                     $true
                 }
                 else {
-                    throw "'$_' must be in the format 'https://api.github.com/repos/user/repository/releases/latest'. Replace 'user' with the user or organisation and 'repository' with the target repository name."
+                    throw "'$_' must be in the format 'https://api.github.com/repos/user/repository/releases', 'https://api.github.com/repos/user/repository/releases/latest', or 'https://api.github.com/repos/user/repository/releases/RELEASE_ID'. Replace 'user' with the user or organisation, 'repository' with the target repository name, and 'RELEASE_ID' with a valid release identifier."
                 }
             })]
         [System.String] $Uri = "https://api.github.com/repos/atom/atom/releases/latest"
