@@ -16,35 +16,53 @@ function Get-FoxitPDFEditor {
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
+    # Make an initial request to the Foxit catalog page to establish a session and retrieve cookies
+    Write-Verbose -Message "$($MyInvocation.MyCommand): Make initial request to retrieve bearer token."
+    $null = Invoke-WebRequest -Uri $res.Get.Update.InitialUri -SessionVariable 'foxitSession' -UseBasicParsing
+    $tokenCookie = $foxitSession.Cookies.GetCookies($res.Get.Update.CookieHost) | Where-Object { $_.Name -eq 'token' }
+    $bearerToken = $tokenCookie.Value
+    if ($null -eq $bearerToken) {
+        Write-Warning -Message "$($MyInvocation.MyCommand): Failed to retrieve bearer token from cookies."
+        return
+    }
+    Write-Verbose -Message "$($MyInvocation.MyCommand): Retrieved bearer token from cookies."
+
     # Query the Foxit package download form to get the JSON
-    $UpdateFeed = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri
+    $Metadata = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri -Headers @{"authorization" = "Bearer $bearerToken"}
 
-    # Grab latest version. Removed Sort-Object because Foxit moved to a 5 part version number
-    $BigVersion = $UpdateFeed.package_info.big_version | Select-Object -First 1
-    Write-Verbose -Message "$($MyInvocation.MyCommand): Found 'big' version: $BigVersion."
-
-    # Match version using the .package_info.down property
-    if ($null -ne $UpdateFeed.package_info.version[0]) {
-        $Version = $UpdateFeed.package_info.version[0]
+    # Grab latest version. The property name is also the value
+    if ($null -eq $Metadata.data.version) {
+        Write-Warning -Message "$($MyInvocation.MyCommand): No version information found in the metadata."
+        return
     }
-    else {
-        $Version = [RegEx]::Match($UpdateFeed.package_info.down, $res.Get.Update.MatchVersion).Groups[0].Value
-    }
-    Write-Verbose -Message "$($MyInvocation.MyCommand): Matched version: $Version."
+    $VersionProperty = $Metadata.data.version.PSObject.Properties |
+        Where-Object { $_.MemberType -eq 'NoteProperty' } |
+        Select-Object -First 1 -ExpandProperty Name
+    $Version = $Metadata.data.version.$VersionProperty
+    Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version."
 
-    # Build the download URL; Follow the download link which will return a 301/302
-    $DownloadUrl = $res.Get.Download.Uri -replace "#version", $Version
-    $Url = ((Resolve-InvokeWebRequest -Uri $DownloadUrl -MaximumRedirection 2) -split "\?")[0]
+    $FileTypes = $Metadata.data.package_type.PSObject.Properties |
+        Where-Object { $_.MemberType -eq 'NoteProperty' } |
+        ForEach-Object { $_.Name }
+    Write-Verbose -Message "$($MyInvocation.MyCommand): Found file types: $($FileTypes -join ", ")."
 
-    # Construct the output; Return the custom object to the pipeline
-    Write-Verbose -Message "$($MyInvocation.MyCommand): Return details for dynamic download URL."
-    $PSObject = [PSCustomObject] @{
-        Version  = $Version
-        Date     = ConvertTo-DateTime -DateTime $updateFeed.package_info.release -Pattern $res.Get.Update.DateTimePattern
-        Language = $res.Get.Download.Language
-        Size     = $UpdateFeed.package_info.size
-        Type     = Get-FileType -File $Url
-        URI      = $Url
+    # Loop through the file types from the API metadata to build the download URLs
+    foreach ($FileType in $FileTypes) {
+
+        # Build the download URL; Follow the download link which will return a 301/302
+        $DownloadUrl = $res.Get.Download.Uri -replace "#version", $Version -replace "#filetype", $FileType
+        $ResolvedUrl = Invoke-EvergreenRestMethod -Uri $DownloadUrl -Headers @{"authorization" = "Bearer $bearerToken"}
+        Write-Verbose -Message "$($MyInvocation.MyCommand): Resolved URL to: $($ResolvedUrl.data)."
+        $DownloadUrl = ($ResolvedUrl.data -split "\?")[0]
+        Write-Verbose -Message "$($MyInvocation.MyCommand): Split URL to: $DownloadUrl."
+
+        # Construct the output; Return the custom object to the pipeline
+        $PSObject = [PSCustomObject] @{
+            Version  = $Version
+            Language = $res.Get.Download.Language
+            Type     = Get-FileType -File $DownloadUrl
+            URI      = $DownloadUrl
+        }
+        Write-Output -InputObject $PSObject
     }
-    Write-Output -InputObject $PSObject
 }
