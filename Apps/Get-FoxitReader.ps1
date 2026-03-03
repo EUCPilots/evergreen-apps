@@ -16,8 +16,19 @@ function Get-FoxitReader {
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
+    # Make an initial request to the Foxit catalog page to establish a session and retrieve cookies
+    Write-Verbose -Message "$($MyInvocation.MyCommand): Make initial request to retrieve bearer token."
+    $response = Invoke-WebRequest -Uri $res.Get.Update.InitialUri -SessionVariable 'foxitSession' -UseBasicParsing
+    $tokenCookie = $foxitSession.Cookies.GetCookies($res.Get.Update.CookieHost) | Where-Object { $_.Name -eq 'token' }
+    $bearerToken = $tokenCookie.Value
+    if ($null -eq $bearerToken) {
+        Write-Warning -Message "$($MyInvocation.MyCommand): Failed to retrieve bearer token from cookies."
+        return
+    }
+    Write-Verbose -Message "$($MyInvocation.MyCommand): Retrieved bearer token from cookies."
+
     # Query the Foxit package download form to get the JSON
-    $Metadata = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri -Headers $res.Get.Update.Headers
+    $Metadata = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri -Headers @{"authorization" = "Bearer $bearerToken"}
 
     # Grab latest version. The property name is also the value
     if ($null -eq $Metadata.data.version) {
@@ -34,9 +45,9 @@ function Get-FoxitReader {
     # Loop through the file types from the API metadata to build the download URLs
     foreach ($FileType in $FileTypes) {
 
-         # Build the download URL; Follow the download link which will return a 301/302
+        # Build the download URL; Follow the download link which will return a 301/302
         $DownloadUrl = $res.Get.Download.Uri -replace "#version", $Version -replace "#filetype", $FileType
-        $Url = Invoke-EvergreenRestMethod -Uri $DownloadUrl -Headers $res.Get.Download.Headers
+        $Url = Invoke-EvergreenRestMethod -Uri $DownloadUrl -Headers @{"authorization" = "Bearer $bearerToken"}
 
         # Construct the output; Return the custom object to the pipeline
         $PSObject = [PSCustomObject] @{
