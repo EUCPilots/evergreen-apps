@@ -18,7 +18,7 @@ function Get-FoxitReader {
 
     # Make an initial request to the Foxit catalog page to establish a session and retrieve cookies
     Write-Verbose -Message "$($MyInvocation.MyCommand): Make initial request to retrieve bearer token."
-    $response = Invoke-WebRequest -Uri $res.Get.Update.InitialUri -SessionVariable 'foxitSession' -UseBasicParsing
+    $null = Invoke-WebRequest -Uri $res.Get.Update.InitialUri -SessionVariable 'foxitSession' -UseBasicParsing
     $tokenCookie = $foxitSession.Cookies.GetCookies($res.Get.Update.CookieHost) | Where-Object { $_.Name -eq 'token' }
     $bearerToken = $tokenCookie.Value
     if ($null -eq $bearerToken) {
