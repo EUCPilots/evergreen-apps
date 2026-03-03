@@ -7,18 +7,15 @@
             "Headers": {
                 "sec-fetch-dest": "empty",
                 "sec-ch-ua-mobile": "?0",
-                "method": "GET",
                 "accept-encoding": "gzip, deflate, br, zstd",
                 "dnt": "1",
                 "sec-fetch-site": "same-origin",
-                "scheme": "https",
                 "sec-ch-ua-platform": "\"Windows\"",
                 "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Microsoft Edge\";v=\"145\", \"Chromium\";v=\"145\"",
                 "accept-language": "en-US;q=0.9,en;q=0.8,en-US;q=0.7",
                 "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b3VyaXN0X2lkIjoiZGFiN2Q2YWQxOGUxMTAwNDc1OGMzZDc2MzY3NzIxYjEiLCJicm93c2VyX2ZpbmdlcnByaW50IjoiMjA3NDVlMzhkNjg4NjRlNjExZDlhMWE1ZTMzYmI4NjQiLCJ0aW1lIjoxNzcyNDIzMDQyLCJpcCI6IjQ5LjE4Ni44OS4xMDYifQ.69Z_EI_-REBqs0Pkkevhb-1jqg_snBFWKQjkxjj-8w8",
                 "accept": "application/json, text/plain, */*",
                 "referer": "https://www.foxit.com/products/catalog/",
-                "authority": "www.foxit.com",
                 "sec-fetch-mode": "cors",
                 "priority": "u=1, i"
             }
@@ -28,17 +25,14 @@
             "Headers": {
                 "sec-fetch-dest": "empty",
                 "sec-ch-ua-mobile": "?0",
-                "method": "GET",
                 "accept-encoding": "gzip, deflate, br, zstd",
                 "dnt": "1",
                 "sec-fetch-site": "same-origin",
-                "scheme": "https",
                 "sec-ch-ua-platform": "\"Windows\"",
                 "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Microsoft Edge\";v=\"145\", \"Chromium\";v=\"145\"",
                 "accept-language": "en-US;q=0.9,en;q=0.8,en-US;q=0.7",
                 "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b3VyaXN0X2lkIjoiZGFiN2Q2YWQxOGUxMTAwNDc1OGMzZDc2MzY3NzIxYjEiLCJicm93c2VyX2ZpbmdlcnByaW50IjoiMjA3NDVlMzhkNjg4NjRlNjExZDlhMWE1ZTMzYmI4NjQiLCJ0aW1lIjoxNzcyNDIzMDQyLCJpcCI6IjQ5LjE4Ni44OS4xMDYifQ.69Z_EI_-REBqs0Pkkevhb-1jqg_snBFWKQjkxjj-8w8",
                 "accept": "application/json, text/plain, */*",
-                "authority": "www.foxit.com",
                 "sec-fetch-mode": "cors",
                 "priority": "u=1, i"
             },

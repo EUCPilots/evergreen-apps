@@ -17,7 +17,7 @@ function Get-FoxitReader {
     )
 
     # Query the Foxit package download form to get the JSON
-    $Metadata = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri -Headers $Headers
+    $Metadata = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri -Headers $res.Get.Update.Headers
 
     # Grab latest version. The property name is also the value
     if ([System.String]::IsNullOrEmpty($Metadata.data.version)) {
