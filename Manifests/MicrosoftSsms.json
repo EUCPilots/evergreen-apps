@@ -7,7 +7,7 @@
             "DatePattern": "yyyy-MM-ddTHH:mm:ss"
         },
         "Download": {
-            "Version": "22.3.0",
+            "Version": "22.3.2",
             "Uri": "https://aka.ms/ssms/22/release/vs_SSMS.exe",
             "DatePattern": "yyyy-MM-ddTHH:mm:ss"
         }
