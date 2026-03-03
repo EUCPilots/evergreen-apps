@@ -35,11 +35,15 @@ function Get-FoxitReader {
         Write-Warning -Message "$($MyInvocation.MyCommand): No version information found in the metadata."
         return
     }
-    $VersionProperty = $Metadata.data.version | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" } | Select-Object -ExpandProperty "Name"
+    $VersionProperty = $Metadata.data.version.PSObject.Properties |
+        Where-Object { $_.MemberType -eq 'NoteProperty' } |
+        Select-Object -First 1 -ExpandProperty Name
     $Version = $Metadata.data.version.$VersionProperty
     Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version."
 
-    $FileTypes = $Metadata.data.package_type | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" } | Select-Object -ExpandProperty "Name"
+    $FileTypes = $Metadata.data.package_type.PSObject.Properties |
+        Where-Object { $_.MemberType -eq 'NoteProperty' } |
+        ForEach-Object { $_.Name }
     Write-Verbose -Message "$($MyInvocation.MyCommand): Found file types: $($FileTypes -join ", ")."
 
     # Loop through the file types from the API metadata to build the download URLs
