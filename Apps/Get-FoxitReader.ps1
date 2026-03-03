@@ -20,7 +20,7 @@ function Get-FoxitReader {
     $Metadata = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri -Headers $res.Get.Update.Headers
 
     # Grab latest version. The property name is also the value
-    if ([System.String]::IsNullOrEmpty($Metadata.data.version)) {
+    if ($null -eq $Metadata.data.version) {
         Write-Warning -Message "$($MyInvocation.MyCommand): No version information found in the metadata."
         return
     }
@@ -31,7 +31,7 @@ function Get-FoxitReader {
     $FileTypes = $Metadata.data.package_type | Get-Member | Where-Object { $_.MemberType -eq "NoteProperty" } | Select-Object -ExpandProperty "Name"
     Write-Verbose -Message "$($MyInvocation.MyCommand): Found file types: $($FileTypes -join ", ")."
 
-    # Loop through the file types defined in the manifest to build the download URLs
+    # Loop through the file types from the API metadata to build the download URLs
     foreach ($FileType in $FileTypes) {
 
          # Build the download URL; Follow the download link which will return a 301/302
