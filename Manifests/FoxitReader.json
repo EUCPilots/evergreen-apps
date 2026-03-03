@@ -3,20 +3,13 @@
     "Source": "https://www.foxitsoftware.com/pdf-reader/",
     "Get": {
         "Update": {
-            "Uri": "https://www.foxitsoftware.com/portal/download/getdownloadform.html?retJson=1&product=Foxit-Reader&platform=Windows&formId=download-reader",
-            "ContentType": "text/html; charset=UTF-8",
-            "SkipLanguages": [
-                "Elex",
-                "Portuguese(Portugal)",
-                "Turkish"
-            ],
-			"DateTimePattern": "MM/dd/yy",
-            "MatchVersion": "(?<=/)\\d{4}\\.\\d+\\.\\d+(?=/)"
+            "InitialUri": "https://www.foxit.com/products/catalog/",
+            "CookieHost": "https://www.foxit.com",
+            "Uri": "https://www.foxit.com/foxit-api/form/showDownloadForm/?form_id=download-reader&language=ML&platform=Windows&package_type=&lang=en-us&fresh=1"
         },
         "Download": {
-            "Uri": "https://www.foxitsoftware.com/downloads/latest.html?product=Foxit-Enterprise-Reader&platform=Windows&version=#version&package_type=msi&language=ML&distID=",
-            "Language": "Multi-Language",
-            "MatchHost": "^https?:\\/\\/[^/]+"
+            "Uri": "https://www.foxit.com/foxit-api/form/latest/?product=Foxit-Reader&platform=Windows&version=#version&package_type=#filetype&language=ML",
+            "Language": "Multi-Language"
         }
     },
     "Install": {
