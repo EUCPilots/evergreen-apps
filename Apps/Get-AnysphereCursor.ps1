@@ -22,7 +22,7 @@ function Get-AnysphereCursor {
 
         # Read the version details from the API, format and return to the pipeline
         $Uri = $res.Get.Update.Uri -replace "#platform", $platform.ToLower()
-        $updateFeed = Invoke-EvergreenRestMethod -Uri $Uri
+        $updateFeed = Invoke-EvergreenRestMethod -Uri $Uri -UserAgent $res.Get.Update.UserAgent
         if ($updateFeed) {
             $PSObject = [PSCustomObject] @{
                 Version      = $updateFeed.version

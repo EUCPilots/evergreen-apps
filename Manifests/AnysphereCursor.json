@@ -10,7 +10,6 @@
                 "win32-arm64",
                 "win32-arm64-user"
             ],
-            "ReplaceText": "-insider",
             "UserAgent": "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Cursor/2.6.12 Chrome/142.0.7444.265 Electron/39.6.0 Safari/537.36"
         }
     },
