@@ -1,4 +1,4 @@
-#Requires -Module @{ ModuleName="Evergreen"; ModuleVersion="2511.2823.0" }
+#Requires -Module @{ ModuleName="Evergreen"; ModuleVersion="2603.2832.0" }
 function Get-AzulZulu21 {
     <#
         .NOTES
