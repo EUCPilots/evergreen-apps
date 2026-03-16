@@ -3,7 +3,7 @@
     "Source": "https://kubernetes.io/",
     "Get": {
         "Update": {
-            "Uri": "https://cdn.dl.k8s.io/release/stable.txt"
+            "Uri": "https://dl.k8s.io/release/stable.txt"
         },
         "Download": {
             "Uri": {
