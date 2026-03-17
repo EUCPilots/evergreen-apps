@@ -60,9 +60,9 @@ function Get-AdobeAcrobat {
                             # Build the object
                             $PSObject = [PSCustomObject] @{
                                 Version      = $Content.Trim()
-                                Type         = $res.Get.Download.Type
-                                Product      = $Product.Name
                                 Track        = $item.Name
+                                Product      = $Product.Name
+                                DownloadType = $res.Get.Download.Type
                                 Language     = $Url.Name
                                 Architecture = $Architecture.Name
                                 URI          = $Uri
