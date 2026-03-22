@@ -1,6 +1,6 @@
 {
-    "Name": "Citrix ShareFile for Windows",
-    "Source": "https://www.citrix.com/downloads/sharefile/clients-and-plug-ins/citrix-files-for-windows.html",
+    "Name": "Progress ShareFile",
+    "Source": "https://www.sharefile.com/product-feature/data-access-and-control",
     "Get": {
         "Update": {
             "Uri": "http://www.sf-cdn.net/downloads/cfwin/updates.xml",
@@ -8,7 +8,7 @@
         }
     },
     "Install": {
-        "Setup": "CitrixFilesForWindows*.exe|ShareFileForWindows*.exe",
+        "Setup": "ProgressShareFile*.exe|ShareFileForWindows*.exe",
         "Physical": {
             "Arguments": "/install /quiet /norestart",
             "PostInstall": []

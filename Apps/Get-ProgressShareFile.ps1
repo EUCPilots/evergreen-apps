@@ -1,7 +1,7 @@
-﻿function Get-CitrixShareFile {
+﻿function Get-ProgressShareFile {
     <#
         .SYNOPSIS
-            Returns the current Citrix ShareFile for Windows releases.
+            Returns the current Progress ShareFile for Windows releases.
 
         .NOTES
             Author: Tschuegy
@@ -15,7 +15,7 @@
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    # Read the Citrix ShareFile for Windows for updater feed
+    # Read the Progress ShareFile for Windows updater feed
     $params = @{
         Uri = $res.Get.Update.Uri
     }
