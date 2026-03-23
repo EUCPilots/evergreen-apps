@@ -1,0 +1,320 @@
+name: New GitHub app from issue
+
+on:
+  issues:
+    types:
+      - opened
+      - edited
+      - reopened
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  validate-and-create:
+    if: contains(github.event.issue.labels.*.name, 'github-hosted app')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Parse and validate issue form
+        id: parse
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const body = issue.body || "";
+
+            function getField(label) {
+              const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+              const regex = new RegExp(`###\\s+${escaped}\\s*\\n([\\s\\S]*?)(?=\\n###\\s+|$)`, "i");
+              const match = body.match(regex);
+              return match ? match[1].trim() : "";
+            }
+
+            function isValidUrl(value) {
+              try {
+                const parsed = new URL(value);
+                return parsed.protocol === "http:" || parsed.protocol === "https:";
+              }
+              catch {
+                return false;
+              }
+            }
+
+            const appName = getField("What is the new application?");
+            const githubRepoUrl = getField("GitHub repository URL");
+            const vendorSite = getField("Vendor site");
+            const requiresSignIn = getField("Does the vendor require a sign-in to download the app?");
+            const hasUpdater = getField("Does the application include an updater?");
+
+            const errors = [];
+
+            if (!appName) errors.push("Missing 'What is the new application?' field.");
+            if (!githubRepoUrl) errors.push("Missing 'GitHub repository URL' field.");
+            if (!vendorSite) errors.push("Missing 'Vendor site' field.");
+
+            if (githubRepoUrl && !isValidUrl(githubRepoUrl)) {
+              errors.push("GitHub repository URL must be a valid http/https URL.");
+            }
+
+            if (vendorSite && !isValidUrl(vendorSite)) {
+              errors.push("Vendor site must be a valid http/https URL.");
+            }
+
+            const repoMatch = githubRepoUrl.match(/^https:\/\/github\.com\/([^\/]+)\/([^\/\s#?]+)\/?$/i);
+            if (!repoMatch) {
+              errors.push("GitHub repository URL must be in the format https://github.com/<owner>/<repo>.");
+            }
+
+            if (!["Yes", "No", "Unknown"].includes(hasUpdater)) {
+              errors.push("Updater field must be one of 'Yes', 'No', or 'Unknown'.");
+            }
+
+            if (errors.length > 0) {
+              const message = [
+                "Validation failed for this GitHub-hosted app request:",
+                "",
+                ...errors.map((error) => `- ${error}`),
+                "",
+                "Please update the issue and keep the 'github-hosted app' label."
+              ].join("\n");
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: message
+              });
+
+              core.setFailed("Issue form validation failed.");
+              return;
+            }
+
+            const owner = repoMatch[1];
+            const repo = repoMatch[2];
+
+            core.setOutput("app_name", appName);
+            core.setOutput("github_repo_url", githubRepoUrl);
+            core.setOutput("vendor_site", vendorSite);
+            core.setOutput("requires_sign_in", requiresSignIn);
+            core.setOutput("has_updater", hasUpdater);
+            core.setOutput("repo_owner", owner);
+            core.setOutput("repo_name", repo);
+
+      - name: Verify repository owner is official
+        id: verify
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = `${{ steps.parse.outputs.repo_owner }}`;
+            const repo = `${{ steps.parse.outputs.repo_name }}`;
+
+            const query = `
+              query($owner: String!, $name: String!) {
+                repository(owner: $owner, name: $name) {
+                  isPrivate
+                  isArchived
+                  owner {
+                    __typename
+                    login
+                    ... on Organization {
+                      isVerified
+                    }
+                    ... on User {
+                      isVerified
+                    }
+                  }
+                }
+              }
+            `;
+
+            let result;
+            try {
+              result = await github.graphql(query, { owner, name: repo });
+            }
+            catch {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.issue.number,
+                body: `Unable to inspect ${owner}/${repo}. Ensure the repository exists and is publicly accessible.`
+              });
+              core.setFailed("Unable to query target GitHub repository.");
+              return;
+            }
+
+            const repository = result.repository;
+            if (!repository) {
+              core.setFailed("Repository not found.");
+              return;
+            }
+
+            if (repository.isPrivate) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.issue.number,
+                body: "Repository validation failed: private repositories are not accepted as source applications."
+              });
+              core.setFailed("Repository is private.");
+              return;
+            }
+
+            if (repository.isArchived) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.issue.number,
+                body: "Repository validation failed: archived repositories are not accepted as source applications."
+              });
+              core.setFailed("Repository is archived.");
+              return;
+            }
+
+            const isVerified = !!repository.owner.isVerified;
+            if (!isVerified) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.issue.number,
+                body: "Repository validation failed: owner is not verified. Please provide an official source where the GitHub organisation/user is verified."
+              });
+              core.setFailed("Repository owner is not verified.");
+              return;
+            }
+
+            core.setOutput("owner_login", repository.owner.login);
+
+      - name: Build app metadata
+        id: metadata
+        env:
+          APP_NAME: ${{ steps.parse.outputs.app_name }}
+        run: |
+          set -euo pipefail
+
+          raw_name="$APP_NAME"
+          app_id=$(echo "$raw_name" | sed 's/[^[:alnum:]]/ /g' | awk '{for(i=1;i<=NF;i++){printf toupper(substr($i,1,1)) tolower(substr($i,2))}}')
+
+          if [ -z "$app_id" ]; then
+            echo "Unable to derive app ID from issue title field."
+            exit 1
+          fi
+
+          echo "app_id=$app_id" >> "$GITHUB_OUTPUT"
+          echo "app_function=Get-$app_id" >> "$GITHUB_OUTPUT"
+          echo "app_file=Apps/Get-$app_id.ps1" >> "$GITHUB_OUTPUT"
+          echo "manifest_file=Manifests/$app_id.json" >> "$GITHUB_OUTPUT"
+
+      - name: Ensure files do not already exist
+        run: |
+          set -euo pipefail
+          app_file='${{ steps.metadata.outputs.app_file }}'
+          manifest_file='${{ steps.metadata.outputs.manifest_file }}'
+
+          if [ -f "$app_file" ] || [ -f "$manifest_file" ]; then
+            echo "A generated app or manifest file already exists for this application ID."
+            exit 1
+          fi
+
+      - name: Generate app and manifest scaffolding
+        env:
+          APP_NAME: ${{ steps.parse.outputs.app_name }}
+          APP_ID: ${{ steps.metadata.outputs.app_id }}
+          APP_FUNCTION: ${{ steps.metadata.outputs.app_function }}
+          APP_FILE: ${{ steps.metadata.outputs.app_file }}
+          MANIFEST_FILE: ${{ steps.metadata.outputs.manifest_file }}
+          REPO_URL: ${{ steps.parse.outputs.github_repo_url }}
+          REPO_OWNER: ${{ steps.parse.outputs.repo_owner }}
+          REPO_NAME: ${{ steps.parse.outputs.repo_name }}
+          VENDOR_SITE: ${{ steps.parse.outputs.vendor_site }}
+          REQUIRES_SIGN_IN: ${{ steps.parse.outputs.requires_sign_in }}
+          HAS_UPDATER: ${{ steps.parse.outputs.has_updater }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+
+          cp Apps/Get-7ZipZS.ps1 "$APP_FILE"
+          cp Manifests/7ZipZS.json "$MANIFEST_FILE"
+
+          sed -i.bak "s|^function Get-7ZipZS {|function $APP_FUNCTION {|" "$APP_FILE"
+          sed -i.bak "s|Returns the latest 70Zip ZS version number and download\\.|Returns the latest $APP_NAME version number and download.|" "$APP_FILE"
+          rm -f "$APP_FILE.bak"
+
+          tmp_manifest=$(mktemp)
+          jq \
+            --arg appName "$APP_NAME" \
+            --arg vendorSite "$VENDOR_SITE" \
+            --arg getUri "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest" \
+            --arg downloadUri "$REPO_URL/releases/latest" \
+            --arg issue "#$ISSUE_NUMBER" \
+            --arg repository "$REPO_URL" \
+            --arg requiresSignIn "$REQUIRES_SIGN_IN" \
+            --arg hasUpdater "$HAS_UPDATER" \
+            '.Name = $appName
+            | .Source = $vendorSite
+            | .Get.Uri = $getUri
+            | .Get.Download.Uri = $downloadUri
+            | .Notes = {
+                Issue: $issue,
+                Repository: $repository,
+                RequiresSignIn: $requiresSignIn,
+                HasUpdater: $hasUpdater
+              }' \
+            "$MANIFEST_FILE" > "$tmp_manifest"
+
+          mv "$tmp_manifest" "$MANIFEST_FILE"
+
+      - name: Create pull request with generated files
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "Add scaffold for ${{ steps.metadata.outputs.app_id }} from issue #${{ github.event.issue.number }}"
+          branch: "automation/new-github-app-${{ github.event.issue.number }}-${{ steps.metadata.outputs.app_id }}"
+          title: "Add new app scaffold: ${{ steps.metadata.outputs.app_id }} (issue #${{ github.event.issue.number }})"
+          body: |
+            Automatically generated scaffold for a new GitHub-hosted application request.
+
+            Source issue: #${{ github.event.issue.number }}
+            Requested app: ${{ steps.parse.outputs.app_name }}
+            GitHub repository: ${{ steps.parse.outputs.github_repo_url }}
+
+            Generated files:
+            - `${{ steps.metadata.outputs.app_file }}`
+            - `${{ steps.metadata.outputs.manifest_file }}`
+          labels: |
+            new application
+
+      - name: Comment issue with result
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const failed = "${{ job.status }}" !== "success";
+            if (failed) {
+              return;
+            }
+
+            const prNumber = "${{ steps.cpr.outputs.pull-request-number }}";
+            const prUrl = "${{ steps.cpr.outputs.pull-request-url }}";
+
+            if (!prNumber || !prUrl) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.issue.number,
+                body: "Validation passed, but no pull request was created (an existing automation PR branch may already be open)."
+              });
+              return;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              body: `Validation passed and scaffold PR created: ${prUrl}`
+            });
