@@ -246,9 +246,17 @@ jobs:
           cp Apps/Get-7ZipZS.ps1 "$APP_FILE"
           cp Manifests/7ZipZS.json "$MANIFEST_FILE"
 
-          sed -i.bak "s|^function Get-7ZipZS {|function $APP_FUNCTION {|" "$APP_FILE"
-          sed -i.bak "s|Returns the latest 70Zip ZS version number and download\\.|Returns the latest $APP_NAME version number and download.|" "$APP_FILE"
-          rm -f "$APP_FILE.bak"
+          # Use perl so that env-var values containing newlines or sed special
+          # characters (e.g. | / \) do not corrupt the substitution expression.
+          APP_FUNCTION="$APP_FUNCTION" perl -i -pe \
+            's/^function Get-7ZipZS \{/function $ENV{APP_FUNCTION} {/'  \
+            "$APP_FILE"
+
+          # Take only the first line of APP_NAME for the synopsis string.
+          app_name_synopsis=$(printf '%s' "$APP_NAME" | head -1 | tr -d '\r')
+          APP_NAME_SYNOPSIS="$app_name_synopsis" perl -i -pe \
+            's/Returns the latest 70Zip ZS version number and download\./Returns the latest $ENV{APP_NAME_SYNOPSIS} version number and download./' \
+            "$APP_FILE"
 
           tmp_manifest=$(mktemp)
           jq \
