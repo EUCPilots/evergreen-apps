@@ -284,25 +284,42 @@ jobs:
 
       - name: Create pull request with generated files
         id: cpr
-        uses: peter-evans/create-pull-request@v7
         env:
           GH_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
-        with:
-          commit-message: "Add scaffold for ${{ steps.metadata.outputs.app_id }} from issue #${{ github.event.issue.number }}"
-          branch: "automation/new-github-app-${{ github.event.issue.number }}"
-          title: "Add new app scaffold: ${{ steps.metadata.outputs.app_id }} (issue #${{ github.event.issue.number }})"
-          body: |
-            Automatically generated scaffold for a new GitHub-hosted application request.
+          APP_ID: ${{ steps.metadata.outputs.app_id }}
+          APP_FILE: ${{ steps.metadata.outputs.app_file }}
+          MANIFEST_FILE: ${{ steps.metadata.outputs.manifest_file }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          APP_NAME: ${{ steps.parse.outputs.app_name }}
+          REPO_URL: ${{ steps.parse.outputs.github_repo_url }}
+        run: |
+          set -euo pipefail
 
-            Source issue: #${{ github.event.issue.number }}
-            Requested app: ${{ steps.parse.outputs.app_name }}
-            GitHub repository: ${{ steps.parse.outputs.github_repo_url }}
+          branch="automation/new-github-app-${ISSUE_NUMBER}"
 
-            Generated files:
-            - `${{ steps.metadata.outputs.app_file }}`
-            - `${{ steps.metadata.outputs.manifest_file }}`
-          labels: |
-            new application
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout -b "$branch"
+          git add "$APP_FILE" "$MANIFEST_FILE"
+          git commit -m "Add scaffold for ${APP_ID} from issue #${ISSUE_NUMBER}"
+          git push -f origin "$branch"
+
+          pr_url=$(gh pr create \
+            --title "Add new app scaffold: ${APP_ID} (issue #${ISSUE_NUMBER})" \
+            --body "Automatically generated scaffold for a new GitHub-hosted application request.
+
+          Source issue: #${ISSUE_NUMBER}
+          Requested app: ${APP_NAME}
+          GitHub repository: ${REPO_URL}
+
+          Generated files:
+          - \`${APP_FILE}\`
+          - \`${MANIFEST_FILE}\`" \
+            --base main \
+            --head "$branch" \
+            --label "new application" || true)
+
+          echo "pull_request_url=${pr_url}" >> "$GITHUB_OUTPUT"
 
       - name: Comment issue with result
         if: always()
@@ -314,10 +331,9 @@ jobs:
               return;
             }
 
-            const prNumber = "${{ steps.cpr.outputs.pull-request-number }}";
-            const prUrl = "${{ steps.cpr.outputs.pull-request-url }}";
+            const prUrl = "${{ steps.cpr.outputs.pull_request_url }}";
 
-            if (!prNumber || !prUrl) {
+            if (!prUrl) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
