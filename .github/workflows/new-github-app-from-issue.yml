@@ -285,9 +285,11 @@ jobs:
       - name: Create pull request with generated files
         id: cpr
         uses: peter-evans/create-pull-request@v7
+        env:
+          GH_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
         with:
           commit-message: "Add scaffold for ${{ steps.metadata.outputs.app_id }} from issue #${{ github.event.issue.number }}"
-          branch: "automation/new-github-app-${{ github.event.issue.number }}-${{ steps.metadata.outputs.app_id }}"
+          branch: "automation/new-github-app-${{ github.event.issue.number }}"
           title: "Add new app scaffold: ${{ steps.metadata.outputs.app_id }} (issue #${{ github.event.issue.number }})"
           body: |
             Automatically generated scaffold for a new GitHub-hosted application request.
