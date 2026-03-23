@@ -1,0 +1,30 @@
+{
+  "Name": "Kinovea is a video annotation tool designed for sport analysis.\n\nIt features utilities to capture, slow down, compare, annotate, track and measure motion in videos. ([Learn more](https://www.kinovea.org/features.html)).\n\nKinovea is completely free and open source.",
+  "Source": "https://www.kinovea.org",
+  "Get": {
+    "Uri": "https://api.github.com/repos/Kinovea/Kinovea/releases/latest",
+    "MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+    "MatchFileTypes": "\\.exe$|\\.msi$",
+    "Download": {
+      "Uri": "https://github.com/Kinovea/Kinovea/releases/latest"
+    }
+  },
+  "Install": {
+    "Setup": "7z*.msi",
+    "Preinstall": "",
+    "Physical": {
+      "Arguments": "/quiet /norestart",
+      "PostInstall": []
+    },
+    "Virtual": {
+      "Arguments": "/quiet /norestart",
+      "PostInstall": []
+    }
+  },
+  "Notes": {
+    "Issue": "#119",
+    "Repository": "https://github.com/Kinovea/Kinovea",
+    "RequiresSignIn": "",
+    "HasUpdater": "Unknown"
+  }
+}
