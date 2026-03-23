@@ -178,14 +178,19 @@ jobs:
 
             const isVerified = !!repository.owner.isVerified;
             if (!isVerified) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.issue.number,
+                labels: ["not-verified"]
+              });
+
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.payload.issue.number,
-                body: "Repository validation failed: owner is not verified. Please provide an official source where the GitHub organisation/user is verified."
+                body: "Repository owner is not verified. Continuing automation and applying the 'not-verified' label for maintainer review."
               });
-              core.setFailed("Repository owner is not verified.");
-              return;
             }
 
             core.setOutput("owner_login", repository.owner.login);
