@@ -46,6 +46,8 @@ jobs:
               }
             }
 
+            const vendorName = getField("Vendor name");
+            const applicationName = getField("Application name");
             const appName = getField("What is the new application?");
             const githubRepoUrl = getField("GitHub repository URL");
             const vendorSite = getField("Vendor site");
@@ -54,6 +56,8 @@ jobs:
 
             const errors = [];
 
+            if (!vendorName) errors.push("Missing 'Vendor name' field.");
+            if (!applicationName) errors.push("Missing 'Application name' field.");
             if (!appName) errors.push("Missing 'What is the new application?' field.");
             if (!githubRepoUrl) errors.push("Missing 'GitHub repository URL' field.");
             if (!vendorSite) errors.push("Missing 'Vendor site' field.");
@@ -98,6 +102,8 @@ jobs:
             const owner = repoMatch[1];
             const repo = repoMatch[2];
 
+            core.setOutput("vendor_name", vendorName);
+            core.setOutput("application_name", applicationName);
             core.setOutput("app_name", appName);
             core.setOutput("github_repo_url", githubRepoUrl);
             core.setOutput("vendor_site", vendorSite);
@@ -198,11 +204,12 @@ jobs:
       - name: Build app metadata
         id: metadata
         env:
-          APP_NAME: ${{ steps.parse.outputs.app_name }}
+          VENDOR_NAME: ${{ steps.parse.outputs.vendor_name }}
+          APPLICATION_NAME: ${{ steps.parse.outputs.application_name }}
         run: |
           set -euo pipefail
 
-          raw_name="$APP_NAME"
+          raw_name="$VENDOR_NAME $APPLICATION_NAME"
           app_id=$(echo "$raw_name" | sed 's/[^[:alnum:]]/ /g' | awk '{for(i=1;i<=NF;i++){printf toupper(substr($i,1,1)) tolower(substr($i,2))}}')
 
           if [ -z "$app_id" ]; then
@@ -228,7 +235,7 @@ jobs:
 
       - name: Generate app and manifest scaffolding
         env:
-          APP_NAME: ${{ steps.parse.outputs.app_name }}
+          APP_NAME: ${{ steps.parse.outputs.application_name }}
           APP_ID: ${{ steps.metadata.outputs.app_id }}
           APP_FUNCTION: ${{ steps.metadata.outputs.app_function }}
           APP_FILE: ${{ steps.metadata.outputs.app_file }}
@@ -290,7 +297,7 @@ jobs:
           APP_FILE: ${{ steps.metadata.outputs.app_file }}
           MANIFEST_FILE: ${{ steps.metadata.outputs.manifest_file }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
-          APP_NAME: ${{ steps.parse.outputs.app_name }}
+          APP_NAME: ${{ steps.parse.outputs.application_name }}
           REPO_URL: ${{ steps.parse.outputs.github_repo_url }}
         run: |
           set -euo pipefail

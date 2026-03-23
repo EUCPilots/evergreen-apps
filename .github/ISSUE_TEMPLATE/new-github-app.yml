@@ -7,6 +7,22 @@ body:
     attributes:
       value: |
         Thanks for taking the time to fill out this new GitHub-hosted application request!
+  - type: input
+    id: vendor_name
+    attributes:
+      label: "Vendor name"
+      description: "Provide the vendor or publisher name for this application."
+      placeholder: ExampleVendor
+    validations:
+      required: true
+  - type: input
+    id: application_name
+    attributes:
+      label: "Application name"
+      description: "Provide the application name."
+      placeholder: ExampleApp
+    validations:
+      required: true
   - type: textarea
     id: feature
     attributes:
