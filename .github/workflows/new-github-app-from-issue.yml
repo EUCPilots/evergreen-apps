@@ -144,7 +144,7 @@ jobs:
                 issue_number: context.payload.issue.number,
                 body: `Unable to inspect ${owner}/${repo}. Ensure the repository exists and is publicly accessible.`
               });
-              core.setFailed("Unable to query target GitHub repository.");
+              //core.setFailed("Unable to query target GitHub repository.");
               return;
             }
 
