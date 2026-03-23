@@ -5,7 +5,6 @@ function Get-7ZipZS {
 
         .NOTES
             Author: Aaron Parker
-
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification="Product name is a plural")]
