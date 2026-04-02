@@ -1,0 +1,27 @@
+{
+  "Name": "Kinovea",
+  "Source": "https://kinovea.org",
+  "Get": {
+    "Update": {
+      "Uri": "https://api.github.com/repos/Kinovea/Kinovea/tags",
+      "MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+      "MatchFileTypes": "\\.exe$|\\.msi$"
+    },
+    "Download": {
+      "Uri": "https://kinovea.org/setup/kinovea.#version/#version/Kinovea-#version.exe",
+      "ReplaceText": "#version"
+    }
+  },
+  "Install": {
+    "Setup": "",
+    "Preinstall": "",
+    "Physical": {
+      "Arguments": "/quiet /norestart",
+      "PostInstall": []
+    },
+    "Virtual": {
+      "Arguments": "/quiet /norestart",
+      "PostInstall": []
+    }
+  }
+}

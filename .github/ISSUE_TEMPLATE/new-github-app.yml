@@ -1,0 +1,68 @@
+name: New GitHub-hosted application
+description: Suggest a new application that is hosted in a GitHub repository.
+title: "[New GitHub app]: "
+labels: [new application, github-hosted app]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this new GitHub-hosted application request!
+  - type: input
+    id: vendor_name
+    attributes:
+      label: "Vendor name"
+      description: "Provide the vendor or publisher name for this application."
+      placeholder: ExampleVendor
+    validations:
+      required: true
+  - type: input
+    id: application_name
+    attributes:
+      label: "Application name"
+      description: "Provide the application name."
+      placeholder: ExampleApp
+    validations:
+      required: true
+  - type: textarea
+    id: feature
+    attributes:
+      label: "What is the new application?"
+      description: "Provide clear details about the new application you want to see added to Evergreen."
+      placeholder: "Provide details of the new application that could be added to Evergreen. Please add details of release assets, installer naming, platform support, and any update specifics."
+    validations:
+      required: true
+  - type: input
+    id: github_repo
+    attributes:
+      label: "GitHub repository URL"
+      description: "Add the link to the official GitHub repository for this application."
+      placeholder: https://github.com/owner/repository
+    validations:
+      required: true
+  - type: input
+    id: site
+    attributes:
+      label: "Vendor site"
+      description: "Add a link to the official site for this application (this can be the links that lists downloads)."
+      placeholder: https://www.vendor.com
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: "Does the application include an updater?"
+      description: "Applications that actively check for updates and notify the user or automatically install updates? (These applications may be good candidates for Evergreen)"
+      multiple: false
+      options:
+        - "Yes"
+        - "No"
+        - "Unknown"
+    validations:
+      required: true
+  - type: checkboxes
+    id: documentation
+    attributes:
+      label: "Have you reviewed the list of supported applications?"
+      description: "Please confirm that you've reviewed the list of currently supported before making this application request."
+      options:
+        - label: "Supported apps at: https://eucpilots.com/evergreen-docs/apps/"
+          required: true
