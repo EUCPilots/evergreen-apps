@@ -2,15 +2,18 @@
   "Name": "Kinovea",
   "Source": "https://kinovea.org",
   "Get": {
-    "Uri": "https://api.github.com/repos/Kinovea/Kinovea/releases/latest",
-    "MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
-    "MatchFileTypes": "\\.exe$|\\.msi$",
+    "Update": {
+      "Uri": "https://api.github.com/repos/Kinovea/Kinovea/tags",
+      "MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+      "MatchFileTypes": "\\.exe$|\\.msi$"
+    },
     "Download": {
-      "Uri": "https://github.com/Kinovea/Kinovea/releases/latest"
+      "Uri": "https://kinovea.org/setup/kinovea.#version/#version/Kinovea-#version.exe",
+      "ReplaceText": "#version"
     }
   },
   "Install": {
-    "Setup": "7z*.msi",
+    "Setup": "",
     "Preinstall": "",
     "Physical": {
       "Arguments": "/quiet /norestart",
@@ -20,11 +23,5 @@
       "Arguments": "/quiet /norestart",
       "PostInstall": []
     }
-  },
-  "Notes": {
-    "Issue": "#121",
-    "Repository": "https://github.com/Kinovea/Kinovea",
-    "RequiresSignIn": "",
-    "HasUpdater": "Unknown"
   }
 }
