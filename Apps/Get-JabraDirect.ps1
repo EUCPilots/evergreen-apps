@@ -20,12 +20,14 @@ function Get-JabraDirect {
     $Content = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri
     if ($null -ne $Content) {
 
+        $Url = $Content.WindowsDownload -split("\?") | Select-Object -First 1
+
         $PSObject = [PSCustomObject] @{
             Version       = $Content.WindowsVersion
             Architecture  = "x64"
-            Type          = Get-FileType -File $Content.WindowsDownload
             Sha256        = $Content.WindowsSHA256
-            URI           = $Content.WindowsDownload
+            Type          = Get-FileType -File $Url
+            URI           = $Url
         }
         Write-Output -InputObject $PSObject
     }

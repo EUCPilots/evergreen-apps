@@ -7,7 +7,7 @@
 		"MatchFileTypes": "\\.exe$|\\.msi$"
 	},
 	"Install": {
-		"Setup": "7z*.msi",
+		"Setup": "",
 		"Preinstall": "",
 		"Physical": {
 			"Arguments": "/quiet /norestart",
