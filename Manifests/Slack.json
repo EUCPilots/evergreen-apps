@@ -6,12 +6,11 @@
 			"Uri": ""
 		},
 		"Download": {
-			"PerUser": {
-				"x64": "https://slack.com/ssb/download-win64-msi-legacy"
-			},
-			"PerMachine": {
-				"x64": "https://slack.com/ssb/download-win64-msi"
-			}
+			"Uri": [
+				"https://slack.com/api/desktop.latestRelease?arch=arm64&variant=msix&redirect=true",
+				"https://slack.com/api/desktop.latestRelease?arch=x64&variant=msix&redirect=true",
+				"https://slack.com/api/desktop.latestRelease?arch=x64&variant=exe&redirect=true"
+			]
 		},
 		"MatchVersion": "(\\d+(\\.\\d+){1,4})"
 	},
@@ -19,15 +18,11 @@
 		"Setup": "Slack.*.msi",
 		"Physical": {
 			"Arguments": "/quiet /norestart",
-			"PostInstall": [
-
-			]
+			"PostInstall": []
 		},
 		"Virtual": {
 			"Arguments": "/quiet /norestart",
-			"PostInstall": [
-
-			]
+			"PostInstall": []
 		}
 	}
 }
