@@ -5,7 +5,6 @@ function Get-Slack {
 
         .NOTES
             Author: Aaron Parker
-
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
@@ -16,28 +15,27 @@ function Get-Slack {
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    foreach ($platform in $res.Get.Download.Keys) {
-        foreach ($architecture in $res.Get.Download[$platform].Keys) {
+    foreach ($Uri in $res.Get.Download.Uri) {
 
-            # Follow the download link which will return a 301/302
-            $redirectUrl = Resolve-SystemNetWebRequest -Uri $res.Get.Download[$platform][$architecture]
+        # Follow the download link which will return a 301/302
+        $redirectUrl = Resolve-SystemNetWebRequest -Uri $Uri
+        $DownloadUrl = $redirectUrl.ResponseUri.AbsoluteUri
 
-            # Match version number from the download URL
-            try {
-                $Version = [RegEx]::Match($redirectUrl.ResponseUri.AbsoluteUri, $res.Get.MatchVersion).Captures.Groups[0].Value
-            }
-            catch {
-                $Version = "Latest"
-            }
-
-            # Construct the output; Return the custom object to the pipeline
-            $PSObject = [PSCustomObject] @{
-                Version      = $Version
-                Platform     = $platform
-                Architecture = $architecture
-                URI          = $redirectUrl.ResponseUri.AbsoluteUri
-            }
-            Write-Output -InputObject $PSObject
+        # Match version number from the download URL
+        try {
+            $Version = [RegEx]::Match($DownloadUrl, $res.Get.MatchVersion).Captures.Groups[0].Value
         }
+        catch {
+            $Version = "Latest"
+        }
+
+        # Construct the output; Return the custom object to the pipeline
+        $PSObject = [PSCustomObject] @{
+            Version      = $Version
+            Architecture = Get-Architecture -String $DownloadUrl
+            Type         = Get-FileType -File $DownloadUrl
+            URI          = $redirectUrl.ResponseUri.AbsoluteUri
+        }
+        Write-Output -InputObject $PSObject
     }
 }
