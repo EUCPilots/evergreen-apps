@@ -1,6 +1,6 @@
 {
 	"Name": "Slack",
-	"Source": "https://slack.com/intl/en-au/help/articles/212475728-Deploy-Slack-via-Microsoft-Installer",
+	"Source": "https://slack.com/intl/en-gb/help/articles/212475728-Deploy-Slack-for-Windows",
 	"Get": {
 		"Update": {
 			"Uri": ""
