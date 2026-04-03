@@ -62,7 +62,6 @@ function Get-AdobeAcrobat {
                                 Version      = $Content.Trim()
                                 Track        = $item.Name
                                 Product      = $Product.Name
-                                DownloadType = $res.Get.Download.Type
                                 Language     = $Url.Name
                                 Architecture = $Architecture.Name
                                 URI          = $Uri
