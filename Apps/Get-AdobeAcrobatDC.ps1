@@ -5,10 +5,6 @@ function Get-AdobeAcrobatDC {
 
         .NOTES
             Author: Aaron Parker
-
-
-        .LINK
-            https://github.com/aaronparker/Evergreen
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
@@ -24,7 +20,6 @@ function Get-AdobeAcrobatDC {
         Write-Verbose -Message "$($MyInvocation.MyCommand): Searching download language: [$language]."
         $params = @{
             Uri = $($res.Get.Update.Uri -replace "#Language", $language)
-            #Headers         = $res.Get.Update.Headers
         }
         $Content = Invoke-EvergreenRestMethod @params
 
@@ -53,8 +48,9 @@ function Get-AdobeAcrobatDC {
                     # Build the object
                     $PSObject = [PSCustomObject] @{
                         Version      = $Version
-                        Type         = $Url.Name
+                        Product      = $Url.Name
                         Architecture = $Architecture.Name
+                        Type         = Get-FileType -File $Uri
                         URI          = $Uri
                     }
                     Write-Output -InputObject $PSObject
