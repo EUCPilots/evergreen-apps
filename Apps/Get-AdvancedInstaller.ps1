@@ -18,10 +18,11 @@ function Get-AdvancedInstaller {
         Uri       = $res.Get.Update.Uri
         UserAgent = $res.Get.Update.UserAgent
     }
-    $UpdateFeed = Invoke-EvergreenRestMethod @params
-    if ($null -ne $UpdateFeed) {
-
+    $response = Invoke-EvergreenWebRequest @params
+    if ($null -ne $response) {
+        
         # Convert the INI update feed to an object, replace strings that break conversion
+        $UpdateFeed = [System.Text.Encoding]::Unicode.GetString($response)
         $Updates = ConvertFrom-IniFile -InputObject ($UpdateFeed -replace ";aiu;", "" -replace "\[advinst", "[")
 
         # Get the latest version
