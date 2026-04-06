@@ -6,11 +6,11 @@
             "Uri": ""
         },
         "Download": {
-            "Version": "18.6.1.1",
+            "Version": "18.6.2.1",
             "Uri": [
-                "https://go.microsoft.com/fwlink/?linkid=2345415",
-                "https://go.microsoft.com/fwlink/?linkid=2346006",
-                "https://go.microsoft.com/fwlink/?linkid=2345416"
+                "https://go.microsoft.com/fwlink/?linkid=2358430",
+                "https://go.microsoft.com/fwlink/?linkid=2358335",
+                "https://go.microsoft.com/fwlink/?linkid=2358431"
             ],
             "Language": {
                 "English": "0x409",
