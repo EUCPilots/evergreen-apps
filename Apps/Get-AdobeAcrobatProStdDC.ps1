@@ -5,10 +5,6 @@ function Get-AdobeAcrobatProStdDC {
 
         .NOTES
             Author: Aaron Parker
-
-
-        .LINK
-            https://github.com/aaronparker/Evergreen
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
@@ -33,8 +29,9 @@ function Get-AdobeAcrobatProStdDC {
             foreach ($Sku in $res.Get.Download.Skus) {
                 $PSObject = [PSCustomObject] @{
                     Version      = $Content.products.reader[0].version
-                    Architecture = $Architecture.Name
                     Sku          = $Sku
+                    Architecture = $Architecture.Name
+                    Type         = Get-FileType -File $res.Get.Download.Uri[$Architecture.Key]
                     URI          = $res.Get.Download.Uri[$Architecture.Key]
                 }
                 Write-Output -InputObject $PSObject

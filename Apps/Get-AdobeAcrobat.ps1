@@ -5,7 +5,6 @@ function Get-AdobeAcrobat {
 
         .NOTES
             Author: Aaron Parker
-
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
@@ -64,15 +63,13 @@ function Get-AdobeAcrobat {
                                 Product      = $Product.Name
                                 Language     = $Url.Name
                                 Architecture = $Architecture.Name
+                                Type         = Get-FileType -File $Uri
                                 URI          = $Uri
                             }
                             Write-Output -InputObject $PSObject
                         }
                     }
                 }
-            }
-            else {
-                throw "$($MyInvocation.MyCommand): unable to retrieve content from $($res.Get.Update.Uri[$item.key])."
             }
         }
     }
