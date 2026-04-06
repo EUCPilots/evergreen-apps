@@ -17,7 +17,7 @@ If you want to contribute to this project with fixes or new applications, set up
 
 1. Install the [Evergreen](https://www.powershellgallery.com/packages/Evergreen/) module, or clone the [evergreen-module](https://github.com/EUCPilots/evergreen-module) repository.
 2. Clone this repository.
-3. Configure the Evergreen environment for local development by creating the `EVERGREEN_APPS_PATH` environment variable, pointing to the location of the local repository: [Set a custom cache location](https://eucpilots.com/evergreen-docs/updateapps#set-a-custom-cache-location). For example:
+3. Configure the Evergreen environment for local development by creating the `EVERGREEN_APPS_PATH` environment variable, pointing to the location of the local repository: [Set a custom cache location](https://eucpilots.com/evergreen/updateapps#set-a-custom-cache-location). For example:
 
 ```powershell
 $env:EVERGREEN_APPS_PATH="C:\projects\evergreen-apps"

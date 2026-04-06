@@ -64,5 +64,5 @@ body:
       label: "Have you reviewed the list of supported applications?"
       description: "Please confirm that you've reviewed the list of currently supported before making this application request."
       options:
-        - label: "Supported apps at: https://eucpilots.com/evergreen-docs/apps/"
+        - label: "Supported apps at: https://eucpilots.com/evergreen/apps/"
           required: true
