@@ -5,10 +5,6 @@ function Get-AdobeAcrobatReaderDC {
 
         .NOTES
             Author: Aaron Parker
-
-
-        .LINK
-            https://github.com/aaronparker/Evergreen
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
@@ -47,7 +43,7 @@ function Get-AdobeAcrobatReaderDC {
                         Language     = $LanguageFullName
                         Size         = [System.Int32]$Product.fileSize
                         Architecture = Get-Architecture -String $DownloadContent.downloadURL
-                        #Name         = $Product.displayName
+                        Type         = Get-FileType -File $DownloadContent.downloadURL
                         URI          = $DownloadContent.downloadURL
                     }
                     Write-Output -InputObject $PSObject

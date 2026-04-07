@@ -30,8 +30,8 @@ function Get-AdobeConnect {
 
             $PSObject = [PSCustomObject] @{
                 Version      = $Version -replace "_", "."
-                Type         = Get-FileType -File $Object.ResponseUri.AbsoluteUri
                 Architecture = Get-Architecture -String $Download.Key
+                Type         = Get-FileType -File $Object.ResponseUri.AbsoluteUri
                 URI          = $Object.ResponseUri.AbsoluteUri
             }
             Write-Output -InputObject $PSObject
