@@ -83,7 +83,7 @@ function Get-LibreOffice {
                                     # Construct the output; Return the custom object to the pipeline
                                     $PSObject = [PSCustomObject] @{
                                         Version      = $($Update.description.version)
-                                        Architecture = $arch
+                                        Architecture = Get-Architecture -String $arch
                                         Release      = $item.Name
                                         Language     = $Language
                                         URI          = $("$($res.Get.Download.Uri)/$($Update.description.version)/$($platform.Name)/$arch/$file")

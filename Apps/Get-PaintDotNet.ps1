@@ -26,7 +26,7 @@ function Get-PaintDotNet {
                 $PSObject = [PSCustomObject] @{
                     Version      = $Release.version
                     Channel      = $Release.milestone
-                    Architecture = $File.architecture
+                    Architecture = Get-Architecture -String $File.architecture
                     URI          = $File.'mirror-urls'[0]
                 }
                 Write-Output -InputObject $PSObject
