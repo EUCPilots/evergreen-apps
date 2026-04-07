@@ -25,7 +25,7 @@ function Get-LehrerOffice {
     if ($null -ne $Content) {
         $PSObject = [PSCustomObject] @{
             Version = $newestVersion
-            Type    = 'Exe'
+            Type    = Get-FileType -File $res.Get.Download.Uri
             URI     = $res.Get.Download.Uri
         }
         Write-Output -InputObject $PSObject

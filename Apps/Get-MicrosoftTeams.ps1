@@ -29,7 +29,7 @@ function Get-MicrosoftTeams {
                 $PSObject = [PSCustomObject] @{
                     Version      = $Feed.BuildSettings.$($Release.Value).$Item.latestVersion
                     Release      = $Release.Name
-                    Architecture = $Item
+                    Architecture = Get-Architecture -String $Item
                     Type         = Get-FileType -File $Feed.BuildSettings.$($Release.Value).$Item.buildLink
                     URI          = $Feed.BuildSettings.$($Release.Value).$Item.buildLink
                 }

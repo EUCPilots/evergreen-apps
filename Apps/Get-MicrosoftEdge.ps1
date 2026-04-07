@@ -34,7 +34,7 @@ function Get-MicrosoftEdge {
                             Expiry                  = $Release.ExpectedExpiryDate
                             $Artifact.HashAlgorithm = $Artifact.Hash
                             Size                    = $([Math]::Round($Artifact.SizeInBytes / 1MB, 2))
-                            Architecture            = $Release.Architecture
+                            Architecture            = Get-Architecture -String $Release.Architecture
                             Type                    = $Artifact.ArtifactName
                             URI                     = $Artifact.Location
                         }

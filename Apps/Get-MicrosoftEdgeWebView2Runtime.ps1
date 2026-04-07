@@ -41,7 +41,7 @@ function Get-MicrosoftEdgeWebView2Runtime {
                     $PSObject = [PSCustomObject] @{
                         Version      = $Release.ProductVersion
                         Channel      = $Channel
-                        Architecture = $Release.Architecture
+                        Architecture = Get-Architecture -String $Release.Architecture
                         URI          = $Url
                     }
                     Write-Output -InputObject $PSObject
