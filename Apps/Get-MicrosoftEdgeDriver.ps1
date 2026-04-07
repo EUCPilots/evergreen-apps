@@ -40,7 +40,7 @@ function Get-MicrosoftEdgeDriver {
                     $PSObject = [PSCustomObject] @{
                         Version      = $Release.ProductVersion
                         Channel      = $Channel
-                        Architecture = $Release.Architecture
+                        Architecture = Get-Architecture -String $Release.Architecture
                         URI          = $res.Get.Download.Uri[$Release.Architecture] -replace "#version", $Release.ProductVersion
                     }
                     Write-Output -InputObject $PSObject

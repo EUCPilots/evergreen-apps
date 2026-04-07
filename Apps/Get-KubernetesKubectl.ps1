@@ -23,8 +23,8 @@ function Get-KubernetesKubectl {
     foreach ($DownloadUri in $res.Get.Download.Uri.GetEnumerator()) {
         [PSCustomObject] @{
             Version      = $Version.TrimStart("v")
-            Architecture = $DownloadUri.Name.Split("_")[1]
             Platform     = $DownloadUri.Name.Split("_")[0]
+            Architecture = Get-Architecture -String $DownloadUri.Name.Split("_")[1]
             URI          = $DownloadUri.Value -replace $res.Get.Download.ReplaceVersionText, $Version
         }
     }
