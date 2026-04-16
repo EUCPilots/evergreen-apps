@@ -2,7 +2,6 @@
     <#
         .NOTES
             Author: Aaron Parker
-
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
@@ -21,7 +20,7 @@
         $Version = [RegEx]::Match($Response.ResponseUri, $res.Get.Download.MatchVersion).Captures.Groups[1].Value
     }
     catch {
-        $Version = "Unknown"
+        $Version = "Latest"
     }
 
     # Build the output object; Output object to the pipeline

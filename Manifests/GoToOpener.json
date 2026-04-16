@@ -6,7 +6,7 @@
             "Uri": ""
         },
         "Download": {
-            "Uri": "https://launch.getgo.com/launcher2/latest/GoToOpenerMultiUser.msi",
+            "Uri": "https://meet.goto.com/openerbinaries/latest/GoToOpenerMultiUser.msi",
             "MatchVersion": "(\\d+)"
         }
     },
