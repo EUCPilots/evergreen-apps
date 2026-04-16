@@ -2,7 +2,6 @@
     <#
         .NOTES
             Author: Aaron Parker
-
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
@@ -13,26 +12,27 @@
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    # Step through each installer type
-    foreach ($item in $res.Get.Download.Uri.GetEnumerator()) {
+    # Resolve the URL to the target location
+    $Update = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri
 
-        # Resolve the URL to the target location
-        $URI = Resolve-InvokeWebRequest -Uri $res.Get.Download.Uri[$item.Key]
+    if ($null -ne $Update) {
+        $Version = [RegEx]::Match($Update, $res.Get.Update.MatchVersion).Captures.Groups[1].Value
 
-        # Match version number
-        try {
-            $Version = [RegEx]::Match($URI, $res.Get.Download.MatchVersion).Captures.Groups[1].Value
-        }
-        catch {
-            $Version = "Unknown"
-        }
+        if ($null -ne $Version) {
+            Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version."
 
-        # Build the output object; Output object to the pipeline
-        $PSObject = [PSCustomObject] @{
-            Version = $Version
-            Type    = $item.Name
-            URI     = $(($URI -split $res.Get.Download.Split)[0])
+            foreach ($Architecture in $res.Get.Download.Uri.GetEnumerator()) {
+
+                # Build the output object; Output object to the pipeline
+                $Url = $res.Get.Download.Uri[$Architecture.Key] -replace "#version", $Version
+                $PSObject = [PSCustomObject] @{
+                    Version      = $Version
+                    Architecture = $Architecture.Name
+                    Type         = Get-FileType -File $Url
+                    URI          = $Url
+                }
+                Write-Output -InputObject $PSObject
+            }
         }
-        Write-Output -InputObject $PSObject
     }
 }

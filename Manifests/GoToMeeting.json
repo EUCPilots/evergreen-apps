@@ -3,17 +3,14 @@
     "Source": "https://support.goto.com/meeting/help/install-via-msi-windows",
     "Get": {
         "Update": {
-            "Uri": ""
+            "Uri": "https://goto-desktop.goto.com/machine/latest.yml",
+            "MatchVersion": "^version:\\s(\\d+(\\.\\d+){1,4})"
         },
         "Download": {
             "Uri": {
-                "Latest": "https://link.gotomeeting.com/latest-msi",
-                "Minimum": "https://link.gotomeeting.com/minimum-build-msi",
-                "Multi-build": "https://link.gotomeeting.com/latest-multi-build-msi",
-                "XenAppLatest": "https://link.gotomeeting.com/latest-xen-msi"
-            },
-            "MatchVersion": "(\\d+(\\.\\d+){1,3})",
-            "Split": "\\?"
+                "x64": "https://goto-desktop.goto.com/GoToSetupMachine-4.18.0-x64.msi",
+                "x86": "https://goto-desktop.goto.com/GoToSetupMachine-4.18.0-ia32.msi"
+            }
         }
     },
     "Install": {
