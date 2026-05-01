@@ -1,0 +1,21 @@
+{
+	"Name": "Microsoft XML Notepad",
+	"Source": "https://microsoft.github.io/XmlNotepad/",
+
+	"Get": {
+		"Uri": "https://api.github.com/repos/microsoft/XmlNotepad/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.zip$|\\.msixbundle$"
+	},
+	"Install": {
+		"Setup": "",
+		"Physical": {
+			"Arguments": "",
+			"PostInstall": []
+		},
+		"Virtual": {
+			"Arguments": "",
+			"PostInstall": []
+		}
+	}
+}
