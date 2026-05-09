@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Repo Is
 
-This repository provides **application functions** (PowerShell scripts) and **manifests** (JSON configs) for the [Evergreen](https://eucpilots.com/evergreen-docs) PowerShell module. Evergreen uses these to detect and download the latest versions of Windows applications.
+This repository provides **application functions** (PowerShell scripts) and **manifests** (JSON configs) for the [Evergreen](https://eucpilots.com/evergreen) PowerShell module. Evergreen uses these to detect and download the latest versions of Windows applications.
 
 ## Local Development Setup
 

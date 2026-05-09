@@ -9,7 +9,7 @@ This repository hosts:
 - **Application Functions**: The logic that powers Evergreen's supported application features.
 - **Manifests**: Configuration files that describe how apps detection works.
 
-Check out [Evergreen Documentation](https://eucpilots.com/evergreen-docs) for detailed guides.
+Check out [Evergreen Documentation](https://eucpilots.com/evergreen) for detailed guides.
 
 ## ℹ How to Use
 
