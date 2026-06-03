@@ -1,0 +1,23 @@
+{
+	"Name": "GitHub Copilot",
+	"Source": "https://copilot.github.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/github/app/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	},
+	"Install": {
+		"Setup": "GitHubCopilotSetup*.exe",
+		"Preinstall": "",
+		"Physical": {
+			"Arguments": "-s",
+			"PostInstall": [
+			]
+		},
+		"Virtual": {
+			"Arguments": "-s",
+			"PostInstall": [
+			]
+		}
+	}
+}

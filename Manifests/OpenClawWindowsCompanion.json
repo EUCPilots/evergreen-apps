@@ -1,0 +1,23 @@
+{
+	"Name": "OpenClaw Windows Companion",
+	"Source": "https://github.com/openclaw/openclaw-windows-node/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/openclaw/openclaw-windows-node/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	},
+	"Install": {
+		"Setup": "OpenClawWindowsCompanionSetup*.exe",
+		"Preinstall": "",
+		"Physical": {
+			"Arguments": "-s",
+			"PostInstall": [
+			]
+		},
+		"Virtual": {
+			"Arguments": "-s",
+			"PostInstall": [
+			]
+		}
+	}
+}
