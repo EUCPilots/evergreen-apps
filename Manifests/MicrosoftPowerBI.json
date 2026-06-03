@@ -6,12 +6,9 @@
             "Uri": ""
         },
         "Download": {
-            "Version": "0.22.333",
-            "Uri": [
-                "https://download.microsoft.com/download/f5e1aa08-9d73-4e0b-adbd-14b2947e9b44/Scout 0.22.333/MicrosoftScout-Windows-0.22.333-arm64-Setup.exe",
-                "https://download.microsoft.com/download/f5e1aa08-9d73-4e0b-adbd-14b2947e9b44/Scout 0.22.333/MicrosoftScout-Windows-0.22.333-x64-Setup.exe"
-            ],
-            "Date": "6/2/2026 4:03:37 PM",
+            "Version": "2.154.1260.0",
+            "Uri": "https://download.microsoft.com/download/8/8/0/880bca75-79dd-466a-927d-1abf1f5454b0/PBIDesktopSetup_x64.exe",
+            "Date": "5/29/2026 8:32:11 PM",
             "DatePattern": "M/d/yyyy h:mm:ss tt"
         }
     },
