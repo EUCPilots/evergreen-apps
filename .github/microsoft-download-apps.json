@@ -2,5 +2,9 @@
     {
         "appName": "MicrosoftScout",
         "downloadUrl": "https://www.microsoft.com/en-us/download/details.aspx?id=108685"
+    },
+    {
+        "appName": "MicrosoftPowerBI",
+        "downloadUrl": "https://www.microsoft.com/en-us/download/details.aspx?id=58494"
     }
 ]
