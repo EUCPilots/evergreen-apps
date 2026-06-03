@@ -1,0 +1,27 @@
+{
+    "Name": "Microsoft Power BI",
+    "Source": "https://www.microsoft.com/en-us/power-platform/products/power-bi/desktop",
+    "Get": {
+        "Update": {
+            "Uri": ""
+        },
+        "Download": {
+            "Version": "2.154.1260.0",
+            "Uri": "https://download.microsoft.com/download/8/8/0/880bca75-79dd-466a-927d-1abf1f5454b0/PBIDesktopSetup_x64.exe",
+            "Date": "5/29/2026 8:32:11 PM",
+            "DatePattern": "M/d/yyyy h:mm:ss tt"
+        }
+    },
+    "Install": {
+        "Setup": "",
+        "Preinstall": "",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}
