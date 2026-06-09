@@ -3,7 +3,10 @@
     "Source": "https://www.docker.com/products/docker-desktop/",
     "Get": {
         "Update": {
-            "Uri": "https://desktop.docker.com/win/main/amd64/appcast.xml"
+            "Uri": [
+                "https://desktop.docker.com/win/main/amd64/appcast.xml",
+                "https://desktop.docker.com/win/main/arm64/appcast.xml"
+            ]
         }
     },
     "Install": {
