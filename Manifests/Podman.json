@@ -1,8 +1,8 @@
 {
 	"Name": "Podman",
-	"Source": "https://github.com/containers/podman",
+	"Source": "https://podman.io/",
 	"Get": {
-		"Uri": "https://api.github.com/repos/containers/podman/releases/latest",
+		"Uri": "https://api.github.com/repos/podman-container-tools/podman/releases/latest",
 		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
 		"MatchFileTypes": "\\.exe$"
 	},

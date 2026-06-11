@@ -1,6 +1,6 @@
 {
 	"Name": "Podman Desktop",
-	"Source": "https://github.com/podman-desktop/podman-desktop",
+	"Source": "https://podman-desktop.io/",
 	"Get": {
 		"Uri": "https://api.github.com/repos/podman-desktop/podman-desktop/releases/latest",
 		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
