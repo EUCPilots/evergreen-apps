@@ -223,13 +223,18 @@ jobs:
             old_json=$(git show origin/main:"${manifest}")
             new_json=$(cat "${manifest}")
             if ! diff \
-              <(echo "${old_json}" | jq -S 'del(.Get.Download.Version)') \
-              <(echo "${new_json}" | jq -S 'del(.Get.Download.Version)') > /dev/null 2>&1; then
+              <(printf '%s' "${old_json}" | jq -S 'del(.Get.Download.Version)') \
+              <(printf '%s' "${new_json}" | jq -S 'del(.Get.Download.Version)') > /dev/null 2>&1; then
               echo "Validation failed: changes beyond Get.Download.Version detected in ${manifest}"
-              echo "validation_passed=false" >> $GITHUB_OUTPUT
+              echo "validation_passed=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
-            new_version=$(echo "${new_json}" | jq -r '.Get.Download.Version')
+            new_version=$(printf '%s' "${new_json}" | jq -r '.Get.Download.Version // empty')
+            if [ -z "${new_version}" ] || ! [[ "${new_version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "Validation failed: invalid Get.Download.Version in ${manifest}: ${new_version}"
+              echo "validation_passed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
             echo "${manifest}: Get.Download.Version updated to ${new_version}"
           done
 
