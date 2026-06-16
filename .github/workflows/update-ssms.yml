@@ -243,4 +243,4 @@ jobs:
         run: |
           pr_number="${{ steps.create-pr.outputs.pr_number }}"
           echo "Auto-merging PR #${pr_number}"
-          gh pr merge "${pr_number}" --squash --auto --delete-branch
+          gh pr merge "${pr_number}" --squash --auto --delete-branch || echo "Auto-merge could not be enabled; leaving PR open for manual review."
