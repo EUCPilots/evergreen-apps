@@ -11,9 +11,11 @@ on:
       - 'Manifests/**'
     branches-ignore:
       - main
+      - update-ssms-versions
   pull_request:
     branches:
       - main
+      - update-ssms-versions
     paths:
       - 'Apps/**'
       - 'Manifests/**'
