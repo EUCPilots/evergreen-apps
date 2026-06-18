@@ -111,12 +111,14 @@ jobs:
                   old_date = manifest['Get']['Download'].get('Date', '')
 
                   new_uris = uris if len(uris) > 1 else uris[0]
+                  version_or_uri_changed = old_version != version or old_uris != new_uris
 
                   # Update version, URIs, and date
                   manifest['Get']['Download']['Version'] = version
                   manifest['Get']['Download']['Uri'] = new_uris
-                  # Only set Date if the manifest already has that field
-                  if 'Date' in manifest['Get']['Download']:
+                  # Only set Date if the manifest already has that field and
+                  # version/URI changed in this update.
+                  if 'Date' in manifest['Get']['Download'] and version_or_uri_changed:
                       manifest['Get']['Download']['Date'] = date_published
 
                   # Write updated manifest
@@ -126,14 +128,16 @@ jobs:
                   with open(manifest_path, 'a') as f:
                       f.write('\n')
 
-                  if old_version != version or old_uris != new_uris or old_date != date_published:
+                  new_date = manifest['Get']['Download'].get('Date', '')
+
+                  if old_version != version or old_uris != new_uris or old_date != new_date:
                       print(f"Changes detected for {app_name}:")
                       if old_version != version:
                           print(f"  Version: {old_version} -> {version}")
                       if old_uris != new_uris:
                           print(f"  URI(s) updated")
-                      if old_date != date_published:
-                          print(f"  Date: {old_date} -> {date_published}")
+                      if old_date != new_date:
+                          print(f"  Date: {old_date} -> {new_date}")
                       changes_made = True
                       updated_apps.append(f"{app_name} -> {version} ({download_url})")
                   else:
