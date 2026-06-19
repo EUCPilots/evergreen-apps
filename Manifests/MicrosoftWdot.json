@@ -1,0 +1,30 @@
+{
+	"Name": "Microsoft Windows Desktop Optimization Tool",
+	"Source": "https://github.com/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool",
+	"Get": {
+		"Update": {
+		"Uri": "https://api.github.com/repos/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.zip$"
+		},
+		"Download": {
+			"Uri": "https://github.com/The-Virtual-Desktop-Team/Windows-Desktop-Optimization-Tool/archive/refs/heads/main.zip",
+			"File": "Windows-Desktop-Optimization-Tool-#version.zip",
+			"ReplaceText": "#version"
+		}
+	},
+	"Install": {
+		"Setup": "",
+		"Preinstall": "",
+		"Physical": {
+			"Arguments": "",
+			"PostInstall": [
+			]
+		},
+		"Virtual": {
+			"Arguments": "",
+			"PostInstall": [
+			]
+		}
+	}
+}
