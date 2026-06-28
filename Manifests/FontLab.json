@@ -1,0 +1,24 @@
+{
+    "Name": "FontLab",
+    "Source": "https://www.fontlab.com/font-editor/fontlab/",
+    "Get": {
+        "Update": {
+            "Uri": "https://download.fontlab.com/fontlab-8/appcast-win64.xml",
+            "ContentType": "application/json; charset=utf-8"
+        },
+        "Download": {
+            "Uri": "https://download.fontlab.com/fontlab-8/upd-win64.php"
+        }
+    },
+    "Install": {
+        "Setup": "",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}
