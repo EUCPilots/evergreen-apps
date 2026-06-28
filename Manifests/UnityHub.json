@@ -1,17 +1,15 @@
 {
-    "Name": "Unity Editor",
+    "Name": "Unity Hub",
     "Source": "https://unity.com/download",
     "Get": {
         "Update": {
-            "Uri": ""
+            "Uri": "https://public-cdn.cloud.unity3d.com/hub/prod/latest.yml"
         },
         "Download": {
-            "Uri": "https://public-cdn.cloud.unity3d.com/hub/prod/releases-win32.json",
-            "ContentType": "application/json",
-            "Channels": [
-                "official",
-                "beta"
-            ]
+            "Uri": {
+                "arm64": "https://public-cdn.cloud.unity3d.com/hub/prod/UnityHubSetup-arm64.exe",
+                "x64": "https://public-cdn.cloud.unity3d.com/hub/prod/UnityHubSetup-x64.exe"
+            }
         }
     },
     "Install": {
