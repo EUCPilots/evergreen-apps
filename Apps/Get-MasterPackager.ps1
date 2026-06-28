@@ -18,21 +18,23 @@
 
     # Read the update URI
     $params = @{
-        Uri = $res.Get.Update.Uri
+        Uri       = $res.Get.Update.Uri
+        UserAgent = $res.Get.Update.UserAgent
     }
-    $Version = Invoke-EvergreenRestMethod @params
+    $Update = Invoke-EvergreenRestMethod @params
 
     # Read the JSON and build an array of platform, channel, version
-    if ($null -ne $Version) {
-
+    if ($null -ne $Update) {
         # Step through each installer type
-        foreach ($item in $res.Get.Download.Uri.GetEnumerator()) {
+        foreach ($item in $Update) {
 
             # Build the output object; Output object to the pipeline
             $PSObject = [PSCustomObject] @{
-                Version = $Version
-                Type    = $item.Name
-                URI     = $res.Get.Download.Uri[$item.Key] -replace $res.Get.Download.ReplaceText.Version, $Version
+                Version  = $item.Version
+                Sha256   = $item.SHA256
+                Type     = Get-FileType -File $item.Installer
+                Filename = $item.Installer
+                URI      = $item.URL
             }
             Write-Output -InputObject $PSObject
         }
