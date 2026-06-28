@@ -1,9 +1,9 @@
 {
-    "Name": "AWS AppStream 2.0 Client",
+    "Name": "Amazon AppStream 2.0 Client",
     "Source": "https://docs.aws.amazon.com/en_us/appstream2/latest/developerguide/client-release-versions.html",
     "Get": {
         "Update": {
-            "Uri": "https://docs.aws.amazon.com/en_us/appstream2/latest/developerguide/doc-history.rss",
+            "Uri": "https://docs.aws.amazon.com/appstream2/latest/developerguide/doc-history.rss",
             "MatchVersion": "(\\d+(\\.\\d+){1,4}.*)",
             "MatchText": "New client version"
         },

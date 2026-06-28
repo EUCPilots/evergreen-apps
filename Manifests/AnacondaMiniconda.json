@@ -1,5 +1,5 @@
 {
-	"Name": "Miniconda",
+	"Name": "Anaconda Miniconda",
 	"Source": "https://docs.conda.io/en/latest/miniconda.html",
 	"Get": {
 		"Update": {

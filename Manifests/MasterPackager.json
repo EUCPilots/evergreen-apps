@@ -3,7 +3,8 @@
     "Source": "https://www.masterpackager.com/",
     "Get": {
         "Update": {
-            "Uri": "https://www.masterpackager.com/uploads/file_archive/version.txt"
+            "Uri": "www.masterpackager.com/api/latest-version/mp",
+            "UserAgent": "MasterPackager.Updater/26.3.9665"
         },
         "Download": {
             "Uri": {
