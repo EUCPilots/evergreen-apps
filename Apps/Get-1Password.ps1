@@ -6,7 +6,6 @@ function Get-1Password {
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
@@ -28,14 +27,10 @@ function Get-1Password {
         # Output the object to the pipeline from the update feed
         foreach ($item in $updateFeed) {
 
-            # Pick a URL from the list of returns URLs
-            # $Url = $($item.sources | Select-Object -Index (Get-Random -Minimum 0 -Maximum 2)).url
-            $Url = $item.sources | Where-Object { $_.name -eq $res.Get.Update.CDN } | Select-Object -ExpandProperty "url"
-
             $PSObject = [PSCustomObject] @{
                 Version = $item.version
-                Type    = Get-FileType -File $Url
-                URI     = $Url
+                Type    = Get-FileType -File $res.Get.Download.Uri["msi"]
+                URI     = $res.Get.Download.Uri["msi"]
             }
             Write-Output -InputObject $PSObject
         }
@@ -43,12 +38,17 @@ function Get-1Password {
         # Output the MSI version of the 1Password installer
         $PSObject = [PSCustomObject] @{
             Version = $item.version
-            Type    = Get-FileType -File $res.Get.Download.Uri
-            URI     = $res.Get.Download.Uri
+            Type    = Get-FileType -File $res.Get.Download.Uri["exe"]
+            URI     = $res.Get.Download.Uri["exe"]
         }
         Write-Output -InputObject $PSObject
-    }
-    else {
-        Write-Warning -Message "$($MyInvocation.MyCommand): failed to find an available from: $($res.Get.Update.Uri)."
+
+        # Output the MSIX version of the 1Password installer
+        $PSObject = [PSCustomObject] @{
+            Version = $item.version
+            Type    = Get-FileType -File $res.Get.Download.Uri["msix"]
+            URI     = $res.Get.Download.Uri["msix"]
+        }
+        Write-Output -InputObject $PSObject
     }
 }
