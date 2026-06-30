@@ -1,7 +1,7 @@
-﻿function Get-TrackerSoftwarePDFXChangeEditor {
+﻿function Get-TrackerSoftwarePDFXDriverLite {
     <#
         .SYNOPSIS
-            Returns the current version and download URL for the Tracker Software PDF-XChange Editor.
+            Returns the current version and download URL for the Tracker Software PDF-XChange Driver Lite.
 
         .NOTES
             Site: https://stealthpuppy.com
