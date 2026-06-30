@@ -1,9 +1,9 @@
 {
     "Name": "Tracker Software PDF X-Change Editor",
-    "Source": "https://pdf-xchange.eu/pdf-xchange-editor/index.htm",
+    "Source": "https://www.pdf-xchange.com/product/pdf-xchange-editor",
     "Get": {
         "Update": {
-            "Uri": "https://downloads.pdf-xchange.com/trackerupdate/TrackerData8.xml",
+            "Uri": "https://www.pdf-xchange.com/updater/UpdaterData.xml",
             "ContentType": "application/xml; charset=utf-8",
             "Bundles": [
 				"Editor.x64",

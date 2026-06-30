@@ -6,7 +6,6 @@
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
@@ -29,7 +28,7 @@
         foreach ($bundle in $res.Get.Update.Bundles) {
 
             # Select the latest version
-            $Item = $xmlDocument.TrackerUpdate.bundle | Where-Object { $_.id -eq $bundle }
+            $Item = $xmlDocument.UpdaterData.bundle | Where-Object { $_.id -eq $bundle }
             $Update = $Item.Update | `
                 Sort-Object -Property @{ Expression = { [System.Version]$_.version }; Descending = $true } | `
                 Select-Object -First 1
