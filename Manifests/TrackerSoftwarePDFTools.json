@@ -1,0 +1,30 @@
+{
+    "Name": "Tracker Software PDF Tools",
+    "Source": "https://www.pdf-xchange.com/product/pdf-tools",
+    "Get": {
+        "Update": {
+            "Uri": "https://www.pdf-xchange.com/updater/UpdaterData.xml",
+            "ContentType": "application/xml; charset=utf-8",
+            "Bundles": [
+				"Tools.x64",
+				"Tools.x32",
+				"Tools.arm64"
+			]
+        },
+		"Download": {
+			"Uri": "https://downloads.pdf-xchange.com/#filename"
+		}
+    },
+    "Install": {
+        "Setup": "Tools*.x64.msi",
+        "Preinstall": "",
+        "Physical": {
+            "Arguments": "/qb /norestart",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "/qb /norestart",
+            "PostInstall": []
+        }
+    }
+}

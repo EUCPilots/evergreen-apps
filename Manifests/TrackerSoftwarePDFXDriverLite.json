@@ -1,0 +1,29 @@
+{
+    "Name": "Tracker Software PDF-XChange Driver Lite",
+    "Source": "https://www.pdf-xchange.com/product/pdf-xchange-drivers-api",
+    "Get": {
+        "Update": {
+            "Uri": "https://www.pdf-xchange.com/updater/UpdaterData.xml",
+            "ContentType": "application/xml; charset=utf-8",
+            "Bundles": [
+				"DriverStd.x64",
+				"DriverStd.x32"
+			]
+        },
+		"Download": {
+			"Uri": "https://downloads.pdf-xchange.com/#filename"
+		}
+    },
+    "Install": {
+        "Setup": "DriverStd*.x64.msi",
+        "Preinstall": "",
+        "Physical": {
+            "Arguments": "/qb /norestart",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "/qb /norestart",
+            "PostInstall": []
+        }
+    }
+}

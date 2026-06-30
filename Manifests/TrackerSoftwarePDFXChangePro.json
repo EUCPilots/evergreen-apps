@@ -1,0 +1,30 @@
+{
+    "Name": "Tracker Software PDF X-Change Pro",
+    "Source": "https://www.pdf-xchange.com/product/pdf-xchange-pro",
+    "Get": {
+        "Update": {
+            "Uri": "https://www.pdf-xchange.com/updater/UpdaterData.xml",
+            "ContentType": "application/xml; charset=utf-8",
+            "Bundles": [
+				"Pro.x64",
+				"Pro.x32",
+				"Pro.arm64"
+			]
+        },
+		"Download": {
+			"Uri": "https://downloads.pdf-xchange.com/#filename"
+		}
+    },
+    "Install": {
+        "Setup": "Pro*.x64.msi",
+        "Preinstall": "",
+        "Physical": {
+            "Arguments": "/qb /norestart",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "/qb /norestart",
+            "PostInstall": []
+        }
+    }
+}
