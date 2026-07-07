@@ -8,7 +8,7 @@
 			"MatchFileTypes": "\\.exe$"
 		},
 		"Download": {
-			"Uri": "hhttps://github.com/ImageMagick/ImageMagick/releases/download/#version/ImageMagick-#version-Q16-HDRI-x64-dll.exe",
+			"Uri": "https://github.com/ImageMagick/ImageMagick/releases/download/#version/ImageMagick-#version-Q16-HDRI-x64-dll.exe",
 			"ReplaceText": "#version"
 		}
 	},
