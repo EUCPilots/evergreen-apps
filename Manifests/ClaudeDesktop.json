@@ -1,0 +1,30 @@
+{
+    "Name": "Claude Desktop",
+    "Source": "https://support.claude.com/en/articles/12622703-deploy-claude-desktop-for-windows",
+    "Get": {
+        "Update": {
+            "Uri": [
+                "https://claude.ai/api/desktop/win32/x64/msix/latest/",
+                "https://claude.ai/api/desktop/win32/arm64/msix/latest/"
+            ],
+            "ContentType": "application/json; charset=utf-8"
+        },
+        "Download": {
+            "Uri": {
+                "x64": "https://claude.ai/api/desktop/win32/x64/msix/latest/redirect",
+                "arm64": "https://claude.ai/api/desktop/win32/arm64/msix/latest/redirect"
+            }
+        }
+    },
+    "Install": {
+        "Setup": "ClaudeDesktopSetup.*.msi",
+        "Physical": {
+            "Arguments": "--silent",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "--silent",
+            "PostInstall": []
+        }
+    }
+}
