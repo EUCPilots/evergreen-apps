@@ -2,15 +2,9 @@
 	"Name": "ImageMagick Studio ImageMagick",
 	"Source": "https://imagemagick.org/",
 	"Get": {
-		"Update": {
-			"Uri": "https://api.github.com/repos/ImageMagick/ImageMagick/releases/latest",
-			"MatchVersion": "(*)",
-			"MatchFileTypes": "\\.exe$"
-		},
-		"Download": {
-			"Uri": "https://github.com/ImageMagick/ImageMagick/releases/download/#version/ImageMagick-#version-Q16-HDRI-x64-dll.exe",
-			"ReplaceText": "#version"
-		}
+		"Uri": "https://api.github.com/repos/ImageMagick/ImageMagick/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$|\\.msix$|\\.msixbundle$"
 	},
 	"Install": {
 		"Setup": "ImageMagick*.exe",
