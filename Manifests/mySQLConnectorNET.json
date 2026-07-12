@@ -7,7 +7,7 @@
       },
       "Download": {
         "Uri": {
-          "x64": "https://dev.mysql.com/get/Downloads/Connector-Net/mysql-connector-net-#version.msi"
+          "x64": "https://cdn.mysql.com/Downloads/Connector-Net/mysql-connector-net-#version.msi"
         },
         "ReplaceVersion": "#version"
       }
