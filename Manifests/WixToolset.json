@@ -2,7 +2,7 @@
 	"Name": "WiX Toolset",
 	"Source": "https://wixtoolset.org/",
 	"Get": {
-		"Uri": "https://api.github.com/repos/wixtoolset/wix3/releases/latest",
+		"Uri": "https://api.github.com/repos/wixtoolset/wix/releases/latest",
 		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
 		"MatchFileTypes": "\\.exe$|\\.msi$",
 		"VersionTag": "name"
