@@ -1,7 +1,7 @@
-function Get-SQLiteStudio {
+function Get-Letos {
     <#
         .SYNOPSIS
-            Returns the latest sqlitestudio.pl SQLiteStudio version number and download.
+            Returns the latest letos.org Letos version number and download.
 
         .NOTES
             Author: Aaron Parker

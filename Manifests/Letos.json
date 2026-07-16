@@ -1,0 +1,9 @@
+{
+	"Name": "letos.org Letos",
+	"Source": "https://letos.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/pawelsalawa/letos/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	}
+}
