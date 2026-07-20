@@ -1,0 +1,23 @@
+{
+	"Name": "Mozilla Policy Templates",
+	"Source": "https://github.com/mozilla/policy-templates",
+	"Get": {
+		"Uri": "https://api.github.com/repos/mozilla/policy-templates/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.zip$"
+	},
+	"Install": {
+		"Setup": "",
+		"Preinstall": "",
+		"Physical": {
+			"Arguments": "/quiet /norestart",
+			"PostInstall": [
+			]
+		},
+		"Virtual": {
+			"Arguments": "/quiet /norestart",
+			"PostInstall": [
+			]
+		}
+	}
+}
