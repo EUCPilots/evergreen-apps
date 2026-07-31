@@ -4,7 +4,7 @@
 	"Get": {
 		"Uri": "https://api.github.com/repos/podman-container-tools/podman/releases/latest",
 		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
-		"MatchFileTypes": "\\.exe$"
+		"MatchFileTypes": "\\.exe$|\\.msi$"
 	},
 	"Install": {
 		"Setup": "podman-*.exe",
