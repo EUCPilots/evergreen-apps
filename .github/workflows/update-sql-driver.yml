@@ -1,4 +1,4 @@
-name: Update SQL Drivers
+name: Update Microsoft SQL Drivers
 
 on:
   schedule:

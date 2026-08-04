@@ -1,4 +1,4 @@
-name: Update Microsoft Download Apps
+name: Update Microsoft Downloads Apps
 
 on:
   schedule:
@@ -13,6 +13,7 @@ permissions:
 jobs:
   update-microsoft-downloads:
     runs-on: ubuntu-latest
+    name: Update Microsoft Downloads Apps
 
     steps:
       - name: Checkout repository

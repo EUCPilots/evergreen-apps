@@ -1,4 +1,4 @@
-name: Update SQL Server Management Studio
+name: Update Microsoft Static Apps
 
 on:
   schedule:
@@ -10,9 +10,15 @@ permissions:
   contents: write
   pull-requests: write
 
+env:
+  BRANCH_NAME: microsoft-static-apps
+
 jobs:
   update-ssms-versions:
     runs-on: ubuntu-latest
+    name: 'Update SSMS'
+    outputs:
+      changes_detected: ${{ steps.check-changes.outputs.changes_detected }}
     
     steps:
       - name: Checkout repository
@@ -127,8 +133,6 @@ jobs:
                   f.write("changes_made=false\n")
           
           EOF
-        env:
-          GITHUB_OUTPUT: ${{ github.output }}
       
       - name: Check for changes
         id: check-changes
@@ -147,37 +151,194 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git checkout -b update-ssms-versions
+          git checkout -b "$BRANCH_NAME"
           git add Manifests/MicrosoftSsms.json Manifests/MicrosoftSsms21.json Manifests/MicrosoftSsms20.json
           git commit -m 'Update Microsoft SQL Server Management Studio versions'
-          git push -f origin update-ssms-versions
+          git push -f --set-upstream origin "$BRANCH_NAME"
+
+  update-fslogix-versions:
+    runs-on: ubuntu-latest
+    name: 'Update FSLogix'
+    needs: update-ssms-versions
+    outputs:
+      changes_detected: ${{ steps.check-changes.outputs.changes_detected }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
       
-      - name: Create Pull Request
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 lxml
+      
+      - name: Parse FSLogix version page and update JSON
+        id: update-versions
+        run: |
+          python3 << 'EOF'
+          import requests
+          from bs4 import BeautifulSoup
+          import json
+          import re
+          import sys
+          import os
+          
+          # Define URLs and corresponding manifest files
+          versions = {
+              "latest": {
+                  "url": "https://learn.microsoft.com/en-us/fslogix/overview-release-notes",
+                  "manifest": "Manifests/MicrosoftFSLogix.json"
+              }
+          }
+          
+          # Match the first FSLogix build version in page order (e.g., 3.26.126.19110)
+          version_pattern = re.compile(r'\b\d+\.\d+\.\d+\.\d+\b')
+          
+          changes_made = False
+          
+          for version_key, config in versions.items():
+              url = config["url"]
+              manifest_path = config["manifest"]
+              
+              print(f"\nProcessing FSLogix {version_key}")
+              print(f"URL: {url}")
+              
+              try:
+                  response = requests.get(url, timeout=30)
+                  response.raise_for_status()
+                  soup = BeautifulSoup(response.content, 'html.parser')
+
+                  main_content = soup.find('main') or soup
+                  version_match = version_pattern.search(main_content.get_text("\n", strip=True))
+
+                  if not version_match:
+                      print(f"Warning: No FSLogix build version found for {version_key}")
+                      continue
+
+                  version_string = version_match.group(0)
+                  print(f"Found version string: {version_string}")
+                  
+                  # Validate version format
+                  if not version_pattern.fullmatch(version_string):
+                      print(f"Error: Version '{version_string}' does not match expected pattern (X.Y.Z.W)")
+                      sys.exit(1)
+                  
+                  # Read the manifest file
+                  with open(manifest_path, 'r') as f:
+                      data = json.load(f)
+                  
+                  # Get old version for comparison
+                  old_version = data['Get']['Download']['Version']
+                  print(f"Old version: {old_version}")
+                  
+                  # Update the version
+                  data['Get']['Download']['Version'] = version_string
+                  
+                  # Write updated JSON back to file
+                  with open(manifest_path, 'w') as f:
+                      json.dump(data, f, indent=4)
+                  
+                  # Check if version actually changed
+                  if old_version != version_string:
+                      print(f"Version updated from {old_version} to {version_string}")
+                      changes_made = True
+                  else:
+                      print(f"Version unchanged ({version_string})")
+                      
+              except Exception as e:
+                  print(f"Error processing FSLogix {version_key}: {e}")
+                  import traceback
+                  traceback.print_exc()
+                  sys.exit(1)
+          
+          # Output whether changes were made
+          github_output = os.environ.get('GITHUB_OUTPUT')
+          if github_output and changes_made:
+              with open(github_output, 'a') as f:
+                  f.write("changes_made=true\n")
+          elif github_output:
+              with open(github_output, 'a') as f:
+                  f.write("changes_made=false\n")
+          
+          EOF
+      
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if git diff --quiet -- Manifests/MicrosoftFSLogix.json; then
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          else
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+            echo "Changes detected"
+            git diff -- Manifests/MicrosoftFSLogix.json
+          fi
+      
+      - name: Commit and push changes
         if: steps.check-changes.outputs.changes_detected == 'true'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          if git ls-remote --exit-code --heads origin "$BRANCH_NAME" > /dev/null 2>&1; then
+            git fetch origin "$BRANCH_NAME"
+            git checkout -B "$BRANCH_NAME" "origin/$BRANCH_NAME"
+          else
+            git checkout -b "$BRANCH_NAME"
+          fi
+          git add Manifests/MicrosoftFSLogix.json
+          git commit -m 'Update Microsoft FSLogix versions'
+          git push -f origin "$BRANCH_NAME"
+
+  create-microsoft-static-pr:
+    runs-on: ubuntu-latest
+    name: 'Create Microsoft Static PR'
+    needs:
+      - update-ssms-versions
+      - update-fslogix-versions
+    if: needs.update-ssms-versions.outputs.changes_detected == 'true' || needs.update-fslogix-versions.outputs.changes_detected == 'true'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ env.BRANCH_NAME }}
+          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Create Pull Request
         id: create-pr
         env:
           GH_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           pr_url=$(gh pr create \
-            --title "Update SQL Server Management Studio (SSMS) Versions" \
-            --body "## Automated Update: SSMS Versions
+            --title "Update Microsoft Static App Versions" \
+            --body "## Automated Update: Microsoft Static Apps
 
-          This PR updates the version numbers for Microsoft SQL Server Management Studio (SSMS) 20, 21, and 22.
+          This PR updates version numbers for Microsoft static apps tracked by this workflow.
 
-          **Changes:**
-          - Updated SSMS 22 version in Manifests/MicrosoftSsms.json
-          - Updated SSMS 21 version in Manifests/MicrosoftSsms21.json
-          - Updated SSMS 20 version in Manifests/MicrosoftSsms20.json
+          **Possible changes:**
+          - Updated Microsoft SQL Server Management Studio versions in Manifests/MicrosoftSsms.json
+          - Updated Microsoft SQL Server Management Studio versions in Manifests/MicrosoftSsms21.json
+          - Updated Microsoft SQL Server Management Studio versions in Manifests/MicrosoftSsms20.json
+          - Updated Microsoft FSLogix version in Manifests/MicrosoftFSLogix.json
 
           **Sources:**
           - https://learn.microsoft.com/en-us/ssms/release-notes-22
           - https://learn.microsoft.com/en-us/ssms/release-notes-21
           - https://learn.microsoft.com/en-us/ssms/release-notes-20
+          - https://learn.microsoft.com/en-us/fslogix/overview-release-notes
 
           **Auto-generated by:** GitHub Actions workflow" \
             --base main \
-            --head update-ssms-versions \
-            --label automated 2>/dev/null || gh pr view update-ssms-versions --json url --jq '.url')
+            --head "$BRANCH_NAME" \
+            --label automated 2>/dev/null || gh pr view "$BRANCH_NAME" --json url --jq '.url')
           if [ -z "${pr_url}" ]; then
             echo "Error: failed to create or retrieve PR URL"
             exit 1
@@ -191,23 +352,17 @@ jobs:
           echo "PR number: ${pr_number}"
 
       - name: Validate PR changes
-        if: steps.check-changes.outputs.changes_detected == 'true' && steps.create-pr.outputs.pr_number != ''
         id: validate-pr
-        env:
-          GH_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           set -e
 
-          # Fetch main so we can diff against it
           git fetch origin main
 
-          # Determine which files changed between main and the PR branch
           changed_files=$(git diff --name-only origin/main...HEAD)
           echo "Changed files:"
           echo "${changed_files}"
 
-          # Validate: only the three SSMS manifest files may be changed
-          unexpected=$(echo "${changed_files}" | grep -vx 'Manifests/MicrosoftSsms\.json\|Manifests/MicrosoftSsms21\.json\|Manifests/MicrosoftSsms20\.json' || true)
+          unexpected=$(echo "${changed_files}" | grep -vx 'Manifests/MicrosoftSsms\.json\|Manifests/MicrosoftSsms21\.json\|Manifests/MicrosoftSsms20\.json\|Manifests/MicrosoftFSLogix\.json' || true)
           if [ -n "${unexpected}" ]; then
             echo "Validation failed: unexpected files changed:"
             echo "${unexpected}"
@@ -215,8 +370,7 @@ jobs:
             exit 0
           fi
 
-          # Validate: for each changed file, only Get.Download.Version differs from main
-          for manifest in Manifests/MicrosoftSsms.json Manifests/MicrosoftSsms21.json Manifests/MicrosoftSsms20.json; do
+          for manifest in Manifests/MicrosoftSsms.json Manifests/MicrosoftSsms21.json Manifests/MicrosoftSsms20.json Manifests/MicrosoftFSLogix.json; do
             if ! echo "${changed_files}" | grep -qx "${manifest}"; then
               continue
             fi
@@ -230,7 +384,15 @@ jobs:
               exit 0
             fi
             new_version=$(printf '%s' "${new_json}" | jq -r '.Get.Download.Version // empty')
-            if [ -z "${new_version}" ] || ! [[ "${new_version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            case "${manifest}" in
+              Manifests/MicrosoftFSLogix.json)
+                version_regex='^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$'
+                ;;
+              *)
+                version_regex='^[0-9]+\.[0-9]+\.[0-9]+$'
+                ;;
+            esac
+            if [ -z "${new_version}" ] || ! [[ "${new_version}" =~ ${version_regex} ]]; then
               echo "Validation failed: invalid Get.Download.Version in ${manifest}: ${new_version}"
               echo "validation_passed=false" >> "$GITHUB_OUTPUT"
               exit 0
@@ -242,7 +404,7 @@ jobs:
           echo "validation_passed=true" >> $GITHUB_OUTPUT
 
       - name: Auto-merge Pull Request
-        if: steps.check-changes.outputs.changes_detected == 'true' && steps.validate-pr.outputs.validation_passed == 'true'
+        if: steps.validate-pr.outputs.validation_passed == 'true'
         env:
           GH_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
