@@ -2,10 +2,11 @@
     "Name": "Microsoft FSLogix Apps",
     "Source": "https://docs.microsoft.com/fslogix/",
     "Get": {
+        "Update": {},
         "Download": {
-            "Uri": {
-                "Production": "https://aka.ms/fslogix/download"
-            },
+            "Version": "26.01",
+            "Uri": "https://aka.ms/fslogix-latest",
+            "Channel": "Production",
             "Uri2": "https://aka.ms/fslogix_download",
             "MatchFwlink": "go.microsoft.com/fwlink/\\?linkid",
             "MatchFile": ".*msi$|.*exe$|.*zip$",
