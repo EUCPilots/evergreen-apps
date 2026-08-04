@@ -151,10 +151,15 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git checkout -b "$BRANCH_NAME"
+          if git ls-remote --exit-code --heads origin "$BRANCH_NAME" > /dev/null 2>&1; then
+            git fetch origin "$BRANCH_NAME"
+            git checkout -B "$BRANCH_NAME" "origin/$BRANCH_NAME"
+          else
+            git checkout -b "$BRANCH_NAME"
+          fi
           git add Manifests/MicrosoftSsms.json Manifests/MicrosoftSsms21.json Manifests/MicrosoftSsms20.json
           git commit -m 'Update Microsoft SQL Server Management Studio versions'
-          git push -f --set-upstream origin "$BRANCH_NAME"
+          git push --set-upstream origin "$BRANCH_NAME"
 
   update-fslogix-versions:
     runs-on: ubuntu-latest
@@ -294,7 +299,7 @@ jobs:
           fi
           git add Manifests/MicrosoftFSLogixApps.json
           git commit -m 'Update Microsoft FSLogix versions'
-          git push -f origin "$BRANCH_NAME"
+          git push origin "$BRANCH_NAME"
 
   create-microsoft-static-pr:
     runs-on: ubuntu-latest
