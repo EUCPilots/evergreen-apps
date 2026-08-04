@@ -194,7 +194,7 @@ jobs:
           versions = {
               "latest": {
                   "url": "https://learn.microsoft.com/en-us/fslogix/overview-release-notes",
-                  "manifest": "Manifests/MicrosoftFSLogix.json"
+                  "manifest": "Manifests/MicrosoftFSLogixApps.json"
               }
           }
           
@@ -272,13 +272,13 @@ jobs:
       - name: Check for changes
         id: check-changes
         run: |
-          if git diff --quiet -- Manifests/MicrosoftFSLogix.json; then
+          if git diff --quiet -- Manifests/MicrosoftFSLogixApps.json; then
             echo "changes_detected=false" >> $GITHUB_OUTPUT
             echo "No changes detected"
           else
             echo "changes_detected=true" >> $GITHUB_OUTPUT
             echo "Changes detected"
-            git diff -- Manifests/MicrosoftFSLogix.json
+            git diff -- Manifests/MicrosoftFSLogixApps.json
           fi
       
       - name: Commit and push changes
@@ -292,7 +292,7 @@ jobs:
           else
             git checkout -b "$BRANCH_NAME"
           fi
-          git add Manifests/MicrosoftFSLogix.json
+          git add Manifests/MicrosoftFSLogixApps.json
           git commit -m 'Update Microsoft FSLogix versions'
           git push -f origin "$BRANCH_NAME"
 
@@ -327,7 +327,7 @@ jobs:
           - Updated Microsoft SQL Server Management Studio versions in Manifests/MicrosoftSsms.json
           - Updated Microsoft SQL Server Management Studio versions in Manifests/MicrosoftSsms21.json
           - Updated Microsoft SQL Server Management Studio versions in Manifests/MicrosoftSsms20.json
-          - Updated Microsoft FSLogix version in Manifests/MicrosoftFSLogix.json
+          - Updated Microsoft FSLogix version in Manifests/MicrosoftFSLogixApps.json
 
           **Sources:**
           - https://learn.microsoft.com/en-us/ssms/release-notes-22
@@ -370,7 +370,7 @@ jobs:
             exit 0
           fi
 
-          for manifest in Manifests/MicrosoftSsms.json Manifests/MicrosoftSsms21.json Manifests/MicrosoftSsms20.json Manifests/MicrosoftFSLogix.json; do
+          for manifest in Manifests/MicrosoftSsms.json Manifests/MicrosoftSsms21.json Manifests/MicrosoftSsms20.json Manifests/MicrosoftFSLogixApps.json; do
             if ! echo "${changed_files}" | grep -qx "${manifest}"; then
               continue
             fi
@@ -385,7 +385,7 @@ jobs:
             fi
             new_version=$(printf '%s' "${new_json}" | jq -r '.Get.Download.Version // empty')
             case "${manifest}" in
-              Manifests/MicrosoftFSLogix.json)
+              Manifests/MicrosoftFSLogixApps.json)
                 version_regex='^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$'
                 ;;
               *)
