@@ -1,0 +1,20 @@
+{
+    "Name": "reMarkable",
+    "Source": "https://remarkable.com/",
+    "Get": {
+        "Update": {
+            "Uri": "https://downloads.remarkable.com/sparkle/reMarkableWindows/Prod/appcast.xml"
+        }
+    },
+    "Install": {
+        "Setup": "reMarkable-*.exe",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}
