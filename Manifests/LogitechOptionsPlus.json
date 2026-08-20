@@ -1,0 +1,24 @@
+{
+    "Name": "Logitech Options+",
+    "Source": "https://support.logi.com/hc/en-us/articles/11570501236119-Logitech-Options-offline-installer",
+    "Get": {
+        "Update": {
+            "Uri": "https://updates.optionsplus.logitechg.com/pipeline/v2/update/optionsplus5/win/public/update.json",
+            "DatePattern": "M/d/yyyy h:mm:ss tt"
+        },
+        "Download": {
+            "Uri": "https://download01.logi.com/web/ftp/pub/techsupport/optionsplus/logioptionsplus_installer_offline.exe"
+        }
+    },
+    "Install": {
+        "Setup": "",
+        "Physical": {
+            "Arguments": "/quiet /norestart",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "/quiet /norestart",
+            "PostInstall": []
+        }
+    }
+}

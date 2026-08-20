@@ -1,0 +1,23 @@
+{
+	"Name": "OpenSSL Library",
+	"Source": "https://www.openssl.org/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/openssl/installer/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	},
+	"Install": {
+		"Setup": "OpenSSL*.msi",
+		"Preinstall": "",
+		"Physical": {
+			"Arguments": "/quiet /norestart",
+			"PostInstall": [
+			]
+		},
+		"Virtual": {
+			"Arguments": "/quiet /norestart",
+			"PostInstall": [
+			]
+		}
+	}
+}
