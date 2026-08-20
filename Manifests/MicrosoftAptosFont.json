@@ -1,0 +1,27 @@
+{
+    "Name": "Microsoft Aptos Font",
+    "Source": "https://learn.microsoft.com/en-au/typography/font-list/aptos",
+    "Get": {
+        "Update": {
+            "Uri": "https://www.microsoft.com/en-us/download/details.aspx?id=106087"
+        },
+        "Download": {
+            "Version": "4.40",
+            "Uri": "https://download.microsoft.com/download/8/6/0/860a94fa-7feb-44ef-ac79-c072d9113d69/Microsoft%20Aptos%20Fonts.zip",
+            "Date": "7/30/2026 7:48:42 PM",
+            "DatePattern": "M/d/yyyy h:mm:ss tt"
+        }
+    },
+    "Install": {
+        "Setup": "",
+        "Preinstall": "",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}
