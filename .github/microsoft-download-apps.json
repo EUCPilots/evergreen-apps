@@ -6,5 +6,9 @@
     {
         "appName": "MicrosoftPowerBI",
         "downloadUrl": "https://www.microsoft.com/en-us/download/details.aspx?id=58494"
+    },
+    {
+        "appName": "MicrosoftAptosFont",
+        "downloadUrl": "https://www.microsoft.com/en-us/download/details.aspx?id=106087"
     }
 ]
