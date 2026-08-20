@@ -10,5 +10,9 @@
     {
         "appName": "MicrosoftAptosFont",
         "downloadUrl": "https://www.microsoft.com/en-us/download/details.aspx?id=106087"
+    },
+    {
+        "appName": "MicrosoftOfficeDeploymentTool",
+        "downloadUrl": "https://www.microsoft.com/en-us/download/details.aspx?id=49117"
     }
 ]
