@@ -4,7 +4,7 @@
 	"Get": {
 		"Uri": "https://api.github.com/repos/d2phap/ImageGlass/releases/latest",
 		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
-		"MatchFileTypes": "\\.exe$|\\.msi$"
+		"MatchFileTypes": "\\.exe$|\\.msi$|\\.msix$|\\.zip$"
 	},
 	"Install": {
 		"Setup": "ImageGlass*.msi",
