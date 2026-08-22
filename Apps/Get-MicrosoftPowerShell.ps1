@@ -31,10 +31,10 @@ function Get-MicrosoftPowerShell {
 
         # Determine the tag
         $Tags = $updateFeed.($res.Get.Download.Tags[$release.key])
-        Write-Verbose -Message "$($MyInvocation.MyCommand): Query release for tag: $Tag."
 
         # Pass the repo releases API URL and return a formatted object
         foreach ($Tag in $Tags) {
+            Write-Verbose -Message "$($MyInvocation.MyCommand): Query release for tag: $Tag."
             $params = @{
                 Uri          = "$($res.Get.Download.Uri)$($Tag)"
                 MatchVersion = $res.Get.Download.MatchVersion
