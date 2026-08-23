@@ -1,8 +1,8 @@
-# 🌲 Evergreen Apps Repository
+# Evergreen Apps Repository
 
 Welcome to the **Evergreen Apps** repo! This is repo hosts application functions and manifests for the Evergreen module.
 
-## 🚀 What is This Repo?
+## What is This Repo?
 
 This repository hosts:
 
@@ -11,7 +11,7 @@ This repository hosts:
 
 Check out [Evergreen Documentation](https://eucpilots.com/evergreen) for detailed guides.
 
-## ℹ How to Use
+## How to Use
 
 If you want to contribute to this project with fixes or new applications, set up your local environment as follows:
 
