@@ -1,9 +1,9 @@
 {
-    "Name": "Proton Authenticator",
-    "Source": "https://proton.me/authenticator/",
+    "Name": "Proton Meet",
+    "Source": "https://proton.me/meet/",
     "Get": {
         "Update": {
-            "Uri": "https://proton.me/download/authenticator/windows/version.json",
+            "Uri": "https://proton.me/download/meet/windows/version.json",
             "DatePattern": "yyyy-MM-dd",
             "ReplaceString": "(\\s+\\\"Sha512Checksum\\\":\\s+\\\".*\\\"\\,)",
             "CategoryName": [

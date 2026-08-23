@@ -1,9 +1,9 @@
 {
-    "Name": "Proton Authenticator",
-    "Source": "https://proton.me/authenticator/",
+    "Name": "Proton Mail Bridge",
+    "Source": "https://proton.me/mail/",
     "Get": {
         "Update": {
-            "Uri": "https://proton.me/download/authenticator/windows/version.json",
+            "Uri": "https://proton.me/download/bridge/windows/x86/v1/version.json",
             "DatePattern": "yyyy-MM-dd",
             "ReplaceString": "(\\s+\\\"Sha512Checksum\\\":\\s+\\\".*\\\"\\,)",
             "CategoryName": [
