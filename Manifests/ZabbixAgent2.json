@@ -1,0 +1,39 @@
+{
+    "Name": "Zabbix Agent 2",
+    "Source": "https://www.zabbix.com/download_agents",
+    "Get": {
+        "Update": {
+            "Uri": "https://raw.githubusercontent.com/zabbix/zabbix/refs/heads/master/publiccode.yml",
+            "DateTimeFormat": "MM-dd-yyyy"
+        },
+        "Download": {
+            "Uri": [
+                "https://cdn.zabbix.com/zabbix/binaries/stable/#minorVersion/#softwareVersion/zabbix_agent-#softwareVersion-windows-amd64-openssl.msi",
+                "https://cdn.zabbix.com/zabbix/binaries/stable/#minorVersion/#softwareVersion/zabbix_agent-#softwareVersion-windows-amd64-openssl.zip",
+                "https://cdn.zabbix.com/zabbix/binaries/stable/#minorVersion/#softwareVersion/zabbix_agent-#softwareVersion-windows-amd64.zip",
+                "https://cdn.zabbix.com/zabbix/binaries/stable/#minorVersion/#softwareVersion/zabbix_agent-#softwareVersion-windows-i386-openssl.msi",
+                "https://cdn.zabbix.com/zabbix/binaries/stable/#minorVersion/#softwareVersion/zabbix_agent-#softwareVersion-windows-i386-openssl.zip",
+                "https://cdn.zabbix.com/zabbix/binaries/stable/#minorVersion/#softwareVersion/zabbix_agent-#softwareVersion-windows-i386.zip",
+                "https://cdn.zabbix.com/zabbix/binaries/stable/#minorVersion/#softwareVersion/zabbix_agent2-#softwareVersion-windows-amd64-openssl-static.zip",
+                "https://cdn.zabbix.com/zabbix/binaries/stable/#minorVersion/#softwareVersion/zabbix_agent2-#softwareVersion-windows-amd64-openssl.msi",
+                "https://cdn.zabbix.com/zabbix/binaries/stable/#minorVersion/#softwareVersion/zabbix_agent2-#softwareVersion-windows-amd64-static.zip",
+                "https://cdn.zabbix.com/zabbix/binaries/stable/#minorVersion/#softwareVersion/zabbix_agent2-#softwareVersion-windows-i386-openssl-static.zip",
+                "https://cdn.zabbix.com/zabbix/binaries/stable/#minorVersion/#softwareVersion/zabbix_agent2-#softwareVersion-windows-i386-openssl.msi",
+                "https://cdn.zabbix.com/zabbix/binaries/stable/#minorVersion/#softwareVersion/zabbix_agent2-#softwareVersion-windows-i386-static.zip",
+                "https://cdn.zabbix.com/zabbix/binaries/stable/#minorVersion/#softwareVersion/zabbix_agent2_plugins-#softwareVersion-windows-amd64.msi",
+                "https://cdn.zabbix.com/zabbix/binaries/stable/#minorVersion/#softwareVersion/zabbix_agent2_plugins-#softwareVersion-windows-amd64.zip"
+            ]
+        }
+    },
+    "Install": {
+        "Setup": "zabbix_agent2-*-windows-amd64-openssl.msi",
+        "Physical": {
+            "Arguments": "--silent",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "--silent",
+            "PostInstall": []
+        }
+    }
+}
