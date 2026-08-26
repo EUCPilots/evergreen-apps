@@ -24,8 +24,19 @@ function Get-AdobeAcrobatReaderDC {
             Uri = $res.Get.Update.Uri -replace "#Language", $language.Name
         }
         $UpdateContent = Invoke-EvergreenRestMethod @params
-
+        Write-Verbose -Message "$($MyInvocation.MyCommand): Found $($UpdateContent.products.reader.count) items."
         if ($null -ne $UpdateContent) {
+
+            # Sort and get unique versions of the products for the specified language
+            if (($UpdateContent.products.reader.version | Select-Object -Unique).Count -gt 1) {
+                Write-Verbose -Message "$($MyInvocation.MyCommand): Found multiple versions for language: $($language.Name)."
+                $Version = $UpdateContent.products.reader.version | Select-Object -Unique | Sort-Object -Property { [System.Version]$_ } -Descending | Select-Object -First 1
+                $UpdateContent.products.reader = @(
+                    $UpdateContent.products.reader | Where-Object { $_.version -eq $Version }
+                )
+            }
+
+            # Get the download URLs for each product for the specified language
             foreach ($Product in $UpdateContent.products.reader) {
 
                 # Search for downloads for each display name returned for the language
