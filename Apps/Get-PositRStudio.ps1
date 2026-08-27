@@ -24,9 +24,13 @@ function Get-PositRStudio {
         # Step through each installer type
         foreach ($Product in $res.Get.Download.Products) {
 
+            # Match the version number from the JSON content using the regex pattern defined in the manifest
+            $Content.rstudio.$Product.stable.desktop.installer.windows.version -Match $res.Get.Download.MatchVersion | Out-Null
+            $Version = $Matches[1]
+
             # Build the output object; Output object to the pipeline
             $PSObject = [PSCustomObject] @{
-                Version     = $Content.rstudio.$Product.stable.desktop.installer.windows.version
+                Version     = $Version
                 Date        = ConvertTo-DateTime -DateTime $Content.rstudio.$Product.stable.desktop.installer.windows.last_modified -Pattern "yyyy-MM-dd"
                 Pro         = $Content.rstudio.$Product.stable.desktop.installer.windows.pro
                 ProductName = $Content.rstudio.$Product.stable.desktop.installer.windows.label
