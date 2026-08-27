@@ -7,7 +7,8 @@
 			"Products": [
 				"open_source",
 				"pro"
-			]
+			],
+			"MatchVersion": "(\\d+\\.\\d+\\.\\d+)(?=\\+)"
 		}
 	},
 	"Install": {

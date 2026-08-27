@@ -13,22 +13,24 @@ function Get-DropboxDesktopApp {
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    # Get the latest download
-    foreach ($Url in $res.Get.Download.Uri) {
 
-        # Resolve the URI from the download URL
-        $Response = Resolve-SystemNetWebRequest -Uri $Url
+    # Resolve the download URL for each architecture and return a formatted object
+    foreach ($Architecture in $res.Get.Download.Architectures) {
+        $ResolvedUrl = Resolve-SystemNetWebRequest -Uri ($res.Get.Download.Uri -replace "#architecture", $Architecture)
+        if ($null -ne $ResolvedUrl) {
 
-        # Construct the output; Return the custom object to the pipeline
-        if ($null -ne $Response) {
-            $PSObject = [PSCustomObject] @{
-                Version      = [RegEx]::Match($Response.ResponseUri.LocalPath, $res.Get.Download.MatchVersion).Captures.Groups[1].Value
-                Architecture = Get-Architecture -String $Response.ResponseUri.AbsoluteUri
-                Type         = Get-FileType -File $Response.ResponseUri.AbsoluteUri
-                Filename     = $(Split-Path -Path $Response.ResponseUri.AbsoluteUri -Leaf) -replace "%20", " "
-                URI          = $Response.ResponseUri.AbsoluteUri
+            # Extract the version from the resolved URL using the specified regex pattern
+            $Version = $ResolvedUrl.ResponseUri.AbsoluteUri -match $res.Get.Download.MatchVersion | ForEach-Object { $Matches[1] }
+
+            [PSCustomObject]@{
+                Version      = $Version
+                Date         = $ResolvedUrl.LastModified.ToShortDateString()
+                Architecture = $Architecture
+                Size         = $ResolvedUrl.ContentLength
+                Type         = Get-FileType -File $ResolvedUrl.ResponseUri.AbsoluteUri
+                Filename     = ($ResolvedUrl.ResponseUri.AbsoluteUri -split "/")[-1] -replace "%20", " "
+                URI          = $ResolvedUrl.ResponseUri.AbsoluteUri
             }
-            Write-Output -InputObject $PSObject
         }
     }
 }

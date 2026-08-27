@@ -1,21 +1,20 @@
 {
     "Name": "Dropbox desktop app",
-    "Source": "https://www.dropbox.com/desktop",
+    "Source": "https://www.dropbox.com/install",
     "Get": {
-        "Update": {
-            "Uri": ""
-        },
+        "Update": {},
         "Download": {
-            "Uri": [
-                "https://www.dropbox.com/download?arch=x64&plat=win&type=full",
-                "https://www.dropbox.com/download?arch=arm64&plat=win&type=full"
+            "Uri": "https://www.dropbox.com/download?arch=#architecture&plat=win&type=full",
+            "Architectures": [
+                "x64",
+                "arm64"
             ],
-            "Property": "ResponseUri.Headers.Location",
-            "MatchVersion": "(\\d+(\\.\\d+){1,4})"
+            "MatchVersion": "Dropbox%20(\\d+(?:\\.\\d+)*)%20Offline%20Installer\\.(?:arm64|x64)\\.exe"
         }
     },
     "Install": {
         "Setup": "",
+        "Preinstall": "",
         "Physical": {
             "Arguments": "",
             "PostInstall": []
