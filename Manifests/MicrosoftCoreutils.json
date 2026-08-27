@@ -1,0 +1,23 @@
+{
+	"Name": "Microsoft Coreutils for Windows",
+	"Source": "https://learn.microsoft.com/en-us/windows/core-utils/overview",
+	"Get": {
+		"Uri": "https://api.github.com/repos/microsoft/coreutils/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$"
+	},
+	"Install": {
+		"Setup": "Brackets*.msi",
+		"Preinstall": "",
+		"Physical": {
+			"Arguments": "/quiet /norestart",
+			"PostInstall": [
+			]
+		},
+		"Virtual": {
+			"Arguments": "/quiet /norestart",
+			"PostInstall": [
+			]
+		}
+	}
+}
