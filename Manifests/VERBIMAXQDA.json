@@ -1,6 +1,6 @@
 {
-    "Name": "VERDI MAXQDA",
-    "Source": "https://www.maxqda.com/products/maxqda-verdi",
+    "Name": "VERBI MAXQDA",
+    "Source": "https://www.maxqda.com/products/maxqdad",
     "Get": {
         "Update": {
             "Uri": "https://updates.maxqda.de/MAXQDA/MaxCastWin_64.xml"

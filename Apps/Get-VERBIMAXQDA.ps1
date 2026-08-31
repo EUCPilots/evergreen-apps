@@ -1,7 +1,7 @@
-function Get-VERDIMAXQDA {
+function Get-VERBIMAXQDA {
     <#
         .SYNOPSIS
-            Returns the latest VERDI MAXQDA version number and download.
+            Returns the latest VERBI MAXQDA version number and download.
 
         .NOTES
             Author: Aaron Parker
