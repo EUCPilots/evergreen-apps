@@ -4,7 +4,7 @@
     "Get": {
         "Update": {},
         "Download": {
-            "Version": "3.26.126.19110",
+            "Version": "3.26.826.17182",
             "Uri": "https://aka.ms/fslogix-latest",
             "Channel": "Production",
             "Uri2": "https://aka.ms/fslogix_download",
