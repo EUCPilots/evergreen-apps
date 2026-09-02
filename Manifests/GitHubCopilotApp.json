@@ -1,5 +1,5 @@
 {
-	"Name": "GitHub Copilot",
+	"Name": "GitHub Copilot app",
 	"Source": "https://copilot.github.com/",
 	"Get": {
 		"Uri": "https://api.github.com/repos/github/app/releases/latest",
