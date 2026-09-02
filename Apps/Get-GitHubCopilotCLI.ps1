@@ -1,4 +1,4 @@
-function Get-GitHubCopilot {
+function Get-GitHubCopilotCLI {
     <#
         .SYNOPSIS
             Returns the latest GitHub Copilot version number and download.

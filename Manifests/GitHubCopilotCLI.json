@@ -1,0 +1,23 @@
+{
+	"Name": "GitHub Copilot CLI",
+	"Source": "https://copilot.github.com/",
+	"Get": {
+		"Uri": "https://api.github.com/repos/github/copilot-cli/releases/latest",
+		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+		"MatchFileTypes": "\\.exe$|\\.msi$|\\.zip$"
+	},
+	"Install": {
+		"Setup": "",
+		"Preinstall": "",
+		"Physical": {
+			"Arguments": "-s",
+			"PostInstall": [
+			]
+		},
+		"Virtual": {
+			"Arguments": "-s",
+			"PostInstall": [
+			]
+		}
+	}
+}
