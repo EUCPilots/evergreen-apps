@@ -1,8 +1,8 @@
 {
 	"Name": "Node Version Manager",
-	"Source": "https://github.com/coreybutler/nvm-windows",
+	"Source": "https://nvm-windows.com/",
 	"Get": {
-		"Uri": "https://api.github.com/repos/coreybutler/nvm-windows/releases/latest",
+		"Uri": "https://api.github.com/repos/nvm-windows/nvm/releases/latest",
 		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
 		"MatchFileTypes": "\\.exe$|\\.zip$"
 	},
