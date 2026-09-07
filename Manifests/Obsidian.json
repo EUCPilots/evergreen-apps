@@ -2,22 +2,28 @@
 	"Name": "Obsidian",
 	"Source": "https://obsidian.md/",
 	"Get": {
-		"Uri": "https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest",
-		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
-		"MatchFileTypes": "\\.exe$|\\.msi$"
+		"Update": {
+			"Uri": "https://raw.githubusercontent.com/obsidianmd/obsidian-releases/refs/heads/master/desktop-releases.json"
+		},
+		"Download": {
+			"Uri": "https://api.github.com/repos/obsidianmd/obsidian-releases/releases/tags/v",
+			"Tags": [
+				"latestVersion"
+			],
+			"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+			"MatchFileTypes": "\\.exe$|\\.msi$"
+		}
 	},
 	"Install": {
 		"Setup": "Obsidian*.msi",
 		"Preinstall": "",
 		"Physical": {
 			"Arguments": "",
-			"PostInstall": [
-			]
+			"PostInstall": []
 		},
 		"Virtual": {
 			"Arguments": "",
-			"PostInstall": [
-			]
+			"PostInstall": []
 		}
 	}
 }
