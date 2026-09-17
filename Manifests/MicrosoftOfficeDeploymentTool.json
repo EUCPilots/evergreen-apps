@@ -6,9 +6,9 @@
             "Uri": ""
         },
         "Download": {
-            "Version": "16.0.20228.20124",
-            "Uri": "https://download.microsoft.com/download/6c1eeb25-cf8b-41d9-8d0d-cc1dbc032140/officedeploymenttool_20228-20124.exe",
-            "Date": "8/11/2026 7:48:42 PM",
+            "Version": "16.0.20326.20112",
+            "Uri": "https://download.microsoft.com/download/6c1eeb25-cf8b-41d9-8d0d-cc1dbc032140/officedeploymenttool_20326-20112.exe",
+            "Date": "9/9/2026 4:09:34 PM",
             "DatePattern": "M/d/yyyy h:mm:ss tt"
         }
     },
