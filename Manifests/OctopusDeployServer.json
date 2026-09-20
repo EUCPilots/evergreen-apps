@@ -3,7 +3,7 @@
 	"Source": "https://octopus.com/",
 	"Get": {
 		"Update": {
-			"Uri": "https://octopus.com/download/upgrade/v3",
+			"Uri": "https://octopus.com/download/upgrade/v4",
 			"ContentType": "application/json; charset=utf-8",
 			"DateTimePattern": "yyyy-MM-dd"
 		},
