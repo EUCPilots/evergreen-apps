@@ -33,7 +33,7 @@ function Get-LibreOffice {
         if ($null -ne $Update) {
 
             if ($null -eq $Update.description.version) {
-                Write-Warning -Message "$($MyInvocation.MyCommand): failed to return a version number for release $($item.Name) from: $($res.Get.Update.Uri)."
+                Write-Warning -Message "$($MyInvocation.MyCommand): the LibreOffice update API did not return a version number for release '$($item.Name)'."
             }
             else {
                 Write-Verbose -Message "$($MyInvocation.MyCommand): $($res.Get.Update.Uri) returned version: $($Update.description.version)."
@@ -82,11 +82,12 @@ function Get-LibreOffice {
 
                                     # Construct the output; Return the custom object to the pipeline
                                     $PSObject = [PSCustomObject] @{
-                                        Version      = $($Update.description.version)
-                                        Architecture = Get-Architecture -String $arch
-                                        Release      = $item.Name
-                                        Language     = $Language
-                                        URI          = $("$($res.Get.Download.Uri)/$($Update.description.version)/$($platform.Name)/$arch/$file")
+                                        Version       = $($Update.description.version)
+                                        Release       = $item.Name
+                                        Language      = $Language
+                                        Architecture  = Get-Architecture -String $arch
+                                        InstallerType = if ($file -match "helppack") { "Helppack" } else { "Installer" }
+                                        URI           = $("$($res.Get.Download.Uri)/$($Update.description.version)/$($platform.Name)/$arch/$file")
                                     }
                                     Write-Output -InputObject $PSObject
                                 }

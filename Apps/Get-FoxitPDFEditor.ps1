@@ -16,11 +16,33 @@ function Get-FoxitPDFEditor {
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    # Make an initial request to the Foxit catalog page to establish a session and retrieve cookies
+    # Configure the environment
+    $ErrorActionPreference = [System.Management.Automation.ActionPreference]::continue
+    $InformationPreference = [System.Management.Automation.ActionPreference]::continue
+    $ProgressPreference = [System.Management.Automation.ActionPreference]::SilentlyContinue
+    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+
+    # Make an initial request without a cookie container because Foxit's token exceeds the Windows PowerShell cookie limit
     Write-Verbose -Message "$($MyInvocation.MyCommand): Make initial request to retrieve bearer token."
-    $null = Invoke-WebRequest -Uri $res.Get.Update.InitialUri -SessionVariable 'foxitSession' -UseBasicParsing
-    $tokenCookie = $foxitSession.Cookies.GetCookies($res.Get.Update.CookieHost) | Where-Object { $_.Name -eq 'token' }
-    $bearerToken = $tokenCookie.Value
+    $request = [System.Net.HttpWebRequest]::Create($res.Get.Update.InitialUri)
+    $request.CookieContainer = $null
+    $request.UserAgent = $script:resourceStrings.UserAgent.Base
+    try {
+        $response = [System.Net.HttpWebResponse]$request.GetResponse()
+        $tokenCookie = @($response.Headers.GetValues('Set-Cookie')) |
+        Where-Object { $_ -match '(?i)(?:^|[,;\s])token=([^;]*)' } |
+        Select-Object -First 1
+        $bearerToken = [regex]::Match($tokenCookie, '(?i)(?:^|[,;\s])token=([^;]*)').Groups[1].Value
+    }
+    catch {
+        Write-Verbose -Message "$($MyInvocation.MyCommand): Failed to make initial request to retrieve bearer token."
+    }
+    finally {
+        if ($null -ne $response) {
+            $response.Dispose()
+        }
+    }
+
     if ($null -eq $bearerToken) {
         Write-Warning -Message "$($MyInvocation.MyCommand): Failed to retrieve bearer token from cookies."
         return
@@ -28,7 +50,7 @@ function Get-FoxitPDFEditor {
     Write-Verbose -Message "$($MyInvocation.MyCommand): Retrieved bearer token from cookies."
 
     # Query the Foxit package download form to get the JSON
-    $Metadata = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri -Headers @{"authorization" = "Bearer $bearerToken"}
+    $Metadata = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri -Headers @{"authorization" = "Bearer $bearerToken" }
 
     # Grab latest version. The property name is also the value
     if ($null -eq $Metadata.data.version) {
@@ -36,14 +58,14 @@ function Get-FoxitPDFEditor {
         return
     }
     $VersionProperty = $Metadata.data.version.PSObject.Properties |
-        Where-Object { $_.MemberType -eq 'NoteProperty' } |
-        Select-Object -First 1 -ExpandProperty Name
+    Where-Object { $_.MemberType -eq 'NoteProperty' } |
+    Select-Object -First 1 -ExpandProperty Name
     $Version = $Metadata.data.version.$VersionProperty
     Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version."
 
     $FileTypes = $Metadata.data.package_type.PSObject.Properties |
-        Where-Object { $_.MemberType -eq 'NoteProperty' } |
-        ForEach-Object { $_.Name }
+    Where-Object { $_.MemberType -eq 'NoteProperty' } |
+    ForEach-Object { $_.Name }
     Write-Verbose -Message "$($MyInvocation.MyCommand): Found file types: $($FileTypes -join ", ")."
 
     # Loop through the file types from the API metadata to build the download URLs
@@ -51,7 +73,7 @@ function Get-FoxitPDFEditor {
 
         # Build the download URL; Follow the download link which will return a 301/302
         $DownloadUrl = $res.Get.Download.Uri -replace "#version", $Version -replace "#filetype", $FileType
-        $ResolvedUrl = Invoke-EvergreenRestMethod -Uri $DownloadUrl -Headers @{"authorization" = "Bearer $bearerToken"}
+        $ResolvedUrl = Invoke-EvergreenRestMethod -Uri $DownloadUrl -Headers @{"authorization" = "Bearer $bearerToken" }
         Write-Verbose -Message "$($MyInvocation.MyCommand): Resolved URL to: $($ResolvedUrl.data)."
         $DownloadUrl = ($ResolvedUrl.data -split "\?")[0]
         Write-Verbose -Message "$($MyInvocation.MyCommand): Split URL to: $DownloadUrl."
