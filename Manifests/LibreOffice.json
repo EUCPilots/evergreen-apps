@@ -5,7 +5,8 @@
         "Update": {
             "Uri": "https://update.libreoffice.org/check.php",
             "UserAgent": {
-                "Latest": "LibreOffice 26.2.6.1 (d1ee4fa77ef37aa4cfa80ea6fd156dcae5d60263; Windows; x86;)"
+                "Latest": "LibreOffice 26.8.0.1 (2577b8a8e9a5d3f37124fb86a89387e3807953a7; Windows; x86;)",
+                "Previous": "LibreOffice 26.2.6.2 (ad5cf9fd4989cacf0bca866ebefc0ec8926cb0b2; Windows; x86;)"
             },
             "ContentType": "text/xml"
         },
