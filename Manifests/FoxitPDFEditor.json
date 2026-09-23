@@ -3,7 +3,7 @@
     "Source": "https://www.foxit.com/pdf-editor/",
     "Get": {
         "Update": {
-            "InitialUri": "https://www.foxit.com/products/catalog/",
+            "InitialUri": "https://www.foxit.com/downloads/",
             "CookieHost": "https://www.foxit.com",
             "Uri": "https://www.foxit.com/foxit-api/form/showDownloadForm/?form_id=download-phantom-standard&language=ML&platform=Windows&package_type=&lang=en-us&fresh=1"
         },

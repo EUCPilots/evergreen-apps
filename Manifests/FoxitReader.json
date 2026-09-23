@@ -1,9 +1,9 @@
 {
     "Name": "Foxit PDF Reader",
-    "Source": "https://www.foxitsoftware.com/pdf-reader/",
+    "Source": "https://www.foxit.com/pdf-reader/",
     "Get": {
         "Update": {
-            "InitialUri": "https://www.foxit.com/products/catalog/",
+            "InitialUri": "https://www.foxit.com/downloads/",
             "CookieHost": "https://www.foxit.com",
             "Uri": "https://www.foxit.com/foxit-api/form/showDownloadForm/?form_id=download-reader&language=ML&platform=Windows&package_type=&lang=en-us&fresh=1"
         },
