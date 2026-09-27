@@ -301,13 +301,134 @@ jobs:
           git commit -m 'Update Microsoft FSLogix versions'
           git push origin "$BRANCH_NAME"
 
+  update-wappsdk-versions:
+    runs-on: ubuntu-latest
+    name: 'Update Windows Apps SDK'
+    needs: update-fslogix-versions
+    outputs:
+      changes_detected: ${{ steps.check-changes.outputs.changes_detected }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Parse Windows Apps SDK downloads and update JSON
+        run: |
+          python3 << 'EOF'
+          import json
+          import re
+          import requests
+          from bs4 import BeautifulSoup
+
+          url = "https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/downloads"
+          manifest_path = "Manifests/MicrosoftWindowsAppSDK.json"
+          response = requests.get(url, timeout=30)
+          response.raise_for_status()
+          soup = BeautifulSoup(response.content, 'html.parser')
+
+          heading = soup.find('h2', id='stable-release')
+          if not heading:
+              raise RuntimeError("Stable release heading was not found")
+
+          table = heading.find_next('table')
+          if not table:
+              raise RuntimeError("Stable release downloads table was not found")
+
+          header_row = table.find('tr')
+          if not header_row:
+              raise RuntimeError("Stable release downloads table has no header row")
+          headers = [cell.get_text(' ', strip=True).lower() for cell in header_row.find_all(['th', 'td'])]
+          try:
+              version_index = headers.index('version')
+              downloads_index = headers.index('runtime downloads')
+          except ValueError as error:
+              raise RuntimeError("Expected Version and Runtime downloads columns") from error
+
+          first_row = next((row for row in table.find_all('tr')[1:] if row.find_all('td')), None)
+          if not first_row:
+              raise RuntimeError("Stable release downloads table has no data rows")
+
+          cells = first_row.find_all('td')
+          version_text = cells[version_index].get_text(' ', strip=True)
+          version_match = re.search(r'\b(\d+\.\d+\.\d+)\b\s+(\d{2}/\d{2}/\d{4})', version_text)
+          if not version_match:
+              raise RuntimeError(f"Could not parse version and date from: {version_text}")
+          version, release_date = version_match.groups()
+
+          links = {
+              link.get_text(' ', strip=True).lower(): link.get('href')
+              for link in cells[downloads_index].find_all('a')
+          }
+          download_labels = [
+              'installer (x64)',
+              'installer (x86)',
+              'installer (arm64)',
+              'redistributable (zip)',
+          ]
+          download_uris = [links.get(label) for label in download_labels]
+          if any(not uri for uri in download_uris):
+              raise RuntimeError("Stable release table is missing one or more expected download links")
+
+          with open(manifest_path, 'r') as manifest_file:
+              data = json.load(manifest_file)
+          data['Get']['Download']['Version'] = version
+          data['Get']['Download']['Uri'] = download_uris
+          data['Get']['Download']['Date'] = release_date
+          with open(manifest_path, 'w') as manifest_file:
+              json.dump(data, manifest_file, indent=4)
+              manifest_file.write('\n')
+
+          print(f"Updated Windows Apps SDK to {version} ({release_date})")
+          for label, download_uri in zip(download_labels, download_uris):
+              print(f"{label}: {download_uri}")
+          EOF
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if git diff --quiet -- Manifests/MicrosoftWindowsAppSDK.json; then
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          else
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+            echo "Changes detected"
+            git diff -- Manifests/MicrosoftWindowsAppSDK.json
+          fi
+
+      - name: Commit and push changes
+        if: steps.check-changes.outputs.changes_detected == 'true'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          if git ls-remote --exit-code --heads origin "$BRANCH_NAME" > /dev/null 2>&1; then
+            git fetch origin "$BRANCH_NAME"
+            git checkout -B "$BRANCH_NAME" "origin/$BRANCH_NAME"
+          else
+            git checkout -b "$BRANCH_NAME"
+          fi
+          git add Manifests/MicrosoftWindowsAppSDK.json
+          git commit -m 'Update Microsoft Windows Apps SDK version'
+          git push --set-upstream origin "$BRANCH_NAME"
+
   create-microsoft-static-pr:
     runs-on: ubuntu-latest
     name: 'Create Microsoft Static PR'
     needs:
       - update-ssms-versions
       - update-fslogix-versions
-    if: needs.update-ssms-versions.outputs.changes_detected == 'true' || needs.update-fslogix-versions.outputs.changes_detected == 'true'
+      - update-wappsdk-versions
+    if: needs.update-ssms-versions.outputs.changes_detected == 'true' || needs.update-fslogix-versions.outputs.changes_detected == 'true' || needs.update-wappsdk-versions.outputs.changes_detected == 'true'
 
     steps:
       - name: Checkout repository
@@ -333,12 +454,14 @@ jobs:
           - Updated Microsoft SQL Server Management Studio versions in Manifests/MicrosoftSsms21.json
           - Updated Microsoft SQL Server Management Studio versions in Manifests/MicrosoftSsms20.json
           - Updated Microsoft FSLogix version in Manifests/MicrosoftFSLogixApps.json
+          - Updated Microsoft Windows Apps SDK version, date, and download URLs in Manifests/MicrosoftWindowsAppSDK.json
 
           **Sources:**
           - https://learn.microsoft.com/en-us/ssms/release-notes-22
           - https://learn.microsoft.com/en-us/ssms/release-notes-21
           - https://learn.microsoft.com/en-us/ssms/release-notes-20
           - https://learn.microsoft.com/en-us/fslogix/overview-release-notes
+          - https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/downloads
 
           **Auto-generated by:** GitHub Actions workflow" \
             --base main \
@@ -367,7 +490,7 @@ jobs:
           echo "Changed files:"
           echo "${changed_files}"
 
-          unexpected=$(echo "${changed_files}" | grep -vx 'Manifests/MicrosoftSsms\.json\|Manifests/MicrosoftSsms21\.json\|Manifests/MicrosoftSsms20\.json\|Manifests/MicrosoftFSLogix\.json' || true)
+          unexpected=$(echo "${changed_files}" | grep -vx 'Manifests/MicrosoftSsms\.json\|Manifests/MicrosoftSsms21\.json\|Manifests/MicrosoftSsms20\.json\|Manifests/MicrosoftFSLogixApps\.json\|Manifests/MicrosoftWindowsAppSDK\.json' || true)
           if [ -n "${unexpected}" ]; then
             echo "Validation failed: unexpected files changed:"
             echo "${unexpected}"
@@ -375,20 +498,45 @@ jobs:
             exit 0
           fi
 
-          for manifest in Manifests/MicrosoftSsms.json Manifests/MicrosoftSsms21.json Manifests/MicrosoftSsms20.json Manifests/MicrosoftFSLogixApps.json; do
+          for manifest in Manifests/MicrosoftSsms.json Manifests/MicrosoftSsms21.json Manifests/MicrosoftSsms20.json Manifests/MicrosoftFSLogixApps.json Manifests/MicrosoftWindowsAppSDK.json; do
             if ! echo "${changed_files}" | grep -qx "${manifest}"; then
               continue
             fi
             old_json=$(git show origin/main:"${manifest}")
             new_json=$(cat "${manifest}")
+            allowed_fields='.Get.Download.Version'
+            if [ "${manifest}" = 'Manifests/MicrosoftWindowsAppSDK.json' ]; then
+              allowed_fields='.Get.Download.Version, .Get.Download.Uri, .Get.Download.Date'
+            fi
             if ! diff \
-              <(printf '%s' "${old_json}" | jq -S 'del(.Get.Download.Version)') \
-              <(printf '%s' "${new_json}" | jq -S 'del(.Get.Download.Version)') > /dev/null 2>&1; then
+              <(printf '%s' "${old_json}" | jq -S "del(${allowed_fields})") \
+              <(printf '%s' "${new_json}" | jq -S "del(${allowed_fields})") > /dev/null 2>&1; then
               echo "Validation failed: changes beyond Get.Download.Version detected in ${manifest}"
               echo "validation_passed=false" >> "$GITHUB_OUTPUT"
               exit 0
             fi
             new_version=$(printf '%s' "${new_json}" | jq -r '.Get.Download.Version // empty')
+            if [ "${manifest}" = 'Manifests/MicrosoftWindowsAppSDK.json' ]; then
+              new_date=$(printf '%s' "${new_json}" | jq -r '.Get.Download.Date // empty')
+              uri_count=$(printf '%s' "${new_json}" | jq -r '.Get.Download.Uri | length')
+              if [[ ! "${new_date}" =~ ^[0-9]{2}/[0-9]{2}/[0-9]{4}$ ]] || [ "${uri_count}" -ne 4 ]; then
+                echo "Validation failed: invalid Windows Apps SDK date or download URI list"
+                echo "validation_passed=false" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+              if ! printf '%s' "${new_json}" | jq -e --arg version "${new_version}" '
+                .Get.Download.Uri as $uris |
+                ($uris | length) == 4 and
+                ($uris[0] | startswith("https://") and endswith("/windowsappruntimeinstall-x64.exe")) and
+                ($uris[1] | startswith("https://") and endswith("/windowsappruntimeinstall-x86.exe")) and
+                ($uris[2] | startswith("https://") and endswith("/windowsappruntimeinstall-arm64.exe")) and
+                ($uris[3] | startswith("https://") and endswith("/Microsoft.WindowsAppRuntime.Redist." + ($version | split(".")[0:2] | join(".")) + ".zip"))
+              ' > /dev/null; then
+                echo "Validation failed: invalid Windows Apps SDK download URLs"
+                echo "validation_passed=false" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+            fi
             case "${manifest}" in
               Manifests/MicrosoftFSLogixApps.json)
                 version_regex='^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$'
