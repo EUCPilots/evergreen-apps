@@ -32,11 +32,11 @@ function Get-TenableNessusAgent {
         $PSObject = [PSCustomObject] @{
             Version      = $File.version
             Date         = ConvertTo-DateTime -DateTime $File.release_date -Pattern $res.Get.Update.DatePattern
-            Architecture = Get-Architecture -String $File.file
-            Type         = Get-FileType -File $File.file
             Size         = $File.size
             Md5          = $File.md5
             Sha256       = $File.sha256
+            Architecture = Get-Architecture -String $File.file
+            Type         = Get-FileType -File $File.file
             URI          = $File.file_url
         }
         Write-Output -InputObject $PSObject
