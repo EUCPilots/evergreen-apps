@@ -1,5 +1,5 @@
 {
-    "Name": "Microsoft Windows Apps SDK",
+    "Name": "Microsoft Windows App SDK",
     "Source": "https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/downloads/",
     "Get": {
         "Update": {},

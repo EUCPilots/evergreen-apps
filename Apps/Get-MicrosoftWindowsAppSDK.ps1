@@ -18,13 +18,17 @@ function Get-MicrosoftWindowsAppSDK {
     )
 
     foreach ($Url in $res.Get.Download.Uri) {
+
+        # Resolve the final URL after any redirects
+        $ResolvedUrl = Resolve-SystemNetWebRequest -Uri $Url
+
         # Construct the output; Return the custom object to the pipeline
         $PSObject = [PSCustomObject] @{
             Version      = $res.Get.Download.Version
             Date         = ConvertTo-DateTime -DateTime (Get-Date) -Pattern $res.Get.Download.DatePattern
             Architecture = Get-Architecture -String $Url
             Type         = Get-FileType -File $Url
-            URI          = $Url
+            URI          = $ResolvedUrl.ResponseUri.AbsoluteUri
         }
         Write-Output -InputObject $PSObject
     }
