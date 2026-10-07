@@ -1,7 +1,10 @@
-function Get-Python {
+function Get-PythonInstallManager {
     <#
         .SYNOPSIS
-            Get the current version and download URL for Python Software Foundation version of Python.
+            Returns the available Python Install Manager versions.
+
+        .NOTES
+            Author: Aaron Parker
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
@@ -17,7 +20,7 @@ function Get-Python {
     if ($null -ne $updateFeed) {
 
         # Get latest versions from update feed (PSF typically maintain a version of Python2 and a version of Python 3)
-        $LatestVersions = $updateFeed | Where-Object { $_.is_latest -eq "True" -and $_.slug -match "^python" }
+        $LatestVersions = $updateFeed | Where-Object { $_.is_latest -eq "True" -and $_.slug -match "^pymanager" }
         if ($null -ne $LatestVersions) {
             foreach ($PythonVersion in $LatestVersions) {
 
@@ -63,8 +66,8 @@ function Get-Python {
                         # Construct the output; Return the custom object to the pipeline
                         $PSObject = [PSCustomObject] @{
                             Version      = $FileVersion
-                            Release      = $FileVersion.split('.')[0..1] -join '.' # Get the major.minor version
-                            Python       = $PythonVersion.version
+                            #Release      = $FileVersion.split('.')[0..1] -join '.' # Get the major.minor version
+                            #Python       = $PythonVersion.version
                             Date         = ConvertTo-DateTime -DateTime $PythonVersion.release_date -Pattern $res.Get.Download.DatePattern
                             Sha256       = $UniqueFile.sha256_sum
                             Size         = $UniqueFile.filesize
