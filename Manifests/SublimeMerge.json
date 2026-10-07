@@ -1,0 +1,25 @@
+{
+    "Name": "Sublime Merge",
+    "Source": "https://www.sublimemerge.com/",
+    "Get": {
+        "Update": {
+            "Uri": "https://www.sublimemerge.com/updates/stable_update_check?version=2132&platform=windows&arch=x64",
+            "UserAgent": "sublime-version-check/3.0",
+            "MatchVersion": "(\\d+(\\.\\d+){1,4})"
+        },
+        "Download": {
+            "Uri": "https://download.sublimetext.com/sublime_merge_build_#version_x64_setup.exe"
+        }
+    },
+    "Install": {
+        "Setup": "",
+        "Physical": {
+            "Arguments": "/S",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "/S",
+            "PostInstall": []
+        }
+    }
+}

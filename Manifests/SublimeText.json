@@ -1,0 +1,25 @@
+{
+    "Name": "Sublime Text",
+    "Source": "https://www.sublimetext.com/",
+    "Get": {
+        "Update": {
+            "Uri": "https://www.sublimetext.com/updates/4/stable_update_check?version=4215&platform=windows&arch=x64",
+            "UserAgent": "sublime-version-check/3.0",
+            "MatchVersion": "(\\d+(\\.\\d+){1,4})"
+        },
+        "Download": {
+            "Uri": "https://download.sublimetext.com/sublime_text_build_#version_x64_setup.exe"
+        }
+    },
+    "Install": {
+        "Setup": "",
+        "Physical": {
+            "Arguments": "/S",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "/S",
+            "PostInstall": []
+        }
+    }
+}
