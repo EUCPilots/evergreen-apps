@@ -1,5 +1,5 @@
 {
-	"Name": "Python Software Foundation Python",
+	"Name": "Python Software Foundation Python Install Manager",
 	"Source": "https://www.python.org/",
 	"Get": {
 		"Update": {
@@ -14,13 +14,13 @@
 		}
 	},
 	"Install": {
-		"Setup": "python-*.exe",
+		"Setup": "python-*-amd64.exe",
 		"Physical": {
-			"Arguments": "/quiet InstallAllUsers=1 PrependPath=1 Include_test=0",
+			"Arguments": "/install /passive /norestart",
 			"PostInstall": []
 		},
 		"Virtual": {
-			"Arguments": "/quiet InstallAllUsers=1 PrependPath=1 Include_test=0",
+			"Arguments": "/install /passive /norestart",
 			"PostInstall": []
 		}
 	}
