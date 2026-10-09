@@ -38,7 +38,6 @@ jobs:
       - name: Install Evergreen
         run: |
           Install-Module -Name Evergreen -Repository PSGallery -Scope CurrentUser -Force -AllowClobber -ErrorAction Stop
-          Update-Evergreen -Force
 
       - name: Test application and output diagnostics
         run: |
@@ -49,6 +48,8 @@ jobs:
 
           try {
               Import-Module -Name Evergreen -Force -ErrorAction Stop
+              $Env:EVERGREEN_APPS_PATH=$Env:GITHUB_WORKSPACE
+              Get-EvergreenAppsPath
 
               Write-Output "Application: $env:APP_NAME"
               Write-Output "App definitions: $env:EVERGREEN_APPS_PATH"
