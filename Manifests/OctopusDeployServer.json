@@ -1,9 +1,9 @@
 {
 	"Name": "Octopus Deploy Server",
-	"Source": "https://octopus.com/",
+	"Source": "https://octopus.com/downloads/previous",
 	"Get": {
 		"Update": {
-			"Uri": "https://octopus.com/download/upgrade/v4",
+			"Uri": "https://octopus.com/download/upgrade/",
 			"ContentType": "application/json; charset=utf-8",
 			"DateTimePattern": "yyyy-MM-dd"
 		},

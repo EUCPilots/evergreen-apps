@@ -22,15 +22,12 @@ function Get-OctopusDeployServer {
         Uri         = $res.Get.Update.Uri
         ContentType = $res.Get.Update.ContentType
     }
-    $versions = Invoke-EvergreenRestMethod @params
+    $Version = Invoke-EvergreenRestMethod @params
+    Write-Verbose -Message "$($MyInvocation.MyCommand): Retrieved version $Version"
 
-    if ($null -ne $versions) {
-        $LatestVersion = $versions | Select-Object -Last 1
-        $object = [PSCustomObject] @{
-            Version = $LatestVersion.Version
-            Date    = ConvertTo-DateTime -DateTime $LatestVersion.Released -Pattern $res.Get.Update.DateTimePattern
-            URI     = $res.Get.Download.Uri -replace "#version", $LatestVersion.Version
-        }
+    $object = [PSCustomObject] @{
+        Version = $Version
+        URI     = $res.Get.Download.Uri -replace "#version", $Version
     }
     Write-Output -InputObject $object
 }
