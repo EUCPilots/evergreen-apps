@@ -42,3 +42,17 @@ Import-Module -Name "/Users/aaron/projects/_EUCPilots/evergreen-module/Evergreen
 ```
 
 5. Implement your changes in a new branch and create a pull request.
+
+## Testing an Application on Windows
+
+Run the [Test Evergreen app workflow](.github/workflows/test-evergreen-app.yml) manually
+from the repository's Actions tab. Select a branch and enter an Evergreen application
+name, such as `MicrosoftPowerAutomateDesktop`.
+
+The workflow installs Evergreen from PSGallery on `windows-latest` and uses the
+selected branch's application functions and manifests. Separate matrix jobs test
+PowerShell 7 (`pwsh`) and Windows PowerShell 5.1 (`powershell`), and a failure in
+one job does not cancel the other. The test step logs runner,
+PowerShell, and module details, along with verbose application output. Results or
+full error details and the script stack trace are also written to the run summary.
+Errors and empty application results fail the job.

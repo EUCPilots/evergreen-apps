@@ -1,0 +1,98 @@
+name: Test Evergreen app
+run-name: Test Evergreen app - ${{ inputs.app_name }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      app_name:
+        description: Evergreen application name
+        required: true
+        default: MicrosoftPowerAutomateDesktop
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test application on Windows (${{ matrix.shell }})
+    runs-on: windows-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        shell:
+          - pwsh
+          - powershell
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
+    env:
+      EVERGREEN_APPS_PATH: ${{ github.workspace }}
+      APP_NAME: ${{ inputs.app_name }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Evergreen
+        run: |
+          Install-Module -Name Evergreen -Repository PSGallery -Scope CurrentUser -Force -AllowClobber -ErrorAction Stop
+          Update-Evergreen -Force
+
+      - name: Test application and output diagnostics
+        run: |
+          $ErrorActionPreference = "Stop"
+          if ($PSVersionTable.PSVersion -ge [version]"7.2") {
+              $PSStyle.OutputRendering = "PlainText"
+          }
+
+          try {
+              Import-Module -Name Evergreen -Force -ErrorAction Stop
+
+              Write-Output "Application: $env:APP_NAME"
+              Write-Output "App definitions: $env:EVERGREEN_APPS_PATH"
+              Write-Output "Runner OS: $env:RUNNER_OS"
+              Write-Output "Runner image: $env:ImageOS ($env:ImageVersion)"
+              Write-Output "Temporary directory: $([System.IO.Path]::GetTempPath())"
+              $PSVersionTable | Format-List | Out-String -Width 4096 | Write-Output
+              Get-Module -Name Evergreen |
+                  Select-Object Name, Version, Path |
+                  Format-List | Out-String -Width 4096 | Write-Output
+
+              $Results = @(Get-EvergreenApp -Name $env:APP_NAME -Verbose -ErrorAction Stop)
+              if ($Results.Count -eq 0) {
+                  throw "Get-EvergreenApp returned no results for '$env:APP_NAME'."
+              }
+              $Details = $Results | Format-List * -Force | Out-String -Width 4096
+              Write-Output $Details
+              @(
+                  "## Evergreen application test"
+                  ""
+                  "Status: Passed"
+                  ""
+                  "Results: $($Results.Count)"
+                  ""
+                  '```text'
+                  $Details
+                  '```'
+              ) | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY -Encoding utf8
+          }
+          catch {
+              $Details = $_ | Format-List * -Force | Out-String -Width 4096
+              Write-Output $Details
+              Write-Output "Script stack trace:"
+              Write-Output $_.ScriptStackTrace
+              @(
+                  "## Evergreen application test"
+                  ""
+                  "Status: Failed"
+                  ""
+                  '```text'
+                  $Details
+                  "Script stack trace:"
+                  $_.ScriptStackTrace
+                  '```'
+              ) | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY -Encoding utf8
+              throw
+          }
