@@ -6,10 +6,10 @@
             "Uri": ""
         },
         "Download": {
-            "Version": "19.4.2",
+            "Version": "19.4.3",
             "Uri": [
-                "https://go.microsoft.com/fwlink/?linkid=2364027",
-                "https://go.microsoft.com/fwlink/?linkid=2364026"
+                "https://go.microsoft.com/fwlink/?linkid=2382896",
+                "https://go.microsoft.com/fwlink/?linkid=2383708"
             ],
             "Language": {
                 "English": "0x409",
