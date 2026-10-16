@@ -14,57 +14,30 @@ function Get-ESETEndpointAntivirus {
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    # Query the update feed
+    # Query the download feed
     $params = @{
-        Uri         = $res.Get.Update.Uri
-        ContentType = $res.Get.Update.ContentType
+        Uri         = $res.Get.Download.Uri
+        ContentType = $res.Get.Download.ContentType
+        UserAgent   = $script:ResourceStrings.UserAgent.Base
     }
     $Metadata = Invoke-EvergreenRestMethod @params
     if ($null -ne $Metadata) {
 
-        # Grab the JSON metadata from the returned object
-        Write-Verbose -Message "$($MyInvocation.MyCommand): Filter for metadata and sorting updates."
-        $InfoData = ('{' + $(([Regex]::Matches($Metadata, '(?<={)(.*?)(?=}],"switch")')).Value) + '}]}' | ConvertFrom-Json).info
+        # Extract the files.installer child properties from the metadata
+        $Properties = @{}
+        $Properties = $Metadata.os_group.PSObject.Properties | `
+            Where-Object { $_.Value -match 'Windows' } | `
+            Select-Object -ExpandProperty "Name"
 
-        # Find all the supported languages because the versions can be different per language
-        $Languages = $InfoData.Language | Select-Object -Unique
-        Write-Verbose -Message "$($MyInvocation.MyCommand): Found $($Language.Count) languages."
-
-        # Step through each of the supported languages
-        foreach ($Language in $Languages) {
-
-            # Find the latest version number of this language
-            Write-Verbose -Message "$($MyInvocation.MyCommand): Filter on language: $Language."
-            $Latest = $InfoData | Where-Object { $_.Language -eq $Language } | `
-                Sort-Object -Property @{ Expression = { [System.Version]$_.Version }; Descending = $true } | `
-                Where-Object { $_.OSType -eq "windows" } | `
-                Select-Object -First 1
-
-            Write-Verbose -Message "$($MyInvocation.MyCommand): Found product: $($Latest.Description)."
-            Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $($Latest.Version)."
-
-            # Find the files matching this version number for this language
-            $Files = $InfoData | Where-Object { $_.Language -eq $Language } | `
-                Sort-Object -Property @{ Expression = { [System.Version]$_.Version }; Descending = $true } | `
-                Where-Object { $_.OSType -eq "windows" -and $_.Version -eq $Latest.Version }
-            Write-Verbose -Message "$($MyInvocation.MyCommand): Found $($Files.Count) files."
-
-            # Filter the files for the updates we need
-            $Updates = $Files | Where-Object { $_.Legacy -eq $false -and $_.OSNames -match $res.Get.Update.OS -and $_.Path -match "full" }
-            Write-Verbose -Message "$($MyInvocation.MyCommand): Found $($Updates.Count) individual update files."
-
-            # Output the object to the pipeline
-            foreach ($Update in $Updates) {
-                $PSObject = [PSCustomObject] @{
-                    Version      = $Update.Version
-                    Size         = $Update.Size
-                    Hash         = $Update.Hash
-                    Language     = $Update.Language
-                    Architecture = Get-Architecture -String $Update.Path
-                    Type         = Get-FileType -File $Update.Path
-                    URI          = $res.Get.Download.Uri -replace "#file", $Update.Path
-                }
-                Write-Output -InputObject $PSObject
+        # Iterate over each Windows-specific property extracted from the metadata
+        foreach ($Property in $Properties) {
+            [PSCustomObject]@{
+                Version      = $Metadata.files.installer.$Property.full_version
+                Size         = $Metadata.files.installer.$Property.size
+                Sha256       = $Metadata.files.installer.$Property.sha2
+                Architecture = Get-Architecture -String $Metadata.files.installer.$Property.url
+                Type         = Get-FileType -File $Metadata.files.installer.$Property.url
+                URI          = $Metadata.files.installer.$Property.url
             }
         }
     }
