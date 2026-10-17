@@ -1,10 +1,10 @@
 {
-    "Name": "ESET File Security for Microsoft Windows Server",
-    "Source": "https://www.eset.com/au/business/solutions/endpoint-protection/",
+    "Name": "ESET Rogue Detection Sensor",
+    "Source": "https://help.eset.com/protect_cloud/en-US/component_installation_rd_sensor_windows.html",
     "Get": {
         "Update": {},
         "Download": {
-            "Uri": "https://gwc.eset.com/v1/product/26",
+            "Uri": "https://gwc.eset.com/v1/product/42",
             "ContentType": "application/json"
         }
     },

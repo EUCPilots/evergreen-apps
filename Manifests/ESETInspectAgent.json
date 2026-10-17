@@ -1,0 +1,22 @@
+{
+    "Name": "ESET Inspect Agent",
+    "Source": "https://www.eset.com/int/business/download/inspect/",
+    "Get": {
+        "Download": {
+            "Uri": "https://gwc.eset.com/v1/product/21",
+            "ContentType": "application/json"
+        }
+    },
+    "Install": {
+        "Preinstall": "",
+        "Setup": "",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}

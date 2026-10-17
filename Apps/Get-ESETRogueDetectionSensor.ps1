@@ -1,4 +1,4 @@
-function Get-ESETFileSecurity {
+function Get-ESETRogueDetectionSensor {
     <#
         .NOTES
             Site: https://stealthpuppy.com

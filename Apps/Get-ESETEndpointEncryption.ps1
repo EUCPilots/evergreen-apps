@@ -34,6 +34,7 @@ function Get-ESETEndpointEncryption {
                 Version      = $Metadata.files.installer.$Property.full_version
                 Size         = $Metadata.files.installer.$Property.size
                 Sha256       = $Metadata.files.installer.$Property.sha2
+                Language     = $Metadata.files.installer.$Property.language
                 Architecture = Get-Architecture -String $Metadata.files.installer.$Property.url
                 Type         = Get-FileType -File $Metadata.files.installer.$Property.url
                 URI          = $Metadata.files.installer.$Property.url
