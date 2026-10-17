@@ -1,0 +1,23 @@
+{
+    "Name": "ESET Endpoint Encryption for Windows",
+    "Source": "https://www.eset.com/int/business/extended-protection-with-full-disk-encryption/",
+    "Get": {
+        "Update": {},
+        "Download": {
+            "Uri": "https://gwc.eset.com/v1/product/33",
+            "ContentType": "application/json"
+        }
+    },
+    "Install": {
+        "Preinstall": "",
+        "Setup": "",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}

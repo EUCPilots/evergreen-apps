@@ -1,15 +1,11 @@
 {
-    "Name": "ESET PROTECT Server",
+    "Name": "ESET PROTECT On-Prem Server",
     "Source": "https://www.eset.com/au/business/solutions/endpoint-protection/",
     "Get": {
-        "Update": {
-            "Uri": "https://repository.eset.com/v1/com/eset/apps/business/era/server/windows/metadata",
-            "ContentType": "application/octet-stream",
-            "MatchMetadata": "(?<={)(.*?)(?=}],\"switch\")')).Value)+'}]}",
-            "OS": "Windows*"
-        },
+        "Update": {},
         "Download": {
-            "Uri": "https://repository.eset.com/v1/com/eset/apps/business/era/server/windows/#file"
+            "Uri": "https://gwc.eset.com/v1/product/36",
+            "ContentType": "application/json"
         }
     },
     "Install": {

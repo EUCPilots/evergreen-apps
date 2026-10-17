@@ -1,0 +1,23 @@
+{
+    "Name": "ESET Inspect Server",
+    "Source": "https://www.eset.com/uk/business/download/inspect-server/",
+    "Get": {
+        "Update": {},
+        "Download": {
+            "Uri": "https://gwc.eset.com/v1/product/20",
+            "ContentType": "application/json"
+        }
+    },
+    "Install": {
+        "Preinstall": "",
+        "Setup": "",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}

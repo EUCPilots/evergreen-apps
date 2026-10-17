@@ -1,0 +1,23 @@
+{
+    "Name": "ESET Security for Microsoft SharePoint Server",
+    "Source": "https://www.eset.com/uk/business/download/mail-security-exchange/",
+    "Get": {
+        "Update": {},
+        "Download": {
+            "Uri": "https://gwc.eset.com/v1/product/25",
+            "ContentType": "application/json"
+        }
+    },
+    "Install": {
+        "Preinstall": "",
+        "Setup": "",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}

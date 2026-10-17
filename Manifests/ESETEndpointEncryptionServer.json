@@ -1,0 +1,23 @@
+{
+    "Name": "ESET Endpoint Encryption Server",
+    "Source": "https://help.eset.com/eee_server/3/en-US/",
+    "Get": {
+        "Update": {},
+        "Download": {
+            "Uri": "https://gwc.eset.com/v1/product/34",
+            "ContentType": "application/json"
+        }
+    },
+    "Install": {
+        "Preinstall": "",
+        "Setup": "",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}
