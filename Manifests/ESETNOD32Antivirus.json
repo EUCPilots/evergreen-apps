@@ -1,0 +1,23 @@
+{
+    "Name": "ESET NOD32 Antivirus",
+    "Source": "https://www.eset.com/au/home/antivirus/",
+    "Get": {
+        "Update": {},
+        "Download": {
+            "Uri": "https://gwc.eset.com/v1/product/4",
+            "ContentType": "application/json"
+        }
+    },
+    "Install": {
+        "Preinstall": "",
+        "Setup": "",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}

@@ -2,14 +2,10 @@
     "Name": "ESET Endpoint Antivirus",
     "Source": "https://www.eset.com/au/business/solutions/endpoint-protection/",
     "Get": {
-        "Update": {
-            "Uri": "https://repository.eset.com/v1/com/eset/apps/business/eea/windows/metadata",
-            "ContentType": "application/octet-stream",
-            "MatchMetadata": "(?<={)(.*?)(?=}],\"switch\")')).Value)+'}]}",
-            "OS": "Window*"
-        },
+        "Update": {},
         "Download": {
-            "Uri": "https://repository.eset.com/v1/com/eset/apps/business/eea/windows/#file"
+            "Uri": "https://gwc.eset.com/v1/product/22",
+            "ContentType": "application/json"
         }
     },
     "Install": {

@@ -1,15 +1,11 @@
 {
-    "Name": "ESET Server Security",
-    "Source": "https://www.eset.com/int/business/solutions/file-server-security/",
+    "Name": "ESET Server Security for Microsoft Windows Server",
+    "Source": "https://www.eset.com/au/business/solutions/endpoint-protection/",
     "Get": {
-        "Update": {
-            "Uri": "https://repository.eset.com/v1/com/eset/apps/business/efs/windows/metadata",
-            "ContentType": "application/octet-stream",
-            "MatchMetadata": "(?<={)(.*?)(?=}],\"switch\")')).Value)+'}]}",
-            "OS": "Windows*"
-        },
+        "Update": {},
         "Download": {
-            "Uri": "https://repository.eset.com/v1/com/eset/apps/business/efs/windows/#file"
+            "Uri": "https://gwc.eset.com/v1/product/26",
+            "ContentType": "application/json"
         }
     },
     "Install": {

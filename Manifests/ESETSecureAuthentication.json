@@ -2,14 +2,10 @@
     "Name": "ESET Secure Authentication",
     "Source": "https://www.eset.com/au/business/download/secure-authentication/",
     "Get": {
-        "Update": {
-            "Uri": "https://repository.eset.com/v1/com/eset/apps/business/esa/windows/metadata",
-            "ContentType": "application/octet-stream",
-            "MatchMetadata": "(?<={)(.*?)(?=}],\"switch\")')).Value)+'}]}",
-            "OS": "Windows*"
-        },
+        "Update": {},
         "Download": {
-            "Uri": "https://repository.eset.com/v1/com/eset/apps/business/esa/windows/#file"
+            "Uri": "https://gwc.eset.com/v1/product/50",
+            "ContentType": "application/json"
         }
     },
     "Install": {

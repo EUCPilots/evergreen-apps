@@ -2,14 +2,10 @@
     "Name": "ESET Endpoint Security",
     "Source": "https://www.eset.com/au/business/solutions/endpoint-protection/",
     "Get": {
-        "Update": {
-            "Uri": "https://repository.eset.com/v1/com/eset/apps/business/ees/windows/metadata",
-            "ContentType": "application/octet-stream",
-            "MatchMetadata": "(?<={)(.*?)(?=}],\"switch\")')).Value)+'}]}",
-            "OS": "Windows*"
-        },
+        "Update": {},
         "Download": {
-            "Uri": "https://repository.eset.com/v1/com/eset/apps/business/ees/windows/#file"
+            "Uri": "https://gwc.eset.com/v1/product/11",
+            "ContentType": "application/json"
         }
     },
     "Install": {
