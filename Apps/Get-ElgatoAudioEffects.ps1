@@ -2,7 +2,6 @@ function Get-ElgatoAudioEffects {
     <#
         .NOTES
             Author: Aaron Parker
-
     #>
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification="Product name is a plural")]
     [OutputType([System.Management.Automation.PSObject])]

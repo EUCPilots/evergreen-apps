@@ -1,3 +1,4 @@
+#Requires -Module @{ ModuleName="Evergreen"; ModuleVersion="2610.2856.0" }
 function Get-ElgatoWaveCast {
     <#
         .NOTES

@@ -1,8 +1,8 @@
+#Requires -Module @{ ModuleName="Evergreen"; ModuleVersion="2610.2856.0" }
 function Get-ElgatoStudio {
     <#
         .NOTES
             Author: Aaron Parker
-
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
