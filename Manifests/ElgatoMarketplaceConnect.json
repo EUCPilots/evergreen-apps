@@ -1,0 +1,25 @@
+{
+    "Name": "Elgato Marketplace Connect",
+    "Source": "https://www.elgato.com/",
+    "Get": {
+        "Update": {
+            "Uri": "https://gc-updates.elgato.com",
+            "Property": [
+                "marketplace-plugin-for-obs",
+                "marketplace-plugin-for-obs-beta"
+            ]
+        }
+    },
+    "Install": {
+        "Setup": "",
+        "Preinstall": "",
+        "Physical": {
+            "Arguments": "/install /quiet /norestart",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "/install /quiet /norestart",
+            "PostInstall": []
+        }
+    }
+}

@@ -4,7 +4,10 @@
     "Get": {
         "Update": {
             "Uri": "https://gc-updates.elgato.com",
-            "Property": "wave-link-win"
+            "Property": [
+                "wave-link-3-win",
+                "wave-link-3-win-beta"
+            ]
         }
     },
     "Install": {

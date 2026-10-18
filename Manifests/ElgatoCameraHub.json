@@ -4,7 +4,10 @@
     "Get": {
         "Update": {
             "Uri": "https://gc-updates.elgato.com",
-            "Property": "camera-hub-win"
+            "Property": [
+                "camera-hub-win",
+                "camera-hub-win-beta"
+            ]
         }
     },
     "Install": {

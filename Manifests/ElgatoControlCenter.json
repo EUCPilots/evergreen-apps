@@ -4,7 +4,10 @@
     "Get": {
         "Update": {
             "Uri": "https://gc-updates.elgato.com",
-            "Property": "cc-win"
+            "Property": [
+                "cc-win",
+                "cc-win-beta"
+            ]
         }
     },
     "Install": {

@@ -1,0 +1,25 @@
+{
+    "Name": "Elgato Wave Cast",
+    "Source": "https://www.elgato.com/",
+    "Get": {
+        "Update": {
+            "Uri": "https://gc-updates.elgato.com",
+            "Property": [
+                "wave-cast-win",
+                "wave-cast-win-beta"
+            ]
+        }
+    },
+    "Install": {
+        "Setup": "",
+        "Preinstall": "",
+        "Physical": {
+            "Arguments": "/install /quiet /norestart",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "/install /quiet /norestart",
+            "PostInstall": []
+        }
+    }
+}
