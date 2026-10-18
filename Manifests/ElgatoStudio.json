@@ -1,0 +1,25 @@
+{
+    "Name": "Elgato Studio",
+    "Source": "https://www.elgato.com/",
+    "Get": {
+        "Update": {
+            "Uri": "https://gc-updates.elgato.com",
+            "Property": [
+                "studio-win",
+                "studio-win-beta"
+            ]
+        }
+    },
+    "Install": {
+        "Setup": "",
+        "Preinstall": "",
+        "Physical": {
+            "Arguments": "/install /quiet /norestart",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "/install /quiet /norestart",
+            "PostInstall": []
+        }
+    }
+}
