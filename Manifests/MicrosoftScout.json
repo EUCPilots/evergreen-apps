@@ -8,10 +8,12 @@
         "Download": {
             "Version": "0.23.578",
             "Uri": [
+                "https://download.microsoft.com/download/f5e1aa08-9d73-4e0b-adbd-14b2947e9b44/MicrosoftScout-Windows-0.23.578-arm64-Setup.exe",
                 "https://download.microsoft.com/download/f5e1aa08-9d73-4e0b-adbd-14b2947e9b44/MicrosoftScout-Windows-0.23.578-x64-Setup.exe",
-                "https://download.microsoft.com/download/f5e1aa08-9d73-4e0b-adbd-14b2947e9b44/MicrosoftScout-Windows-0.23.578-arm64-Setup.exe"
+                "https://download.microsoft.com/download/f5e1aa08-9d73-4e0b-adbd-14b2947e9b44/MicrosoftScout-Windows-0.23.788-arm64-Setup.exe",
+                "https://download.microsoft.com/download/f5e1aa08-9d73-4e0b-adbd-14b2947e9b44/MicrosoftScout-Windows-0.23.788-x64-Setup.exe"
             ],
-            "Date": "7/30/2026 7:48:42 PM",
+            "Date": "10/19/2026 11:11:22 AM",
             "DatePattern": "M/d/yyyy h:mm:ss tt"
         }
     },
