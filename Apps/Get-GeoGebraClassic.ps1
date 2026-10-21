@@ -17,19 +17,19 @@ function Get-GeoGebraClassic {
 
         # Construct the output; Return the custom object to the pipeline
         if ($null -ne $Content) {
-            $version = [RegEx]::Match($Content.ResponseUri, $res.Get.Download.MatchVersion).Value.TrimStart('-').Replace('-', '.')
+            $version = [RegEx]::Match($Content.ResponseUri.AbsoluteUri, $res.Get.Download.MatchVersion).Value.TrimStart('-').Replace('-', '.')
 
             $PSObject = [PSCustomObject] @{
                 Version = $version
                 Type    = 'Msi'
-                URI     = $Content.ResponseUri
+                URI     = $Content.ResponseUri.AbsoluteUri
             }
             Write-Output -InputObject $PSObject
 
             $PSObject = [PSCustomObject] @{
                 Version = $version
                 Type    = 'Exe'
-                URI     = $Content.ResponseUri -replace '.msi$', '.exe'
+                URI     = $Content.ResponseUri.AbsoluteUri -replace '.msi$', '.exe'
             }
             Write-Output -InputObject $PSObject
         }
