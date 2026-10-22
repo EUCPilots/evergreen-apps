@@ -1,0 +1,21 @@
+{
+    "Name": "Power Platform ToolBox",
+    "Source": "https://www.powerplatformtoolbox.com/",
+    "Get": {
+        "Uri": "https://api.github.com/repos/PowerPlatformToolBox/desktop-app/releases/latest",
+        "MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+        "MatchFileTypes": "\\.exe$|\\.msi$|\\-win.zip$"
+    },
+    "Install": {
+        "Setup": "Power-Platform-ToolBox-*.exe",
+        "Preinstall": "",
+        "Physical": {
+            "Arguments": "/S",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "/S",
+            "PostInstall": []
+        }
+    }
+}
