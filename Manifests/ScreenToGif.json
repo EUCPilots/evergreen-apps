@@ -4,7 +4,7 @@
 	"Get": {
 		"Uri": "https://api.github.com/repos/NickeManarin/ScreenToGif/releases/latest",
 		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
-		"MatchFileTypes": "\\.exe$|\\.msi$|\\.appx$|\\.msix$|\\.msixbundle$"
+		"MatchFileTypes": "\\.exe$|\\.msi$|\\.appx$|\\.msix$|\\.msixbundle$|\\.zip$"
 	},
 	"Install": {
 		"Setup": "ScreenToGif.*.Setup.*.msi",
