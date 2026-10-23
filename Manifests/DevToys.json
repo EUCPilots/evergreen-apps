@@ -4,7 +4,7 @@
 	"Get": {
 		"Uri": "https://api.github.com/repos/DevToys-app/DevToys/releases/latest",
 		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
-		"MatchFileTypes": "\\.exe$|\\.zip$|\\.msixbundle$"
+		"MatchFileTypes": "\\.exe$|\\.msi$|\\.appx$|\\.msix$|\\.msixbundle$"
 	},
 	"Install": {
 		"Setup": "*.exe",

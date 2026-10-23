@@ -6,7 +6,7 @@
             "Uri": "https://msixhero.net/update.json",
             "Uri2": "https://api.github.com/repos/marcinotorowski/MSIX-Hero/releases/latest",
             "MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
-            "MatchFileTypes": "\\.exe$|\\.msi$|\\.msix$",
+            "MatchFileTypes": "\\.exe$|\\.msi$|\\.appx$|\\.msix$|\\.msixbundle$",
             "DateTime": "yyyy-MM-dd HH:mm:ss"
         },
         "Download": {

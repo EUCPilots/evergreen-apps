@@ -4,7 +4,7 @@
 	"Get": {
 		"Uri": "https://api.github.com/repos/microsoft/winget-cli/releases/latest",
 		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
-		"MatchFileTypes": "\\.exe$|\\.msi$|\\.msixbundle"
+		"MatchFileTypes": "\\.exe$|\\.msi$|\\.appx$|\\.msix$|\\.msixbundle$"
 	},
 	"Install": {
 		"Setup": "Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle",
