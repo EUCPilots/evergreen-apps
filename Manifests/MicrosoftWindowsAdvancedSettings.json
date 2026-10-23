@@ -4,6 +4,6 @@
     "Get": {
         "Uri": "https://api.github.com/repos/microsoft/WindowsAdvancedSettings/releases/latest",
         "MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
-        "MatchFileTypes": "\\.exe$|\\.msi$|\\.msixbundle$"
+        "MatchFileTypes": "\\.exe$|\\.msi$|\\.appx$|\\.msix$|\\.msixbundle$"
     }
 }

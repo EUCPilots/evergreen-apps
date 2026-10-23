@@ -4,7 +4,7 @@
     "Get": {
         "Uri": "https://api.github.com/repos/M2Team/NanaZip/releases/latest",
         "MatchVersion": "(\\d+.\\d+.\\d+.\\d+).*$",
-        "MatchFileTypes": "\\.msixbundle$"
+        "MatchFileTypes": "\\.exe$|\\.msi$|\\.appx$|\\.msix$|\\.msixbundle$"
     },
     "Install": {
         "Setup": "",
