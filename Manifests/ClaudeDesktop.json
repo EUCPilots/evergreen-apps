@@ -7,6 +7,7 @@
                 "https://claude.ai/api/desktop/win32/x64/msix/latest/",
                 "https://claude.ai/api/desktop/win32/arm64/msix/latest/"
             ],
+            "UserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
             "ContentType": "application/json; charset=utf-8"
         },
         "Download": {
