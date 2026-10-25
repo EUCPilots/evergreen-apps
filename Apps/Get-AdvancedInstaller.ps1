@@ -21,10 +21,6 @@ function Get-AdvancedInstaller {
     }
     $response = Invoke-EvergreenWebRequest @params
     if ($null -ne $response) {
-        
-        # Convert the INI update feed to an object, replace strings that break conversion
-        # $UpdateFeed = [System.Text.Encoding]::Unicode.GetString($response)
-        # $Updates = ConvertFrom-IniFile -InputObject ($UpdateFeed -replace ";aiu;", "" -replace "\[advinst", "[")
 
         # Convert the raw INI response to an object
         $Updates = ConvertFrom-IniFile -InputObject ($response -replace ";aiu;", "" -replace "\[advinst", "[")
