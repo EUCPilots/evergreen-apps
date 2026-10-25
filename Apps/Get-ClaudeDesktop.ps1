@@ -20,7 +20,7 @@ function Get-ClaudeDesktop {
     foreach ($Uri in $res.Get.Update.Uri) {
         $params = @{
             Uri       = $Uri
-            UserAgent = $script:resourceStrings.UserAgent.Base
+            UserAgent = $res.Get.Update.UserAgent
         }
         $Update = Invoke-EvergreenRestMethod @params
         if ($null -ne $Update) {

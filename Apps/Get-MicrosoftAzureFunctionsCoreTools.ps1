@@ -5,7 +5,6 @@ function Get-MicrosoftAzureFunctionsCoreTools {
 
         .NOTES
             Author: Aaron Parker
-
     #>
     [OutputType([System.Management.Automation.PSObject])]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Justification="Product name is a plural")]
@@ -22,19 +21,7 @@ function Get-MicrosoftAzureFunctionsCoreTools {
         Uri               = $res.Get.Update.Uri
         MatchVersion      = $res.Get.Update.MatchVersion
         Filter            = $res.Get.Update.MatchFileTypes
-        ReturnVersionOnly = $true
     }
     $object = Get-GitHubRepoRelease @params
-
-    # Build the output object
-    if ($null -ne $object) {
-        foreach ($architecture in $res.Get.Download.Uri.GetEnumerator()) {
-            $PSObject = [PSCustomObject] @{
-                Version      = $object.Version
-                Architecture = $architecture.Name
-                URI          = $res.Get.Download.Uri[$architecture.Key] -replace $res.Get.Download.ReplaceText, $object.Version
-            }
-            Write-Output -InputObject $PSObject
-        }
-    }
+    Write-Output -InputObject $object
 }
