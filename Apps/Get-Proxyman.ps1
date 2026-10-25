@@ -33,6 +33,7 @@ function Get-Proxyman {
         Size         = $Url.ContentLength
         Architecture = Get-Architecture -String $Url.ResponseUri.AbsoluteUri
         Type         = Get-FileType -File $Url.ResponseUri.AbsoluteUri
+        FileName     = [System.IO.Path]::GetFileName($Url.ResponseUri.AbsoluteUri) -replace "%20", " "
         URI          = $Url.ResponseUri.AbsoluteUri
     } | Write-Output
 }

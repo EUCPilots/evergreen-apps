@@ -14,7 +14,7 @@ function Get-XnSoftXnViewMP {
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    # Pass the repo releases API URL and return a formatted object
+    # Read the INI update feed and return a formatted object
     $params = @{
         Uri          = $res.Get.Update.Uri
         ContentType  = $res.Get.Update.ContentType
@@ -22,7 +22,7 @@ function Get-XnSoftXnViewMP {
     }
     $Content = Invoke-EvergreenWebRequest @params
     if ($null -ne $Content) {
-        $Update = ConvertFrom-IniFile -InputObject $Content
+        $Update = ConvertFrom-IniFile -InputObject ($Content -split "\r?\n")
 
         if ($null -ne $Update) {
             foreach ($Download in $res.Get.Download.Uri.GetEnumerator()) {

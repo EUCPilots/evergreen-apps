@@ -5,7 +5,7 @@
         "Update": {
             "Uri": {
                 "x64": "https://dl.pstmn.io/changelog?channel=stable&platform=win64",
-                "x86": "https://dl.pstmn.io/changelog?channel=stable&platform=win32"
+                "arm64": "https://dl.pstmn.io/changelog?channel=stable&platform=winarm64"
             },
 			"ContentType": "application/json",
             "DatePattern": "yyyy-MM-ddTHH:mm:ss.fffK"

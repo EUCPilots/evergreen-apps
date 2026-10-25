@@ -27,6 +27,7 @@ function Get-Postman {
 
             # Work out latest version
             $LatestVersion = $Content.changelog | `
+                Where-Object { $_.name -match '^\d+(?:\.\d+){1,3}$' } | `
                 Sort-Object -Property @{ Expression = { [System.Version]$_.name }; Descending = $true } | `
                 Select-Object -First 1
 
@@ -34,9 +35,9 @@ function Get-Postman {
             $PSObject = [PSCustomObject] @{
                 Version      = $LatestVersion.name
                 Size         = $LatestVersion.assets.size
-                Hash         = $LatestVersion.assets.hash
+                Sha1         = $LatestVersion.assets.hash
                 Date         = ConvertTo-DateTime -DateTime ($LatestVersion.createdAt) -Pattern $res.Get.Update.DatePattern
-                Architecture = $item.Name
+                Architecture = Get-Architecture -String $item.Name
                 Filename     = $LatestVersion.assets.name
                 URI          = $LatestVersion.assets.url
             }

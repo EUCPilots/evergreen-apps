@@ -1,0 +1,26 @@
+{
+    "Name": "JetBrains RustRover",
+    "Source": "https://www.jetbrains.com/rustrover",
+    "Get": {
+        "Update": {
+            "Uri": "https://data.services.jetbrains.com/products/releases?code=#ReplaceEdition&latest",
+            "Editions": {
+                "RustRover": "RR"
+            },
+            "ReplaceEdition": "#ReplaceEdition",
+            "DatePattern": "yyyy-MM-dd"
+        },
+        "Download": {}
+    },
+    "Install": {
+        "Setup": "",
+        "Physical": {
+            "Arguments": "/S",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "/S",
+            "PostInstall": []
+        }
+    }
+}

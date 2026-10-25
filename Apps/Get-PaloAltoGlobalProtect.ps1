@@ -19,11 +19,6 @@ function Get-PaloAltoGlobalProtect {
     }
     $DownloadFeed = Invoke-EvergreenRestMethod @params
 
-    # # Select the list of versions from the ListBucketResult.Contents.Key property in the download feed
-    # $Versions = ($DownloadFeed.ListBucketResult.Contents.Key | `
-    #         Where-Object { $_ -match $res.Get.Download.MatchFileType }) `
-    #     -replace $res.Get.Download.MatchFileName
-
     # Select the item with the latest date and export the date to $LatestDate
     $LatestDate = $DownloadFeed.ListBucketResult.Contents | `
         Sort-Object -Property @{ Expression = { [System.DateTime]$_.LastModified }; Descending = $true } | `
