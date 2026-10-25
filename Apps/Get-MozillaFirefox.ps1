@@ -3,10 +3,14 @@ function Get-MozillaFirefox {
         .SYNOPSIS
             Returns downloads for the latest Mozilla Firefox releases.
 
+        .PARAMETER Language
+            Filters localized installers to the specified languages. By default, returns
+            all published languages. Multilingual MSIX packages are always included once
+            per channel and architecture with Language set to Multi.
+
         .NOTES
             Site: https://stealthpuppy.com
             Author: Aaron Parker
-
 
             # https://wiki.mozilla.org/Release_Management/Product_details
     #>
@@ -19,54 +23,78 @@ function Get-MozillaFirefox {
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1]),
 
         [Parameter(Mandatory = $false, Position = 1)]
-        [ValidateNotNull()]
-        [System.String[]] $Language = @("en-US")
+        [ValidateNotNullOrEmpty()]
+        [System.String[]] $Language
     )
 
     # Get latest Firefox version
     $Versions = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri
 
-    # Construct custom object with output details
-    foreach ($currentLanguage in $Language) {
-        foreach ($channel in $res.Get.Update.Channels.GetEnumerator()) {
-            foreach ($platform in $res.Get.Download.Platforms) {
+    foreach ($channel in $res.Get.Update.Channels.GetEnumerator()) {
+        $RawVersion = $Versions.$($channel.Key)
+        if ([System.String]::IsNullOrWhiteSpace($RawVersion)) {
+            Write-Verbose -Message "$($MyInvocation.MyCommand): Skipping inactive channel: $($channel.Key)."
+            continue
+        }
 
-                # Select the download file for the selected platform
-                foreach ($installer in $res.Get.Download.Uri[$channel.Key].GetEnumerator()) {
+        $Version = $RawVersion -replace $res.Get.Download.ReplaceText.Version, ""
+        $ReleaseUri = $res.Get.Download.ReleaseUri[$channel.Key] -replace "#version", $RawVersion
+        $Checksums = Invoke-EvergreenRestMethod -Uri "$ReleaseUri/SHA256SUMS"
 
-                    $params = @{
-                        Uri           = (($res.Get.Download.Uri[$channel.Key][$installer.Key] -replace $res.Get.Download.ReplaceText.Platform, $platform) `
-                                -replace $res.Get.Download.ReplaceText.Language, $currentLanguage)
-                        ErrorAction   = "SilentlyContinue"
-                        WarningAction = "SilentlyContinue"
-                    }
-                    $Url = Resolve-InvokeWebRequest @params
-                    if ($null -ne $Url) {
+        # Use published full installers, excluding stubs, EME-free builds and other artifacts.
+        $Pattern = '^(?<Sha256>[a-f0-9]{64})\s+(?<Path>(?<Platform>win32|win64|win64-aarch64)/(?<Language>[^/\s]+)/(?<Filename>Firefox Setup ' +
+            [regex]::Escape($RawVersion) + '\.(?:exe|msi)))\r?$'
+        $Installers = [regex]::Matches($Checksums, $Pattern, [System.Text.RegularExpressions.RegexOptions]::Multiline)
+        if ($Installers.Count -eq 0) {
+            throw "$($MyInvocation.MyCommand): No Windows installers found in $ReleaseUri/SHA256SUMS."
+        }
 
-                        # Catch if version is null
-                        if ([System.String]::IsNullOrEmpty($Versions.$($channel.Key))) {
-                            Write-Verbose -Message "$($MyInvocation.MyCommand): No version info for channel: $($channel.Key)."
-                            $Version = "Unknown"
-                        }
-                        else {
-                            $Version = $Versions.$($channel.Key) -replace $res.Get.Download.ReplaceText.Version, ""
-                            Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version."
-                        }
-
-                        # Build object and output to the pipeline
-                        $PSObject = [PSCustomObject] @{
-                            Version      = $Version
-                            Channel      = $channel.Value
-                            Language     = $currentLanguage
-                            Architecture = Get-Architecture -String $platform
-                            Type         = Get-FileType -File $Url
-                            Filename     = (Split-Path -Path $Url -Leaf).Replace('%20', ' ')
-                            URI          = $Url
-                        }
-                        Write-Output -InputObject $PSObject
-                    }
+        if ($Language) {
+            $AvailableLanguages = $Installers | ForEach-Object { $_.Groups["Language"].Value } | Select-Object -Unique
+            foreach ($RequestedLanguage in $Language) {
+                if ($RequestedLanguage -notin $AvailableLanguages) {
+                    Write-Warning -Message "$($MyInvocation.MyCommand): Language '$RequestedLanguage' is not available for channel: $($channel.Value)."
                 }
             }
+        }
+
+        foreach ($installer in $Installers) {
+            $CurrentLanguage = $installer.Groups["Language"].Value
+            if ($Language -and $CurrentLanguage -notin $Language) {
+                continue
+            }
+
+            $Path = ($installer.Groups["Path"].Value.Split("/") | ForEach-Object { [System.Uri]::EscapeDataString($_) }) -join "/"
+            $Url = "$ReleaseUri/$Path"
+            [PSCustomObject] @{
+                Version      = $Version
+                Channel      = $channel.Value
+                Language     = $CurrentLanguage
+                Sha256       = $installer.Groups["Sha256"].Value
+                Architecture = Get-Architecture -String $installer.Groups["Platform"].Value
+                Type         = Get-FileType -File $Url
+                Filename     = $installer.Groups["Filename"].Value
+                URI          = $Url
+            } | Write-Output
+        }
+
+        # MSIX packages are multilingual and are not listed in SHA256SUMS.
+        foreach ($platform in $res.Get.Download.Platforms) {
+            $Uri = $res.Get.Download.Msix[$channel.Key] -replace "#platform", $platform
+            $Url = Resolve-InvokeWebRequest -Uri $Uri -ErrorAction Stop
+            if ([System.String]::IsNullOrWhiteSpace($Url)) {
+                Write-Verbose -Message "$($MyInvocation.MyCommand): No MSIX download resolved for $($channel.Value), $platform."
+            }
+            [PSCustomObject] @{
+                Version      = $Version
+                Channel      = $channel.Value
+                Language     = "Multi"
+                Sha256       = $null
+                Architecture = Get-Architecture -String $platform
+                Type         = Get-FileType -File $Url
+                Filename     = [System.Uri]::UnescapeDataString((Split-Path -Path $Url -Leaf))
+                URI          = $Url
+            } | Write-Output
         }
     }
 }
