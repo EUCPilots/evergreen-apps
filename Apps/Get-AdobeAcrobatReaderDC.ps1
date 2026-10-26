@@ -24,15 +24,14 @@ function Get-AdobeAcrobatReaderDC {
 
         # Get the installer display names for the specified language
         Write-Verbose -Message "$($MyInvocation.MyCommand): Searching updates for language: $LanguageFullName."
-        $params = @{
-            Uri = $res.Get.Update.Uri -replace "#Language", $language.Name
-        }
-        $UpdateContent = Invoke-EvergreenRestMethod @params
+        $UpdateContent = Invoke-EvergreenRestMethod $($res.Get.Update.Uri -replace "#Language", $language.Name)
         Write-Verbose -Message "$($MyInvocation.MyCommand): Found $($UpdateContent.products.reader.count) items for language $LanguageFullName."
+
         if ($null -ne $UpdateContent) {
 
             # Sort and get unique versions of the products for the specified language
             if (($UpdateContent.products.reader.version | Select-Object -Unique).Count -gt 1) {
+
                 Write-Verbose -Message "$($MyInvocation.MyCommand): Found multiple versions for language: $LanguageFullName."
                 $Version = $UpdateContent.products.reader.version | Select-Object -Unique | Sort-Object -Property { [System.Version]$_ } -Descending | Select-Object -First 1
                 $UpdateContent.products.reader = @(
@@ -46,10 +45,7 @@ function Get-AdobeAcrobatReaderDC {
                 try {
                     # Search for downloads for each display name returned for the language
                     Write-Verbose -Message "$($MyInvocation.MyCommand): Searching downloads for language: $LanguageFullName."
-                    $params = @{
-                        Uri = $res.Get.Download.Uri -replace "#DisplayName", $Product.displayName -replace "#ShortLanguage", $language.Name -replace " ", "%20"
-                    }
-                    $DownloadContent = Invoke-EvergreenRestMethod @params
+                    $DownloadContent = Invoke-EvergreenRestMethod $($res.Get.Download.Uri -replace "#DisplayName", $Product.displayName -replace "#ShortLanguage", $language.Name -replace " ", "%20")
 
                     # Build the output object
                     if ($null -ne $DownloadContent) {
@@ -57,8 +53,8 @@ function Get-AdobeAcrobatReaderDC {
                             Version      = $Product.version
                             Language     = $LanguageFullName
                             Size         = [System.Int32]$Product.fileSize
-                            Architecture = Get-Architecture -String $DownloadContent.downloadURL
-                            Type         = Get-FileType -File $DownloadContent.downloadURL
+                            Architecture = Get-Architecture -String $(Split-Path -Path $DownloadContent.downloadURL -Leaf)
+                            Type         = Get-FileType -File $(Split-Path -Path $DownloadContent.downloadURL -Leaf)
                             URI          = $DownloadContent.downloadURL
                         }
                         Write-Output -InputObject $PSObject
