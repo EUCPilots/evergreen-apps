@@ -57,6 +57,7 @@ function Get-Microsoft.NET {
                                 Version      = $Releases.releases[0].$Installer.version
                                 Channel      = $Channel
                                 Support      = $Releases.'support-phase'
+                                Date         = ConvertTo-DateTime -DateTime $Releases.releases[0].'release-date' -AutoDetect
                                 Installer    = $Installer
                                 Architecture = if ($_.rid.length -gt 0) { Get-Architecture -String $_.rid } else { Get-Architecture -String $_.url }
                                 Sha512       = $_.hash
