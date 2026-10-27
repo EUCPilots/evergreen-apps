@@ -21,17 +21,20 @@ function Get-MicrosoftEdge {
     # Read the JSON and build an array of platform, channel, architecture, version
     if ($null -ne $Feed) {
         foreach ($Item in $Feed) {
+
+            Write-Verbose -Message "$($MyInvocation.MyCommand): Found $($Item.Releases.Count) release(s)."
             foreach ($Release in $Item.Releases) {
-                Write-Verbose -Message "$($MyInvocation.MyCommand): Found $($Item.Releases.Count) release(s)."
+
                 if ($Release.Platform -in $res.Get.Update.Platforms) {
                     Write-Verbose -Message "$($MyInvocation.MyCommand): Found $($Release.Platform) release for $($Item.Product)."
+
                     foreach ($Artifact in $Release.Artifacts) {
                         [PSCustomObject]@{
                             Version                 = $Release.ProductVersion
-                            Date                    = $Release.PublishedTime
+                            Date                    = ConvertTo-DateTime -DateTime $Release.PublishedTime -AutoDetect
                             Channel                 = $Item.Product
                             Release                 = "Enterprise"
-                            Expiry                  = $Release.ExpectedExpiryDate
+                            Expiry                  = ConvertTo-DateTime -DateTime $Release.ExpectedExpiryDate -AutoDetect
                             $Artifact.HashAlgorithm = $Artifact.Hash
                             Size                    = $([Math]::Round($Artifact.SizeInBytes / 1MB, 2))
                             Architecture            = Get-Architecture -String $Release.Architecture
