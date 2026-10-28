@@ -24,13 +24,17 @@ function Get-MicrosoftOpenJDK11 {
 
         # Output the download links for additional file types
         foreach ($Uri in $res.Get.Download.Uri) {
+
+            $Url = (Resolve-SystemNetWebRequest -Uri ($Uri -replace "#version", $Version)).ResponseUri.AbsoluteUri
             [PSCustomObject]@{
                 Version      = $Output[0].Version
                 Date         = $Output[0].Date
                 ImageType    = $Output[0].ImageType
-                Architecture = Get-Architecture -String $Uri
-                Type         = Get-FileType -File $Uri
-                URI          = (Resolve-SystemNetWebRequest -Uri ($Uri -replace "#version", $Version)).ResponseUri.AbsoluteUri
+                Checksum     = $null
+                Size         = $null
+                Architecture = Get-Architecture -String $Url
+                Type         = Get-FileType -File $Url
+                URI          = $Url
             }
         }
     }
