@@ -4,14 +4,14 @@
     "Get": {
         "Update": {},
         "Download": {
-            "Version": "2.5.1",
+            "Version": "2.6.4",
             "Uri": [
-                "https://aka.ms/windowsappsdk/2.5/2.5.1/windowsappruntimeinstall-x64.exe",
-                "https://aka.ms/windowsappsdk/2.5/2.5.1/windowsappruntimeinstall-x86.exe",
-                "https://aka.ms/windowsappsdk/2.5/2.5.1/windowsappruntimeinstall-arm64.exe",
-                "https://aka.ms/windowsappsdk/2.5/2.5.1/Microsoft.WindowsAppRuntime.Redist.2.5.zip"
+                "https://aka.ms/windowsappsdk/2.6/2.6.4/windowsappruntimeinstall-x64.exe",
+                "https://aka.ms/windowsappsdk/2.6/2.6.4/windowsappruntimeinstall-x86.exe",
+                "https://aka.ms/windowsappsdk/2.6/2.6.4/windowsappruntimeinstall-arm64.exe",
+                "https://aka.ms/windowsappsdk/2.6/2.6.4/Microsoft.WindowsAppRuntime.Redist.2.6.zip"
             ],
-            "Date": "09/16/2026",
+            "Date": "10/27/2026",
             "DatePattern": "MM/dd/yyyy"
         }
     },
