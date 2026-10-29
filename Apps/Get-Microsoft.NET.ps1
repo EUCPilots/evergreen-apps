@@ -64,7 +64,7 @@ function Get-Microsoft.NET {
                 }
 
                 # Convert the release date to a DateTime object for easier handling
-                $ReleaseDate = ConvertTo-DateTime -DateTime $Release.'release-date' -AutoDetect
+                $ReleaseDate = ConvertTo-DateTime -DateTime $Release.'release-date' # -AutoDetect
                 Write-Verbose -Message "$($MyInvocation.MyCommand): Found $($ReleaseEntries.Count) release/s."
                 Write-Verbose -Message "$($MyInvocation.MyCommand): Release date for version '$FeedVersion': $ReleaseDate."
 
