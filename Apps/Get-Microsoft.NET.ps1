@@ -1,3 +1,4 @@
+#Requires -Module @{ ModuleName="Evergreen"; ModuleVersion="2610.2862.0" }
 function Get-Microsoft.NET {
     <#
         .SYNOPSIS
@@ -64,7 +65,7 @@ function Get-Microsoft.NET {
                 }
 
                 # Convert the release date to a DateTime object for easier handling
-                $ReleaseDate = ConvertTo-DateTime -DateTime $Release.'release-date' # -AutoDetect
+                $ReleaseDate = ConvertTo-DateTime -DateTime $Release.'release-date' -AutoDetect
                 Write-Verbose -Message "$($MyInvocation.MyCommand): Found $($ReleaseEntries.Count) release/s."
                 Write-Verbose -Message "$($MyInvocation.MyCommand): Release date for version '$FeedVersion': $ReleaseDate."
 
