@@ -1,3 +1,4 @@
+#Requires -Module @{ ModuleName="Evergreen"; ModuleVersion="2610.2862.0" }
 function Get-PaloAltoGlobalProtect {
     <#
         .NOTES
@@ -34,7 +35,7 @@ function Get-PaloAltoGlobalProtect {
     foreach ($Item in $LatestVersions) {
         [PSCustomObject]@{
             Version      = $Item.Key -replace $res.Get.Download.MatchFileName
-            Date         = ConvertTo-DateTime -DateTime $Item.LastModified -Pattern $res.Get.Download.DateTimePattern
+            Date         = ConvertTo-DateTime -DateTime $Item.LastModified -AutoDetect
             Architecture = Get-Architecture -String $Item.Key
             Type         = Get-FileType -File $Item.Key
             URI          = "$($res.Get.Download.Uri)/$($Item.Key)"
