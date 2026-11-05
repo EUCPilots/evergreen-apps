@@ -26,7 +26,7 @@ function Get-AnalogDevicesLTspice {
         # Output the latest version
         [PSCustomObject]@{
             Version = $Updates.Update.Version.Trim()
-            Date    = $Updates.Update.ReleaseDate.Trim()
+            Date    = ConvertTo-DateTime -Date $Updates.Update.ReleaseDate.Trim()
             Size    = $Updates.Update.Size.Trim()
             Sha256  = $Updates.Update.SHA256.Trim()
             Type    = Get-FileType -File $Updates.Update.URL

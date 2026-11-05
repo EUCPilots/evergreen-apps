@@ -26,7 +26,7 @@
     # Build the output object; Output object to the pipeline
     $PSObject = [PSCustomObject] @{
         Version = $Version
-        Date    = $Response.LastModified
+        Date    = ConvertTo-DateTime -Date $Response.LastModified
         URI     = $Response.ResponseUri.AbsoluteUri
     }
     Write-Output -InputObject $PSObject

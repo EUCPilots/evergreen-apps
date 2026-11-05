@@ -36,7 +36,7 @@ function Get-AnacondaMiniconda {
             $PSObject = [PSCustomObject] @{
                 Version      = $Version
                 Architecture = Get-Architecture $Release
-                Date         = $UnixEpoch.AddSeconds($LatestRelease.mtime)
+                Date         = ConvertTo-DateTime -Date $UnixEpoch.AddSeconds($LatestRelease.mtime)
                 Size         = $LatestRelease.size
                 Sha256       = $LatestRelease.sha256
                 URI          = $res.Get.Update.Uri -replace "#replace", $FileName

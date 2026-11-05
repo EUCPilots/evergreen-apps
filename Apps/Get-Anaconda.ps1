@@ -47,7 +47,7 @@ function Get-Anaconda {
             $PSObject = [PSCustomObject] @{
                 Version      = $Version
                 Architecture = Get-Architecture -String $Release
-                Date         = $UnixEpoch.AddSeconds($UpdateFeed.$Release.mtime)
+                Date         = ConvertTo-DateTime -Date $UnixEpoch.AddSeconds($UpdateFeed.$Release.mtime)
                 Size         = $UpdateFeed.$Release.size
                 MD5          = $UpdateFeed.$Release.md5
                 Sha256       = $UpdateFeed.$Release.sha256

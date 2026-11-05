@@ -23,7 +23,7 @@ function Get-AWSAppStreamClient {
 
     [PSCustomObject]@{
         Version = $LatestVersion
-        Date    = $LatestItem.pubDate
+        Date    = ConvertTo-DateTime -Date $LatestItem.pubDate
         Type    = Get-FileType -File $res.Get.Download.Uri
         URI     = $res.Get.Download.Uri -replace $res.Get.Download.ReplaceText, $LatestVersion
     } | Write-Output
