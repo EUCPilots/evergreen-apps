@@ -28,9 +28,9 @@ function Get-MicrosoftEdgeForBusiness {
                     foreach ($Artifact in $Release.Artifacts) {
                         [PSCustomObject]@{
                             Version                 = $Release.ProductVersion
-                            Date                    = $Release.PublishedTime
+                            Date                    = ConvertTo-DateTime -Date $Release.PublishedTime
                             Channel                 = $Item.Product
-                            Expiry                  = $Release.ExpectedExpiryDate
+                            Expiry                  = ConvertTo-DateTime -Date $Release.ExpectedExpiryDate
                             $Artifact.HashAlgorithm = $Artifact.Hash
                             Size                    = $([Math]::Round($Artifact.SizeInBytes / 1MB, 2))
                             Architecture            = Get-Architecture -String $Release.Architecture

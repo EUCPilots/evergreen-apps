@@ -33,7 +33,7 @@ function Get-MicrosoftWvdMultimediaRedirection {
     # Construct the output; Return the custom object to the pipeline
     $PSObject = [PSCustomObject] @{
         Version      = $Version
-        Date         = $Response.LastModified.DateTime
+        Date         = ConvertTo-DateTime -Date $Response.LastModified.DateTime
         Architecture = Get-Architecture -String $Response.ResponseUri.AbsoluteUri
         URI          = $Response.ResponseUri.AbsoluteUri
     }

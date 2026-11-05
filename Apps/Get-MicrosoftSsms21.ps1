@@ -22,7 +22,7 @@ function Get-MicrosoftSsms21 {
         # Construct the output; Return the custom object to the pipeline
         $PSObject = [PSCustomObject] @{
             Version = $res.Get.Download.Version
-            Date    = $ResolvedUrl.LastModified.ToShortDateString()
+            Date    = ConvertTo-DateTime -Date $ResolvedUrl.LastModified.ToShortDateString()
             Type    = Get-FileType -File $ResolvedUrl.ResponseUri.AbsoluteUri
             URI     = $ResolvedUrl.ResponseUri.AbsoluteUri
         }

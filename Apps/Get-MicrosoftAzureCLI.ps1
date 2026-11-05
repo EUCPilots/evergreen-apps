@@ -30,7 +30,7 @@ function Get-MicrosoftAzureCLI {
         # Return a formatted object to the pipeline
         [PSCustomObject]@{
             Version      = $LatestVersion.Version
-            Date         = $Url.LastModified.ToShortDateString()
+            Date         = ConvertTo-DateTime -Date $Url.LastModified.ToShortDateString()
             Size         = $Url.ContentLength
             Architecture = Get-Architecture -String $Url.ResponseUri.AbsoluteUri
             Type         = Get-FileType -File $Url.ResponseUri.AbsoluteUri

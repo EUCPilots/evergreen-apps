@@ -34,7 +34,7 @@ function Get-MicrosoftWvdRemoteDesktop {
                     # Output the version object
                     $PSObject = [PSCustomObject] @{
                         Version      = $Update.version
-                        Date         = $Date
+                        Date         = ConvertTo-DateTime -Date $Date
                         Channel      = $channel
                         MD5          = $Update.md5
                         Sha2         = $Update.sha2

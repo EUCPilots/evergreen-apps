@@ -24,7 +24,7 @@ function Get-DropboxDesktopApp {
 
             [PSCustomObject]@{
                 Version      = $Version
-                Date         = $ResolvedUrl.LastModified.ToShortDateString()
+                Date         = ConvertTo-DateTime -Date $ResolvedUrl.LastModified.ToShortDateString()
                 Architecture = $Architecture
                 Size         = $ResolvedUrl.ContentLength
                 Type         = Get-FileType -File $ResolvedUrl.ResponseUri.AbsoluteUri
