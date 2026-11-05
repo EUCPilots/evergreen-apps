@@ -24,7 +24,7 @@ function Get-MSIXHero {
     if ($null -ne $UpdateFeed) {
         $PSObject = [PSCustomObject] @{
             Version = $UpdateFeed.lastVersion
-            Date    = ConvertTo-DateTime -DateTime $UpdateFeed.released -Pattern $res.Get.Update.DateTime
+            Date    = ConvertTo-DateTime -DateTime $UpdateFeed.released -AutoDetect
             URI     = $res.Get.Download.Uri -replace $res.Get.Download.ReplaceText, $UpdateFeed.lastVersion
         }
         Write-Output -InputObject $PSObject
