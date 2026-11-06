@@ -40,7 +40,7 @@ function Get-MicrosoftPowerAutomateDesktop {
                 # Get the update object and set properties
                 $ResolvedUpdate = Resolve-MicrosoftFwLink -Uri $res.Get.Download.Uri
                 $ResolvedUpdate.Version = $Update.latestVersion.version
-                $ResolvedUpdate.Date = $Update.latestVersion.releaseDate
+                $ResolvedUpdate.Date = ConvertTo-DateTime -DateTime $Update.latestVersion.releaseDate
                 Write-Output -InputObject $ResolvedUpdate
             }
             else {
