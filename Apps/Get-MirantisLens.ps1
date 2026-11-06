@@ -23,9 +23,9 @@ function Get-MirantisLens {
 
             $PSObject = [PSCustomObject] @{
                 Version      = $Update.Version
-                Architecture = "x64"
                 Release      = $Release.Name
-                Date         = [System.DateTime]$Update.ReleaseDate
+                Date         = ConvertTo-DateTime -DateTime $Update.ReleaseDate
+                Architecture = "x64"
                 Size         = $(($Update.Files | Select-Object -First 1).Size)
                 Sha512       = $(($Update.Files | Select-Object -First 1).Sha512)
                 URI          = $(Resolve-InvokeWebRequest -Uri $($res.Get.Download.Uri -replace $res.Get.Download.ReplaceText, $($Update.Files | Select-Object -First 1).Url))
