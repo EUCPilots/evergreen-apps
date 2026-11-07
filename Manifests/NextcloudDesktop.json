@@ -1,10 +1,10 @@
 {
     "Name": "Nextcloud Desktop",
-    "Source": "https://github.com/nextcloud-releases/desktop",
+    "Source": "https://nextcloud.com/install/",
     "Get": {
-        "Uri": "https://api.github.com/repos/nextcloud-releases/desktop/releases/latest",
+        "Uri": "https://api.github.com/repos/nextcloud-releases/Office-DesktopEditors/releases/latest",
         "MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
-        "MatchFileTypes": "\\.msi$"
+        "MatchFileTypes": "\\.exe$|\\.msi$|\\.appx$|\\.msix$|\\.msixbundle$|\\.zip$"
     },
     "Install": {
         "Setup": "Nextcloud*.msi",

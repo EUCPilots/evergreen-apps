@@ -23,10 +23,11 @@ function Get-Npcap {
     $Version = $Tags | Sort-Object -Property @{ Expression = { [System.Version]$_.Tag }; Descending = $true } | Select-Object -First 1
 
     # Output the version and download URL
+    $DownloadUri = $res.Get.Download.Uri -replace $res.Get.Download.ReplaceText, $Version.Tag
     $PSObject = [PSCustomObject] @{
         Version = $Version.Tag
-        Type    = Get-FileType -File $res.Get.Download.Uri
-        URI     = $res.Get.Download.Uri -replace $res.Get.Download.ReplaceText, $Version.Tag
+        Type    = Get-FileType -File $DownloadUri
+        URI     = $DownloadUri
     }
     Write-Output -InputObject $PSObject
 

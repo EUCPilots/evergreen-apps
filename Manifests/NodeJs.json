@@ -21,7 +21,9 @@
                     "https://nodejs.org/dist/#version/node-#version-x86.msi",
                     "https://nodejs.org/dist/#version/node-#version-x64.msi",
                     "https://nodejs.org/dist/#version/node-#version-win-x86.zip",
-                    "https://nodejs.org/dist/#version/node-#version-win-x64.zip"
+                    "https://nodejs.org/dist/#version/node-#version-win-x64.zip",
+                    "https://nodejs.org/dist/#version/node-#version-arm64.msi",
+                    "https://nodejs.org/dist/#version/node-#version-win-arm64.zip"
                 ]
             },
             "ReplaceText": "#version"
