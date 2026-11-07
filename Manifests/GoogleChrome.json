@@ -3,7 +3,7 @@
     "Source": "https://cloud.google.com/chrome-enterprise/browser/download/",
     "Get": {
         "Update": {
-            "Uri": "https://versionhistory.googleapis.com/v1/chrome/platforms/win64/channels/#channel/versions?order_by=version%20desc",
+            "Uri": "https://versionhistory.googleapis.com/v1/chrome/platforms/#platform/channels/#channel/versions?order_by=version%20desc",
             "ReleaseUri": "https://versionhistory.googleapis.com/v1/chrome/platforms/#platform/channels/#channel/versions/all/releases?filter=version=#version",
             "Channels": [
                 "Extended",
