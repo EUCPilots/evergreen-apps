@@ -1,4 +1,4 @@
-function Get-AppleITunes {
+function Get-AppleiTunes {
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
     param (

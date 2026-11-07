@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="3" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2026-11-07" time="05:36:02">
+  <environment clr-version="10.0.14" platform="Linux" user-domain="" os-version="7.0.0-1017-azure" user="runner" cwd="/home/runner/work/evergreen-apps/evergreen-apps" nunit-version="2.5.8.0" machine-name="runnervm7aw5e" />
+  <culture-info current-culture="" current-uiculture="" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="1.1692" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="/home/runner/work/evergreen-apps/evergreen-apps/tests/AppleiTunes.Tests.ps1" executed="True" result="Success" success="True" time="1.1692" asserts="0" description="/home/runner/work/evergreen-apps/evergreen-apps/tests/AppleiTunes.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Apple iTunes installer discovery" executed="True" result="Success" success="True" time="0.6713" asserts="0" description="Apple iTunes installer discovery">
+            <results>
+              <test-case description="returns the current version and resolved installers for both architectures" name="Apple iTunes installer discovery.returns the current version and resolved installers for both architectures" time="0.5133" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="reports when the version is missing from the feed" name="Apple iTunes installer discovery.reports when the version is missing from the feed" time="0.0907" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="reports when a download URL cannot be resolved" name="Apple iTunes installer discovery.reports when a download URL cannot be resolved" time="0.0292" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
