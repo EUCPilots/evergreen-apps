@@ -15,7 +15,14 @@ function Get-AppleITunes {
     }
 
     $Version = $VersionNode.InnerText.Trim()
-    foreach ($Architecture in $res.Get.Download.Uri.GetEnumerator()) {
+    $DownloadUris = $res.Get.Download.Uri
+    $Architectures = if ($DownloadUris -is [System.Collections.IDictionary]) {
+        $DownloadUris.GetEnumerator()
+    }
+    else {
+        $DownloadUris.PSObject.Properties
+    }
+    foreach ($Architecture in $Architectures) {
         $Uri = Resolve-InvokeWebRequest -Uri $Architecture.Value -ErrorAction Stop
         if ([string]::IsNullOrWhiteSpace($Uri)) {
             throw "$($MyInvocation.MyCommand): failed to resolve the $($Architecture.Name) download URL."
