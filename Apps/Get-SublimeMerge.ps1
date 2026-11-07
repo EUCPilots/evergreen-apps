@@ -25,11 +25,12 @@ function Get-SublimeMerge {
         # Extract and format the latest version number from the update information
         $Version = ([string]$Updates.latest_version).ToCharArray() -join "."
 
+        $DownloadUri = $res.Get.Download.Uri -replace "#version", [string]$Updates.latest_version
         $PSObject = [PSCustomObject] @{
             Version      = $Version
-            Architecture = Get-Architecture -String $res.Get.Download.Uri
-            Type         = Get-FileType -File $res.Get.Download.Uri
-            URI          = $res.Get.Download.Uri -replace "#version", [string]$Updates.latest_version
+            Architecture = Get-Architecture -String $DownloadUri
+            Type         = Get-FileType -File $DownloadUri
+            URI          = $DownloadUri
         }
         Write-Output -InputObject $PSObject
     }
