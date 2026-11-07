@@ -1,6 +1,6 @@
 {
 	"Name": "VMware Tools",
-	"Source": "https://docs.vmware.com/en/VMware-Tools/index.html",
+	"Source": "https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/tools/13-1-0.html",
 	"Get": {
 		"Update": {
 			"Uri": "https://packages-prod.broadcom.com/tools/versions",
@@ -14,7 +14,7 @@
 			]
 		},
 		"Download": {
-			"Uri": "https://packages-prod.broadcom.com/tools/releases/latest/windows/#architecture/VMware-tools-#version-#build-#processor.exe",
+			"Uri": "https://packages-prod.broadcom.com/tools/releases/#version/windows/#architecture/VMware-tools-#version-#build-#processor.exe",
 			"Architecture": {
 				"x64": "x64",
 				"arm": "arm"
