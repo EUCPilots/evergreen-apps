@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="3" errors="0" failures="2" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2026-11-07" time="05:13:34">
+  <environment user="runner" os-version="7.0.0-1017-azure" machine-name="runnervm7aw5e" nunit-version="2.5.8.0" platform="Linux" clr-version="10.0.14" cwd="/home/runner/work/evergreen-apps/evergreen-apps" user-domain="" />
+  <culture-info current-culture="" current-uiculture="" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="0.8928" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="/home/runner/work/evergreen-apps/evergreen-apps/tests/AppleITunes.Tests.ps1" executed="True" result="Failure" success="False" time="0.8928" asserts="0" description="/home/runner/work/evergreen-apps/evergreen-apps/tests/AppleITunes.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Apple iTunes installer discovery" executed="True" result="Failure" success="False" time="0.4941" asserts="0" description="Apple iTunes installer discovery">
+            <results>
+              <test-case description="returns the current version and resolved installers for both architectures" name="Apple iTunes installer discovery.returns the current version and resolved installers for both architectures" time="0.3526" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>RuntimeException: Method invocation failed because [System.Management.Automation.PSCustomObject] does not contain a method named 'GetEnumerator'.</message>
+                  <stack-trace>at Get-AppleITunes, /home/runner/work/evergreen-apps/evergreen-apps/Apps/Get-AppleITunes.ps1:18
+at &lt;ScriptBlock&gt;, /home/runner/work/evergreen-apps/evergreen-apps/tests/AppleITunes.Tests.ps1:27</stack-trace>
+                </failure>
+              </test-case>
+              <test-case description="reports when the version is missing from the feed" name="Apple iTunes installer discovery.reports when the version is missing from the feed" time="0.0505" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="reports when a download URL cannot be resolved" name="Apple iTunes installer discovery.reports when a download URL cannot be resolved" time="0.0386" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>Expected an exception with message like '*failed to resolve the x64 download URL*' to be thrown, but the message was 'Method invocation failed because [System.Management.Automation.PSCustomObject] does not contain a method named 'GetEnumerator'.'. from /home/runner/work/evergreen-apps/evergreen-apps/tests/AppleITunes.Tests.ps1:49 char:15
+    + …            { Get-AppleITunes -res $script:AppleITunesResource } | Sho …
+    +                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</message>
+                  <stack-trace>at { Get-AppleITunes -res $script:AppleITunesResource } | Should -Throw "*failed to resolve the x64 download URL*", /home/runner/work/evergreen-apps/evergreen-apps/tests/AppleITunes.Tests.ps1:49</stack-trace>
+                </failure>
+              </test-case>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>
