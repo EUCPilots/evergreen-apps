@@ -1,0 +1,27 @@
+{
+    "Name": "Apple iTunes",
+    "Source": "https://www.apple.com/itunes/",
+    "Get": {
+        "Update": {
+            "Uri": "https://s.mzstatic.com/version",
+            "XPath": "/plist/dict/key[.='iTunesWindowsVersion']/following-sibling::string[1]"
+        },
+        "Download": {
+            "Uri": {
+                "x64": "https://www.apple.com/itunes/download/win64",
+                "x86": "https://www.apple.com/itunes/download/win32"
+            }
+        }
+    },
+    "Install": {
+        "Setup": "iTunes*Setup.exe",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}
