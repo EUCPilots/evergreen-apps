@@ -1,0 +1,25 @@
+{
+    "Name": "WireGuard",
+    "Source": "https://www.wireguard.com",
+    "Get": {
+        "Update": {
+            "Uri": "https://download.wireguard.com/windows-client/latest.sig",
+            "MatchPattern": "^(?<Sha256>[a-fA-F0-9]{64})\\s+(?<Filename>wireguard-(?:amd64|arm64|x86)-(?<Version>\\d+(?:\\.\\d+)+)\\.msi)\r?$"
+        },
+        "Download": {
+            "Uri": "https://download.wireguard.com/windows-client/#filename"
+
+        }
+    },
+    "Install": {
+        "Setup": "",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}
