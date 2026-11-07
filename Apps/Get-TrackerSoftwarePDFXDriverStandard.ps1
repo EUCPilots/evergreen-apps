@@ -39,7 +39,7 @@
                 Hash         = $Update.hash
                 Architecture = Get-Architecture -String $Update.Url
                 Type         = $Update.type
-                URI          = $res.Get.Download.Uri -replace "#filename", $Update.url
+                URI          = $res.Get.Download.Uri -replace "#filename", "$($Update.version)/$($Update.url)"
             }
             Write-Output -InputObject $PSObject
         }
