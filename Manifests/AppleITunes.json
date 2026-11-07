@@ -3,7 +3,8 @@
     "Source": "https://www.apple.com/itunes/",
     "Get": {
         "Update": {
-            "Uri": "https://s.mzstatic.com/version"
+            "Uri": "https://s.mzstatic.com/version",
+            "XPath": "/plist/dict/key[.='iTunesWindowsVersion']/following-sibling::string[1]"
         },
         "Download": {
             "Uri": {

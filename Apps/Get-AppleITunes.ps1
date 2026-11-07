@@ -9,7 +9,7 @@ function Get-AppleITunes {
     )
 
     [System.XML.XMLDocument] $UpdateFeed = Invoke-EvergreenWebRequest -Uri $res.Get.Update.Uri -Raw -ErrorAction Stop
-    $VersionNode = $UpdateFeed.SelectSingleNode("/plist/dict/key[.='iTunesWindowsVersion']/following-sibling::string[1]")
+    $VersionNode = $UpdateFeed.SelectSingleNode($res.Get.Update.XPath)
     if ($null -eq $VersionNode -or [string]::IsNullOrWhiteSpace($VersionNode.InnerText)) {
         throw "$($MyInvocation.MyCommand): failed to locate iTunesWindowsVersion in the update feed."
     }
@@ -31,7 +31,7 @@ function Get-AppleITunes {
         [PSCustomObject] @{
             Version      = $Version
             Architecture = $Architecture.Name
-            Type         = "Exe"
+            Type         = Get-FileType -File $Uri
             URI          = $Uri
         } | Write-Output
     }

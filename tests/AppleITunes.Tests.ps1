@@ -29,7 +29,7 @@ Describe "Apple iTunes installer discovery" {
             @($result.Architecture | Sort-Object) | Should -Be @("x64", "x86")
             foreach ($item in $result) {
                 $item.Version | Should -BeExactly "12.13.8"
-                $item.Type | Should -BeExactly "Exe"
+                $item.Type | Should -BeExactly "exe"
             }
             $result[0].URI | Should -BeExactly "https://secure-appldnld.apple.com/itunes12/iTunes64Setup.exe"
             $result[1].URI | Should -BeExactly "https://secure-appldnld.apple.com/itunes12/iTunesSetup.exe"
