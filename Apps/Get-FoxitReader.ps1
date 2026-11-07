@@ -63,9 +63,8 @@ function Get-FoxitReader {
     $Version = $Metadata.data.version.$VersionProperty
     Write-Verbose -Message "$($MyInvocation.MyCommand): Found version: $Version."
 
-    # Foxit's MSI download can lag behind its version metadata; omit this stale package type.
     $FileTypes = $Metadata.data.package_type.PSObject.Properties |
-    Where-Object { $_.MemberType -eq 'NoteProperty' -and $_.Name -ine 'msi' } |
+    Where-Object { $_.MemberType -eq 'NoteProperty' } |
     ForEach-Object { $_.Name }
     Write-Verbose -Message "$($MyInvocation.MyCommand): Found file types: $($FileTypes -join ", ")."
 
