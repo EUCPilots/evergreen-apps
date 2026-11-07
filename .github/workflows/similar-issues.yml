@@ -1,0 +1,68 @@
+name: Similar issues
+
+on:
+  issues:
+    types: [opened, edited, reopened]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Issue number to check
+        required: true
+        type: string
+      dry_run:
+        description: Preview without commenting or changing labels
+        default: true
+        type: boolean
+  pull_request:
+    paths:
+      - '.github/workflows/similar-issues.yml'
+      - '.github/scripts/similar-issues.cjs'
+      - 'tests/similar-issues.test.cjs'
+  push:
+    branches-ignore: [main]
+    paths:
+      - '.github/workflows/similar-issues.yml'
+      - '.github/scripts/similar-issues.cjs'
+      - 'tests/similar-issues.test.cjs'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/similar-issues.test.cjs
+
+  tag:
+    if: github.event_name == 'issues' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+    concurrency:
+      group: similar-issues-${{ github.event.issue.number || inputs.issue_number }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - name: Find and tag related reports
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number || inputs.issue_number }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        with:
+          script: |
+            const run = require('./.github/scripts/similar-issues.cjs').run;
+            await run({ github, context, core });

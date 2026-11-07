@@ -113,3 +113,37 @@ one job does not cancel the other. The test step logs runner,
 PowerShell, and module details, along with verbose application output. Results or
 full error details and the script stack trace are also written to the run summary.
 Errors and empty application results fail the job.
+
+## Automatic Similar-Issue Suggestions
+
+The [Similar issues workflow](.github/workflows/similar-issues.yml) checks opened,
+edited, and reopened issues against earlier open and closed reports. It detects
+application names using the manifests, ranks reports for the same application
+by shared symptom words, and prioritizes reports labelled `information` or
+`vendor issue`. When no application is detected, it requires at least three
+shared significant words and 50% overlap with the shorter description. Form
+boilerplate and verbose logs are excluded from symptom scoring.
+
+When related reports or an application-specific section in the
+[known-issues documentation](https://eucpilots.com/evergreen/issues) are found,
+the workflow posts up to five issue links and the relevant documentation link,
+and creates/applies the `similar issues` label. Suggestions are not duplicate
+determinations: it never closes issues or copies classification labels.
+Edits update the same bot comment; if matches disappear, the workflow removes
+its comment and label.
+
+Merge the workflow and its script into the default branch to enable issue
+events. No additional secrets or external AI service are required; the workflow
+uses `GITHUB_TOKEN` with read access to contents and write access to issues.
+It reads only trusted default-branch code, treating issue text as data.
+API and documentation failures fail the run rather than posting partial results.
+
+To preview an existing report, run **Similar issues** manually with its issue
+number (for example, `241`) and leave **dry_run** enabled. Review the Actions
+run summary, then rerun with **dry_run** disabled to post suggestions.
+The workflow tests also run on pull requests affecting its files. Run them
+locally with:
+
+```shell
+node --test tests/similar-issues.test.cjs
+```
