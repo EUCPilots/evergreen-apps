@@ -50,7 +50,7 @@ function Get-FoxitReader {
     Write-Verbose -Message "$($MyInvocation.MyCommand): Retrieved bearer token from cookies."
 
     # Query the Foxit package download form to get the JSON
-    $Metadata = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri -Headers @{"authorization" = "Bearer $bearerToken" }
+    $Metadata = Invoke-EvergreenRestMethod -Uri $res.Get.Update.Uri -Headers @{authorization = "Bearer $bearerToken" }
 
     # Grab latest version. The property name is also the value
     if ($null -eq $Metadata.data.version) {
@@ -73,7 +73,7 @@ function Get-FoxitReader {
 
         # Build the download URL; Follow the download link which will return a 301/302
         $DownloadUrl = $res.Get.Download.Uri -replace "#version", $Version -replace "#filetype", $FileType
-        $Url = Invoke-EvergreenRestMethod -Uri $DownloadUrl -Headers @{"authorization" = "Bearer $bearerToken" }
+        $Url = Invoke-EvergreenRestMethod -Uri $DownloadUrl -Headers @{authorization = "Bearer $bearerToken" }
 
         # Construct the output; Return the custom object to the pipeline
         $PSObject = [PSCustomObject] @{
