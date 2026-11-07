@@ -43,6 +43,63 @@ Import-Module -Name "/Users/aaron/projects/_EUCPilots/evergreen-module/Evergreen
 
 5. Implement your changes in a new branch and create a pull request.
 
+## Delegate an Issue to GitHub Copilot
+
+The [Evergreen App Maintainer](.github/agents/evergreen-app-maintainer.agent.md)
+agent handles both existing application bugs and new application requests. It
+reads [AGENTS.md](AGENTS.md) and [RULES.md](RULES.md), investigates the issue,
+updates the app function and manifest as needed, and validates the local
+definitions. New applications must have a viable public machine-readable
+source; the agent reports a blocker rather than inventing one.
+
+### One-time setup
+
+1. Merge the agent configuration and
+   [Copilot setup workflow](.github/workflows/copilot-setup-steps.yml) into the
+   default branch so GitHub can discover them.
+2. Ensure your account has access to Copilot cloud agent, the organization's
+   Copilot policy permits it, and it is enabled for this repository. The person
+   assigning an issue needs write access. Cloud runs consume Copilot usage and
+   GitHub Actions resources according to your plan.
+3. Run **Copilot setup steps** manually in Actions to verify that the runner can
+   install Evergreen, PSScriptAnalyzer, and Pester from PSGallery. Setup uses
+   Ubuntu's PowerShell 7 and read-only repository permissions; GitHub supplies
+   the agent's separate task permissions. No dispatch token or additional
+   repository secret is required.
+4. If a required vendor API is blocked by the Copilot firewall, review the
+   domain and configure the repository's Copilot network allowlist as needed.
+   Do not disable the firewall or give the agent credentials for vendor sites.
+
+### Start a run
+
+1. Create or complete the app bug or new-application issue. Include the
+   application name, vendor/source links, and reproduction details or the
+   information requested by the new-app issue template.
+2. Open **Assignees**, select **Copilot**, and choose **Evergreen App Maintainer**
+   in the agent dropdown. Add any task-specific context in the optional prompt
+   before confirming assignment.
+3. Copilot works unattended on its own branch and opens a pull request. Review
+   its diff, source evidence, validation results, and any blockers before
+   merging. The agent is instructed not to merge or push to the default branch.
+4. Send follow-up requests with `@copilot` **on the pull request**. Copilot
+   receives the issue's existing comments at assignment time; later issue
+   comments are not automatically included in that task.
+
+This uses GitHub's native issue assignment, not a custom issue-comment trigger.
+Mentioning the agent name or `@copilot` in an issue comment alone does not start
+this workflow. VS Code's **Autopilot** mode is a local chat setting, not a switch
+for cloud runs. GitHub may still require maintainer approval before running
+Actions on an agent pull request. Missing source information or blocked
+validation is reported for review rather than silently treated as success.
+
+For Windows-specific behavior, run the existing
+[Test Evergreen app workflow](.github/workflows/test-evergreen-app.yml) against
+the agent's branch before merging.
+
+See GitHub's documentation for
+[assigning issues and selecting custom agents](https://docs.github.com/en/copilot/how-tos/copilot-on-github/use-copilot-agents/kick-off-a-task)
+and [configuring the agent environment](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/customize-the-agent-environment).
+
 ## Testing an Application on Windows
 
 Run the [Test Evergreen app workflow](.github/workflows/test-evergreen-app.yml) manually

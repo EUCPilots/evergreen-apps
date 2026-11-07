@@ -1,0 +1,40 @@
+name: Copilot setup steps
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/copilot-setup-steps.yml'
+  pull_request:
+    paths:
+      - '.github/workflows/copilot-setup-steps.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install PowerShell validation dependencies
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          Install-Module -Name Evergreen,PSScriptAnalyzer -Repository PSGallery -Scope CurrentUser -Force -AllowClobber -ErrorAction Stop
+          Install-Module -Name Pester -MinimumVersion 5.0.0 -Repository PSGallery -Scope CurrentUser -Force -ErrorAction Stop
+
+      - name: Verify local application environment
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $env:EVERGREEN_APPS_PATH = $env:GITHUB_WORKSPACE
+          Import-Module -Name Evergreen,PSScriptAnalyzer -Force -ErrorAction Stop
+          Import-Module -Name Pester -MinimumVersion 5.0.0 -Force -ErrorAction Stop
+          Get-EvergreenAppsPath
+          Get-Command -Name Get-EvergreenApp,Invoke-ScriptAnalyzer,Invoke-Pester -ErrorAction Stop

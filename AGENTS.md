@@ -9,6 +9,7 @@ This repository provides application functions (PowerShell scripts) and manifest
 - Prefer the existing repository patterns over inventing new ones. Start by reviewing nearby examples in Apps and Manifests.
 - Keep changes focused. Do not modify unrelated files unless the task explicitly requires it.
 - Follow the contributor guidance in [README.md](README.md) and [RULES.md](RULES.md) for repository structure and validation expectations.
+- For issue-driven app fixes or new applications in GitHub Copilot, use [Evergreen App Maintainer](.github/agents/evergreen-app-maintainer.agent.md). Read this file and `RULES.md` in full before editing, work on the task branch, and leave the pull request for human review.
 - For new application requests, use the specialist workflow in [.github/agents/evergreen-new-app.agent.md](.github/agents/evergreen-new-app.agent.md) when applicable.
 
 ## Local development and testing
