@@ -37,10 +37,14 @@ function Get-GoogleChrome {
                 foreach ($DownloadUri in $res.Get.Download.Uri.$Channel.$Platform) {
                     Write-Verbose -Message "$($MyInvocation.MyCommand): Download URI: $DownloadUri"
 
+                    # Determine the start and end dates for this release
+                    $StartDate = $( if ($null -ne $Release.releases.serving.startTime) { $Release.releases.serving.startTime[-1] } else { "N/A" } )
+                    $EndDate = $( if ($null -ne $Release.releases.serving.endTime) { $Release.releases.serving.endTime[-1] } else { "N/A" } )
+
                     [PSCustomObject] @{
                         Version      = $LatestVersion
-                        StartDate    = $( if ($null -ne $Release.releases.serving.startTime) { $Release.releases.serving.startTime[-1] } else { "N/A" } )
-                        EndDate      = $( if ($null -ne $Release.releases.serving.endTime) { $Release.releases.serving.endTime[-1] } else { "N/A" } )
+                        StartDate    = ConvertTo-DateTime -DateTime $StartDate
+                        EndDate      = if ($EndDate -ne "N/A") { ConvertTo-DateTime -DateTime $EndDate } else { "N/A" }
                         Channel      = $Channel
                         Architecture = Get-Architecture -String $Platform
                         Type         = Get-FileType -File $DownloadUri
