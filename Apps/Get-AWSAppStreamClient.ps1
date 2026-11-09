@@ -21,10 +21,11 @@ function Get-AWSAppStreamClient {
     $LatestItem = $UpdateFeed | Where-Object { $_.title -match $res.Get.Update.MatchText } | Select-Object -First 1
     $LatestVersion = [RegEx]::Match(($LatestItem | Select-Object -ExpandProperty "description"), $res.Get.Update.MatchVersion).Captures.Groups[1].Value
 
+    $DownloadUri = $res.Get.Download.Uri -replace $res.Get.Download.ReplaceText, $LatestVersion
     [PSCustomObject]@{
         Version = $LatestVersion
         Date    = ConvertTo-DateTime -Date $LatestItem.pubDate
-        Type    = Get-FileType -File $res.Get.Download.Uri
-        URI     = $res.Get.Download.Uri -replace $res.Get.Download.ReplaceText, $LatestVersion
+        Type    = Get-FileType -File $DownloadUri
+        URI     = $DownloadUri
     } | Write-Output
 }
