@@ -1,0 +1,34 @@
+{
+    "Name": "HP WXP Insights Agent",
+    "Source": "https://workforceexperience.hp.com/software/",
+    "Get": {
+        "Update": {
+            "Uri": "https://workforceexperience.hp.com/software-version/software.json",
+            "ContentType": "application/json; charset=utf-16",
+            "AppName": "TM-Client"
+        },
+        "Download": {
+            "Uri": {
+                "x64": {
+                    "exe": "https://downloads.hpdaas.com/production/microsoft/tm-client/#version/WXPInsights.exe",
+                    "zip": "https://downloads.hpdaas.com/production/microsoft/tm-client/#version/WXPInsights.zip"
+                },
+                "arm64": {
+                    "exe": "https://downloads.hpdaas.com/production/microsoft/tm-client/#version/arm64/WXPInsights-arm.exe",
+                    "zip": "https://downloads.hpdaas.com/production/microsoft/tm-client/#version/arm64/WXPInsights-arm64.zip"
+                }
+            }
+        }
+    },
+    "Install": {
+        "Setup": "*.exe",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}
