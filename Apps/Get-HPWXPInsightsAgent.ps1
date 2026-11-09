@@ -25,22 +25,19 @@ function Get-HPWXPInsightsAgent {
         foreach ($Build in $LatestBuild) {
             Write-Verbose -Message "$($MyInvocation.MyCommand): Processing version $($Build.appVersion) released on $($Build.releaseDate)."
             foreach ($Architecture in $res.Get.Download.Uri.Keys) {
-                Write-Verbose -Message "$($MyInvocation.MyCommand): Generating $Architecture download URI for version $($Build.appVersion)."
-                $DownloadUri = $res.Get.Download.Uri[$Architecture] -replace "#version", $Build.appVersion
-                if ($Architecture -eq "arm64") {
-                    $Sha256 = $Build.Sha256HashARM64
-                }
-                else {
-                    $Sha256 = $Build.Sha256Hash
-                }
+                foreach ($Type in $res.Get.Download.Uri[$Architecture].Keys) {
 
-                [PSCustomObject]@{
-                    Version      = $Build.appVersion
-                    Date         = ConvertTo-DateTime -DateTime $Build.releaseDate -Pattern "yyyyMMdd"
-                    Architecture = $Architecture
-                    Sha256       = $Sha256
-                    Type         = Get-FileType -File $DownloadUri
-                    URI          = $DownloadUri
+                    Write-Verbose -Message "$($MyInvocation.MyCommand): Generating $Architecture $Type download URI for version $($Build.appVersion)."
+                    $DownloadUri = $res.Get.Download.Uri[$Architecture][$Type] -replace "#version", $Build.appVersion
+
+                    # The feed's hashes do not match these download files.
+                    [PSCustomObject]@{
+                        Version      = $Build.appVersion
+                        Date         = ConvertTo-DateTime -DateTime $Build.releaseDate -Pattern "yyyyMMdd"
+                        Architecture = $Architecture
+                        Type         = Get-FileType -File $DownloadUri
+                        URI          = $DownloadUri
+                    }
                 }
             }
         }

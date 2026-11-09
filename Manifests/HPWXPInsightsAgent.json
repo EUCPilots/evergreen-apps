@@ -9,8 +9,14 @@
         },
         "Download": {
             "Uri": {
-                "x64": "https://downloads.hpdaas.com/production/microsoft/tm-client/#version/setup.exe",
-                "arm64": "https://downloads.hpdaas.com/production/microsoft/tm-client/#version/arm64/setuparm.exe"
+                "x64": {
+                    "exe": "https://downloads.hpdaas.com/production/microsoft/tm-client/#version/WXPInsights.exe",
+                    "zip": "https://downloads.hpdaas.com/production/microsoft/tm-client/#version/WXPInsights.zip"
+                },
+                "arm64": {
+                    "exe": "https://downloads.hpdaas.com/production/microsoft/tm-client/#version/arm64/WXPInsights-arm.exe",
+                    "zip": "https://downloads.hpdaas.com/production/microsoft/tm-client/#version/arm64/WXPInsights-arm64.zip"
+                }
             }
         }
     },
