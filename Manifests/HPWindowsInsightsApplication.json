@@ -1,6 +1,6 @@
 {
     "Name": "HP Windows Insights Application",
-    "Source": "https://workforceexperience.hp.com/software-version/software.json",
+    "Source": "https://workforceexperience.hp.com/software/",
     "Get": {
         "Update": {
             "Uri": "https://workforceexperience.hp.com/software-version/software.json",
