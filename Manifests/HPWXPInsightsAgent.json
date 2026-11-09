@@ -1,5 +1,5 @@
 {
-    "Name": "HP Windows Insights Application",
+    "Name": "HP WXP Insights Agent",
     "Source": "https://workforceexperience.hp.com/software/",
     "Get": {
         "Update": {

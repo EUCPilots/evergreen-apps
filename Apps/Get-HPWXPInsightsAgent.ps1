@@ -1,4 +1,4 @@
-function Get-HPWindowsInsightsApplication {
+function Get-HPWXPInsightsAgent {
     [OutputType([System.Management.Automation.PSObject])]
     [CmdletBinding(SupportsShouldProcess = $false)]
     param (
