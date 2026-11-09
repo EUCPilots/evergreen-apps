@@ -1,0 +1,28 @@
+{
+    "Name": "HP Windows Insights Application",
+    "Source": "https://workforceexperience.hp.com/software-version/software.json",
+    "Get": {
+        "Update": {
+            "Uri": "https://workforceexperience.hp.com/software-version/software.json",
+            "ContentType": "application/json; charset=utf-16",
+            "AppName": "TM-Client"
+        },
+        "Download": {
+            "Uri": {
+                "x64": "https://downloads.hpdaas.com/production/microsoft/tm-client/#version/setup.exe",
+                "arm64": "https://downloads.hpdaas.com/production/microsoft/tm-client/#version/arm64/setuparm.exe"
+            }
+        }
+    },
+    "Install": {
+        "Setup": "*.exe",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}
