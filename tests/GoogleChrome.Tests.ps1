@@ -31,15 +31,20 @@ Describe "Google Chrome fully rolled-out channel releases" {
                 win64     = @(New-ChromeRelease -Version "140.0.1.2")
                 win_arm64 = @(New-ChromeRelease -Version "140.0.1.3")
             }
+            $script:ChromeFallbackReleases = @{}
             $script:ChromePage = $null
             Mock Start-Sleep {}
             Mock Invoke-EvergreenRestMethod {
                 param($Uri)
+                $Uri -match "/platforms/([^/]+)/" | Out-Null
+                $Platform = $Matches[1]
+                if ($Uri -match "filter=endtime%3Dnone") {
+                    return [PSCustomObject] @{ releases = $script:ChromeFallbackReleases[$Platform] }
+                }
                 if ($Uri -match "pageToken=") {
                     return [PSCustomObject] @{ releases = $script:ChromePage }
                 }
-                $Uri -match "/platforms/([^/]+)/" | Out-Null
-                $response = [PSCustomObject] @{ releases = $script:ChromeReleases[$Matches[1]] }
+                $response = [PSCustomObject] @{ releases = $script:ChromeReleases[$Platform] }
                 if ($null -ne $script:ChromePage) {
                     $response | Add-Member -NotePropertyName nextPageToken -NotePropertyValue "next/page+token"
                 }
@@ -271,10 +276,28 @@ Describe "Google Chrome fully rolled-out channel releases" {
             }
         }
 
-        It "fails explicitly when a configured channel has no qualifying releases" {
+        It "uses an active release when no fully rolled-out release is available" {
+            $script:ChromeResource.Get.Update.Channels = @("Extended")
+            $script:ChromeResource.Get.Update.Platforms = @("win")
+            $script:ChromeReleases.win = @()
+            $script:ChromeFallbackReleases.win = @(
+                New-ChromeRelease -Channel "extended" -Version "141.0.2.3"
+            )
+            $result = @(Get-GoogleChrome -res $script:ChromeResource -WarningAction SilentlyContinue)
+            $result.Count | Should -Be 2
+            @($result.Version | Sort-Object -Unique) | Should -Be @("141.0.2.3")
+            @($result.URI) | Should -Be $script:ChromeResource.Get.Download.Uri.Extended.win
+            Should -Invoke Invoke-EvergreenRestMethod -Times 2 -Exactly
+            Should -Invoke Invoke-EvergreenRestMethod -Times 1 -Exactly -ParameterFilter {
+                $Uri -match "filter=endtime%3Dnone$"
+            }
+        }
+
+        It "skips a channel when neither fully rolled-out nor active releases are available" {
+            $script:ChromeResource.Get.Update.Platforms = @("win")
             $script:ChromeReleases.win = @(New-ChromeRelease -Channel "canary_asan")
-            { Get-GoogleChrome -res $script:ChromeResource -WarningAction SilentlyContinue } |
-                Should -Throw "*No fully rolled-out releases returned for Stable/win*"
+            $result = @(Get-GoogleChrome -res $script:ChromeResource -WarningAction SilentlyContinue)
+            $result.Count | Should -Be 0
         }
 
         It "skips empty download lists without querying the API" {
@@ -285,29 +308,32 @@ Describe "Google Chrome fully rolled-out channel releases" {
             Should -Invoke Invoke-EvergreenRestMethod -Times 0 -Exactly
         }
 
-        It "fails explicitly when the API returns an empty releases array" {
+        It "skips a channel when the API returns no releases" {
+            $script:ChromeResource.Get.Update.Platforms = @("win")
             $script:ChromeReleases.win = @()
-            { Get-GoogleChrome -res $script:ChromeResource -WarningAction SilentlyContinue } |
-                Should -Throw "*No fully rolled-out releases returned for Stable/win*"
+            $result = @(Get-GoogleChrome -res $script:ChromeResource -WarningAction SilentlyContinue)
+            $result.Count | Should -Be 0
         }
 
-        It "fails explicitly on an empty final page with omitted proto3 fields" {
+        It "skips a channel on an empty final page with omitted proto3 fields" {
             Mock Invoke-EvergreenRestMethod { [PSCustomObject] @{} }
             Set-StrictMode -Version Latest
-            { Get-GoogleChrome -res $script:ChromeResource -WarningAction SilentlyContinue } |
-                Should -Throw "*No fully rolled-out releases returned for Stable/win*"
+            $result = @(Get-GoogleChrome -res $script:ChromeResource -WarningAction SilentlyContinue)
+            $result.Count | Should -Be 0
         }
 
-        It "fails explicitly when a release has no version" {
+        It "skips a release without a version" {
+            $script:ChromeResource.Get.Update.Platforms = @("win")
             $script:ChromeReleases.win[0].version = $null
-            { Get-GoogleChrome -res $script:ChromeResource -WarningAction SilentlyContinue } |
-                Should -Throw "*Missing release version for win*"
+            $result = @(Get-GoogleChrome -res $script:ChromeResource -WarningAction SilentlyContinue)
+            $result.Count | Should -Be 0
         }
 
-        It "fails explicitly when a release has no start time" {
+        It "skips a release without a start time" {
+            $script:ChromeResource.Get.Update.Platforms = @("win")
             $script:ChromeReleases.win[0].serving.startTime = $null
-            { Get-GoogleChrome -res $script:ChromeResource -WarningAction SilentlyContinue } |
-                Should -Throw "*Missing release start time for win*"
+            $result = @(Get-GoogleChrome -res $script:ChromeResource -WarningAction SilentlyContinue)
+            $result.Count | Should -Be 0
         }
 
         It "propagates request failures rather than emitting fabricated results" {
