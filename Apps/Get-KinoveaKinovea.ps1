@@ -23,11 +23,12 @@ function Get-KinoveaKinovea {
     $Version = $Tags | Sort-Object -Property @{ Expression = { [System.Version]$_.Tag }; Descending = $true } -ErrorAction "SilentlyContinue" | Select-Object -First 1
 
     # Build the output object
+    $DownloadUri = $res.Get.Download.Uri -replace $res.Get.Download.ReplaceText, $Version.Tag
     if ($null -ne $Version) {
         $PSObject = [PSCustomObject] @{
             Version = $Version.Tag
-            Type    = Get-FileType -File $res.Get.Download.Uri
-            URI     = $res.Get.Download.Uri -replace $res.Get.Download.ReplaceText, $Version.Tag
+            Type    = Get-FileType -File $DownloadUri
+            URI     = $DownloadUri
         }
         Write-Output -InputObject $PSObject
     }
