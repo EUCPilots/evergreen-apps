@@ -23,11 +23,12 @@ function Get-1PasswordCLI {
 
         # Output the object to the pipeline
         foreach ($Architecture in $res.Get.Download.Uri.GetEnumerator()) {
+            $DownloadUri = $res.Get.Download.Uri[$Architecture.Name] -replace $res.Get.Download.ReplaceText, $updateFeed.version
             $PSObject = [PSCustomObject] @{
                 Version      = $updateFeed.version
                 Architecture = $Architecture.Name
-                Type         = Get-FileType -File $res.Get.Download.Uri[$Architecture.Name]
-                URI          = $res.Get.Download.Uri[$Architecture.Name] -replace $res.Get.Download.ReplaceText, $updateFeed.version
+                Type         = Get-FileType -File $DownloadUri
+                URI          = $DownloadUri
             }
             Write-Output -InputObject $PSObject
         }
