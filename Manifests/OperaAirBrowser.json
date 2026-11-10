@@ -21,6 +21,7 @@
             },
             "Architecture": {
                 "x64": "_x64",
+                "arm64": "_arm64",
                 "x86": ""
             },
             "Architectures": [

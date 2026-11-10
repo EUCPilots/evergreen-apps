@@ -1,5 +1,5 @@
 {
-    "Name": "Nextcloud Desktop",
+    "Name": "Nextcloud Office",
     "Source": "https://nextcloud.com/install/",
     "Get": {
         "Uri": "https://api.github.com/repos/nextcloud-releases/Office-DesktopEditors/releases/latest",

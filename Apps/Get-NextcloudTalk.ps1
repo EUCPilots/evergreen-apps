@@ -1,4 +1,4 @@
-function Get-NextcloudDesktop {
+function Get-NextcloudTalk {
     <#
         .NOTES
             Author: John Billekens
