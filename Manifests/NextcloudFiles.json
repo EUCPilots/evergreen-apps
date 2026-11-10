@@ -1,0 +1,20 @@
+{
+    "Name": "Nextcloud Files",
+    "Source": "https://nextcloud.com/install/",
+    "Get": {
+        "Uri": "https://api.github.com/repos/nextcloud-releases/desktop/releases/latest",
+        "MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
+        "MatchFileTypes": "\\.exe$|\\.msi$|\\.appx$|\\.msix$|\\.msixbundle$|\\.zip$"
+    },
+    "Install": {
+        "Setup": "Nextcloud*.msi",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}
