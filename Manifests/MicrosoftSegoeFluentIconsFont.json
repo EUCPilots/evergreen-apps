@@ -1,0 +1,27 @@
+{
+    "Name": "Microsoft Segoe Fluent Icons Font",
+    "Source": "https://www.microsoft.com/en-us/download/details.aspx?id=108863",
+    "Get": {
+        "Update": {
+            "Uri": "https://www.microsoft.com/en-us/download/details.aspx?id=108863"
+        },
+        "Download": {
+            "Version": "1.56",
+            "Uri": "https://download.microsoft.com/download/e67899fc-9e91-433c-91c6-876b3b98d787/Segoe-Fluent-Icons.zip",
+            "Date": "10/9/2026 8:00:13 PM",
+            "DatePattern": "M/d/yyyy h:mm:ss tt"
+        }
+    },
+    "Install": {
+        "Setup": "",
+        "Preinstall": "",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}
