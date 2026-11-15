@@ -1,0 +1,26 @@
+{
+    "Name": "Box Drive",
+    "Source": "https://community.box.com/t5/Box-Drive-Releases/bd-p/Box-Drive-Releases",
+    "Get": {
+        "Update": {
+            "Uri": "https://cdn07.boxcdn.net/Autoupdate8.json",
+            "UserAgent": "Box/2.56.271;Windows/10.0.26100;ARMv8 (64-bit) Family 8 Model 0 Revision 0, /64bit",
+            "Property": "win"
+        },
+        "Download": {
+            "Uri": {}
+        }
+    },
+    "Install": {
+        "Preinstall": "",
+        "Setup": "",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}
