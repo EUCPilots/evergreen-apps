@@ -1,0 +1,26 @@
+{
+    "Name": "Box Tools",
+    "Source": "https://docs.box.com/en/box-tools/using-box-tools/large-scale-deployments-box-tools",
+    "Get": {
+        "Update": {
+            "Uri": "https://cdn07.boxcdn.net/BoxEditAutoupdate4.json",
+            "UserAgent": "Box Edit/4.32.0.1324;Windows/10.0.26300.0;ARM64",
+            "Property": "win.default"
+        },
+        "Download": {
+            "Uri": {}
+        }
+    },
+    "Install": {
+        "Preinstall": "",
+        "Setup": "",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}

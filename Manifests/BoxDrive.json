@@ -1,6 +1,6 @@
 {
     "Name": "Box Drive",
-    "Source": "https://community.box.com/t5/Box-Drive-Releases/bd-p/Box-Drive-Releases",
+    "Source": "https://docs.box.com/en/box-drive/deploying-and-managing-box-drive/large-scale-deployments-box-drive",
     "Get": {
         "Update": {
             "Uri": "https://cdn07.boxcdn.net/Autoupdate8.json",
