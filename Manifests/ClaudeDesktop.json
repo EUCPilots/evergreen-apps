@@ -3,28 +3,29 @@
     "Source": "https://support.claude.com/en/articles/12622703-deploy-claude-desktop-for-windows",
     "Get": {
         "Update": {
-            "Uri": [
-                "https://claude.ai/api/desktop/win32/x64/msix/latest/",
-                "https://claude.ai/api/desktop/win32/arm64/msix/latest/"
-            ],
-            "UserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
-            "ContentType": "application/json; charset=utf-8"
+            "Uri": "https://api.anthropic.com/api/desktop/win32/{0}/msix/update?device_id={1}&version={2}&os_version={3}",
+            "UserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/5.11492.5 Chrome/156.0.8078.75 Electron/45.2.1 Safari/537.36 MSIX",
+            "Version": "5.11492.5",
+            "Architecture": [
+                "x64",
+                "arm64"
+            ]
         },
         "Download": {
             "Uri": {
-                "x64": "https://claude.ai/api/desktop/win32/x64/msix/latest/redirect",
-                "arm64": "https://claude.ai/api/desktop/win32/arm64/msix/latest/redirect"
+                "x64": "https://api.anthropic.com/api/desktop/win32/x64/msix/latest/redirect",
+                "arm64": "https://api.anthropic.com/api/desktop/win32/arm64/msix/latest/redirect"
             }
         }
     },
     "Install": {
-        "Setup": "ClaudeDesktopSetup.*.msi",
+        "Setup": "",
         "Physical": {
-            "Arguments": "--silent",
+            "Arguments": "",
             "PostInstall": []
         },
         "Virtual": {
-            "Arguments": "--silent",
+            "Arguments": "",
             "PostInstall": []
         }
     }
