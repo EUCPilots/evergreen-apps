@@ -1,0 +1,25 @@
+{
+    "Name": "Bitvise SSH Client",
+    "Source": "https://bitvise.com/ssh-client",
+    "Get": {
+        "Update": {
+            "Uri": "https://bitvise.com/versions/BvSshClient9?v=9.67&e=s&l=f",
+            "ContentType": "application/octet-stream"
+        },
+        "Download": {
+            "Uri": {
+            }
+        }
+    },
+    "Install": {
+        "Setup": "*.exe",
+        "Physical": {
+            "Arguments": "",
+            "PostInstall": []
+        },
+        "Virtual": {
+            "Arguments": "",
+            "PostInstall": []
+        }
+    }
+}
