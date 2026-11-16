@@ -17,20 +17,27 @@ function Get-ClaudeDesktop {
     )
 
     # Get latest version and download latest release via update API
-    foreach ($Uri in $res.Get.Update.Uri) {
+    $Guid = New-Guid
+    foreach ($Architecture in $res.Get.Update.Architecture) {
+
+        # Construct the update API URI for the current architecture
+        $Uri = $res.Get.Update.Uri -f $Architecture, $Guid, $res.Get.Update.Version, (([System.Environment]::OSVersion.Version).ToString())
         $params = @{
             Uri       = $Uri
             UserAgent = $res.Get.Update.UserAgent
         }
         $Update = Invoke-EvergreenRestMethod @params
-        if ($null -ne $Update) {
+        if ($null -ne $Update -and $Update.releases.Count -gt 0) {
 
             # Output the object to the pipeline
             [PSCustomObject] @{
-                Version      = $Update.version
-                Architecture = Get-Architecture -String $Update.url
-                Type         = Get-FileType -File $Update.url
-                URI          = $Update.url
+                Version      = $Update.releases[0].updateTo.version
+                Date         = ConvertTo-DateTime -DateTime $Update.releases[0].updateTo.pub_date -AutoDetect
+                Sha256       = $Update.releases[0].updateTo.sha256
+                Size         = $Update.releases[0].updateTo.size
+                Architecture = Get-Architecture -String $Architecture
+                Type         = Get-FileType -File $Update.releases[0].updateTo.url
+                URI          = $Update.releases[0].updateTo.url
             }
         }
     }
