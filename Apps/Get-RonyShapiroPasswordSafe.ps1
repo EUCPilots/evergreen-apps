@@ -22,5 +22,8 @@ function Get-RonyShapiroPasswordSafe {
         Filter       = $res.Get.MatchFileTypes
     }
     $object = Get-GitHubRepoRelease @params
-    Write-Output -InputObject $object
+
+    # Select the latest version from the objects returned from the repo
+    $Version = $object.Version | Sort-Object -Property { [version]$_ } -Descending | Select-Object -First 1
+    $object | where-Object { $_.Version -eq $Version }
 }
