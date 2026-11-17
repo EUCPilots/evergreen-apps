@@ -2,7 +2,7 @@
 	"Name": "acaudwell Gource",
 	"Source": "https://gource.io/",
 	"Get": {
-		"Uri": "https://api.github.com/repos/acaudwell/Gource/releases/latest",
+		"Uri": "https://api.github.com/repos/acaudwell/Gource/releases",
 		"MatchVersion": "(\\d+(\\.\\d+){1,4}).*",
 		"MatchFileTypes": "\\.exe$|\\.msi$"
 	}
