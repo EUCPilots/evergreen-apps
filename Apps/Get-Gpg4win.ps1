@@ -16,24 +16,37 @@ function Get-Gpg4win {
         $res = (Get-FunctionResource -AppName ("$($MyInvocation.MyCommand)".Split("-"))[1])
     )
 
-    # Get files from server (https://files.gpg4win.org/)
-    $Response = Invoke-WebRequest -Uri $res.Get.Update.Uri -UseBasicParsing
+    # Get update details from update feed
+    $Response = Invoke-EvergreenWebRequest -Uri $res.Get.Update.Uri -ReturnObject "All"
 
-    if ($null -ne $Response) {
-        # Filter and sort by latest (gpg4win-4.0.3.exe)
-        $LatestVersion = ($Response.Links | Where-Object { $_.href -match $res.Get.Update.MatchFile } | Sort-Object -Property href -Descending | Select-Object -First 1).href
-
-        $Version = [RegEx]::Match($LatestVersion, $res.Get.Update.MatchVersion).Value
-
-        # Create download uri https://files.gpg4win.org/#version -> https://files.gpg4win.org/gpg4win-4.0.3.exe
-        $Uri = $res.Get.Download.Uri -replace $res.Get.Download.ReplaceText, $LatestVersion
-
-        # Output the Version and URI object
-        [PSCustomObject] @{
-            Version      = $Version
-            Architecture = $res.Get.Download.Architecture
-            Type         = [System.IO.Path]::GetExtension($Uri).TrimStart(".")
-            URI          = $Uri
+    # Convert response content to string if it is in byte array format
+    if ($Response.Content -is [byte[]]) {
+        $Content = [System.Text.Encoding]::UTF8.GetString($Response.Content)
+    }
+    
+    # Parse the response content line by line and update metadata accordingly
+    $Metadata = $res.Get.Update.Metadata
+    foreach ($line in ($Content -split '\r?\n')) {
+        if ($line -match '^\s*(?<key>\S+)\s+(?<value>\S+)\s*$' -and $Metadata.ContainsKey($Matches['key'])) {
+            $Metadata[$Matches['key']] = $Matches['value']
         }
+    }
+
+    # Ensure all required metadata fields are populated
+    $missing = @($Metadata.Keys | Where-Object { $null -eq $Metadata[$_] })
+    if ($missing.Count -gt 0) {
+        throw "Missing Gpg4win properties in ${res.Get.Update.Uri}: $($missing -join ', ')"
+    }
+
+    # Return the final object with all relevant information
+    $Object = [PSCustomObject]$Metadata
+    [PSCustomObject] @{
+        Version      = $Object.gpg4win_ver
+        Date         = ConvertTo-DateTime -DateTime $Object.gpg4win_date -AutoDetect
+        #Size         = $Object.gpg4win_exe_size
+        Sha256       = $Object.gpg4win_exe_sha2
+        Architecture = Get-Architecture -String $res.Get.Download.Architecture
+        Type         = Get-FileType -File $res.Get.Download.Uri
+        URI          = $res.Get.Download.Uri -f $Object.gpg4win_ver
     }
 }
