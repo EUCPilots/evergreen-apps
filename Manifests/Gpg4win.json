@@ -3,14 +3,19 @@
     "Source": "https://www.gpg4win.org/",
     "Get": {
         "Update": {
-            "Uri": "https://files.gpg4win.org/",
-            "MatchFile": "^gpg4win-([0-9]|[\\.])+exe$",
-            "MatchVersion": "(\\d+(\\.\\d+){1,3})"
+            "Uri": "https://versions.gnupg.org/swdb.lst",
+            "Metadata": {
+                "gpg4win_ver": null,
+                "gpg4win_date": null,
+                "gpg4win_exe_size": null,
+                "gpg4win_exe_sha1": null,
+                "gpg4win_exe_sha2": null
+            },
+            "MatchMetadata": "^\\s*(?<key>\\S+)\\s+(?<value>\\S+)\\s*$"
         },
         "Download": {
-            "Uri": "https://files.gpg4win.org/#version",
-            "ReplaceText": "#version",
-            "Architecture": "x86"
+            "Uri": "https://files.gpg4win.org/gpg4win-{0}.exe",
+            "Architecture": "x64"
         }
     },
     "Install": {
