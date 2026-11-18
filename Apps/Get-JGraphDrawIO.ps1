@@ -1,3 +1,4 @@
+#Requires -Module @{ ModuleName="Evergreen"; ModuleVersion="2611.2877.1" }
 function Get-JGraphDrawIO {
     <#
         .SYNOPSIS
@@ -22,6 +23,5 @@ function Get-JGraphDrawIO {
         MatchVersion = $res.Get.MatchVersion
         Filter       = $res.Get.MatchFileTypes
     }
-    $object = Get-GitHubRepoRelease @params
-    Write-Output -InputObject $object
+    Get-GitHubRepoRelease @params | Set-ObjectProperty -PropertyName "Architecture" -CurrentValue "x86" -Value "x64" 
 }
